@@ -240,15 +240,14 @@
 <body>
     <header>
         <h1>🌳 Quad Tree Visualization Tool</h1>
-        <p>Learn how spatial indexing works for RF propagation & building lookup simulations</p>
+        <p>Learn how spatial indexing works in an easy, visual way!</p>
     </header>
     
     <div class="container">
         <div class="main-area">
             <div class="info-box">
-                <h4>What is a Quad Tree?</h4>
-                <p>A quad tree is a tree data structure where each internal node has exactly four children (quadrants). 
-                It's used to efficiently search and partition 2D space - perfect for finding buildings in urban environments!</p>
+                <h4>🤔 What is a Quad Tree? (In Simple Terms)</h4>
+                <p>Imagine you have a map with lots of buildings on it. Instead of searching through ALL the buildings every time you want to find something, a <strong>Quad Tree</strong> splits the map into smaller and smaller squares (quadrants). Think of it like organizing a messy room by dividing it into sections, then subsections. When you need to find something, you only look in the relevant section!</p>
             </div>
             
             <div class="canvas-container">
@@ -284,7 +283,7 @@
                 <div class="controls">
                     <button class="btn-primary" onclick="addRandomBuildings(10)">Add 10 Random Buildings</button>
                     <button class="btn-success" onclick="addRandomBuildings(50)">Add 50 Buildings</button>
-                    <button class="btn-primary" onclick="simulateRFQuery()">Simulate RF Range Query</button>
+                    <button class="btn-primary" onclick="simulateRangeQuery()">Simulate Range Query</button>
                     <button class="btn-secondary" onclick="toggleAnimation()">Toggle Auto-Insert</button>
                     <button class="btn-danger" onclick="resetTree()">Reset Everything</button>
                 </div>
@@ -325,16 +324,131 @@
             </div>
             
             <div class="panel">
-                <h3>💡 How It Works</h3>
+                <h3>💡 How It Works (Like a Boss)</h3>
                 <div style="font-size: 13px; line-height: 1.8; color: #34495e;">
-                    <p><strong>1.</strong> Start with a single square covering the entire area</p>
-                    <p><strong>2.</strong> When a quadrant has too many buildings, split it into 4 smaller quadrants</p>
-                    <p><strong>3.</strong> Each child quadrant is a new node in the tree</p>
-                    <p><strong>4.</strong> Search only relevant quadrants for efficient lookup!</p>
+                    <p><strong>🗺️ Think of it like this:</strong></p>
+                    <p>1. You have one big map covering everything</p>
+                    <p>2. When an area gets crowded with buildings, you split it into 4 smaller squares (like cutting a pizza into 4 slices)</p>
+                    <p>3. Each small square can split again if it gets too crowded</p>
+                    <p>4. Now when you search, you only check the squares that matter - way faster than checking everything!</p>
+                    <br>
+                    <p><strong>🎯 Real World Uses:</strong></p>
+                    <p>• GPS navigation finding nearby restaurants</p>
+                    <p>• Video games loading only visible terrain</p>
+                    <p>• Computer graphics rendering</p>
+                    <p>• Image compression</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- 3D Cityscape Footer -->
+    <div class="cityscape-container">
+        <div class="cityscape">
+            <div class="building building-1"></div>
+            <div class="building building-2"></div>
+            <div class="building building-3"></div>
+            <div class="building building-4"></div>
+            <div class="building building-5"></div>
+            <div class="building building-6"></div>
+            <div class="building building-7"></div>
+            <div class="building building-8"></div>
+            <div class="building building-9"></div>
+            <div class="building building-10"></div>
+            <div class="building building-11"></div>
+            <div class="building building-12"></div>
+        </div>
+    </div>
+
+    <style>
+        .cityscape-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(to top, #1a1a2e, transparent);
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .cityscape {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 0 20px;
+        }
+        
+        .building {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            box-shadow: 
+                inset -5px 0 10px rgba(0,0,0,0.3),
+                inset 5px 0 10px rgba(255,255,255,0.1),
+                0 -10px 20px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .building:hover {
+            transform: translateY(-5px);
+        }
+        
+        .building::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 8px,
+                rgba(255,255,255,0.1) 8px,
+                rgba(255,255,255,0.1) 10px
+            );
+        }
+        
+        .building::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 6px,
+                rgba(255,255,255,0.15) 6px,
+                rgba(255,255,255,0.15) 8px
+            );
+        }
+        
+        .building-1 { width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .building-2 { width: 50px; height: 60px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .building-3 { width: 35px; height: 35px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .building-4 { width: 55px; height: 70px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .building-5 { width: 45px; height: 50px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .building-6 { width: 60px; height: 75px; background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .building-7 { width: 40px; height: 45px; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .building-8 { width: 50px; height: 55px; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+        .building-9 { width: 35px; height: 30px; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+        .building-10 { width: 45px; height: 65px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .building-11 { width: 55px; height: 45px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .building-12 { width: 40px; height: 50px; background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%); }
+        
+        /* Add margin to body to make room for cityscape */
+        body {
+            padding-bottom: 80px;
+        }
+    </style>
 
     <script>
         // Quad Tree Implementation
@@ -632,7 +746,7 @@
             draw();
         }
 
-        function simulateRFQuery() {
+        function simulateRangeQuery() {
             // Clear previous highlights
             function clearHighlights(qt) {
                 for (let p of qt.points) {
@@ -667,7 +781,7 @@
             
             // Show notification
             setTimeout(() => {
-                alert(`RF Range Query Complete!\nFound ${found.length} buildings in the search area.\n\nWithout Quad Tree: Would check all ${pointId} buildings\nWith Quad Tree: Only checked relevant quadrants!`);
+                alert(`Range Query Complete!\nFound ${found.length} buildings in the search area.\n\nWithout Quad Tree: Would check all ${pointId} buildings\nWith Quad Tree: Only checked relevant quadrants!`);
             }, 100);
         }
 
