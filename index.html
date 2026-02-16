@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quad Tree Visualization Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        header h1 {
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+        }
+        
+        .main-area {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .canvas-container {
+            position: relative;
+            border: 2px solid #34495e;
+            border-radius: 5px;
+            overflow: hidden;
+            background: #ecf0f1;
+        }
+        
+        canvas {
+            display: block;
+            cursor: crosshair;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .panel {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .panel h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .info-box h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .info-box p {
+            color: #34495e;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .tree-structure {
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .stat-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
+        .demo-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+        
+        .slider-container {
+            margin: 10px 0;
+        }
+        
+        .slider-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #34495e;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+        }
+        
+        .point-counter {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌳 Quad Tree Visualization Tool</h1>
+        <p>Learn how spatial indexing works for RF propagation & building lookup simulations</p>
+    </header>
+    
+    <div class="container">
+        <div class="main-area">
+            <div class="info-box">
+                <h4>What is a Quad Tree?</h4>
+                <p>A quad tree is a tree data structure where each internal node has exactly four children (quadrants). 
+                It's used to efficiently search and partition 2D space - perfect for finding buildings in urban environments!</p>
+            </div>
+            
+            <div class="canvas-container">
+                <canvas id="quadtreeCanvas" width="800" height="600"></canvas>
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="panel">
+                <h3>📊 Statistics</h3>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="pointCount">0</div>
+                        <div class="stat-label">Buildings/Points</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="nodeCount">1</div>
+                        <div class="stat-label">Tree Nodes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="leafCount">1</div>
+                        <div class="stat-label">Leaf Nodes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="depthCount">0</div>
+                        <div class="stat-label">Max Depth</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>🎮 Controls</h3>
+                <div class="controls">
+                    <button class="btn-primary" onclick="addRandomBuildings(10)">Add 10 Random Buildings</button>
+                    <button class="btn-success" onclick="addRandomBuildings(50)">Add 50 Buildings</button>
+                    <button class="btn-primary" onclick="simulateRFQuery()">Simulate RF Range Query</button>
+                    <button class="btn-secondary" onclick="toggleAnimation()">Toggle Auto-Insert</button>
+                    <button class="btn-danger" onclick="resetTree()">Reset Everything</button>
+                </div>
+                
+                <div class="slider-container">
+                    <label>Max Points per Node: <span id="capacityValue">4</span></label>
+                    <input type="range" id="capacitySlider" min="1" max="10" value="4" oninput="updateCapacity(this.value)">
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>🎨 Legend</h3>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #e74c3c;"></div>
+                        <span>Building/Point</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #34495e; border: 2px solid #34495e; background: transparent;"></div>
+                        <span>Tree Boundary</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(52, 152, 219, 0.3);"></div>
+                        <span>Search Area</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #f39c12;"></div>
+                        <span>Found Results</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>🌲 Tree Structure</h3>
+                <div class="tree-structure" id="treeStructure">
+                    Root (empty)
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>💡 How It Works</h3>
+                <div style="font-size: 13px; line-height: 1.8; color: #34495e;">
+                    <p><strong>1.</strong> Start with a single square covering the entire area</p>
+                    <p><strong>2.</strong> When a quadrant has too many buildings, split it into 4 smaller quadrants</p>
+                    <p><strong>3.</strong> Each child quadrant is a new node in the tree</p>
+                    <p><strong>4.</strong> Search only relevant quadrants for efficient lookup!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quad Tree Implementation
+        class Point {
+            constructor(x, y, id) {
+                this.x = x;
+                this.y = y;
+                this.id = id;
+                this.highlighted = false;
+            }
+        }
+
+        class Rectangle {
+            constructor(x, y, w, h) {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+                this.h = h;
+            }
+
+            contains(point) {
+                return point.x >= this.x && point.x < this.x + this.w &&
+                       point.y >= this.y && point.y < this.y + this.h;
+            }
+
+            intersects(range) {
+                return !(range.x > this.x + this.w || 
+                        range.x + range.w < this.x || 
+                        range.y > this.y + this.h || 
+                        range.y + range.h < this.y);
+            }
+        }
+
+        class QuadTree {
+            constructor(boundary, capacity) {
+                this.boundary = boundary;
+                this.capacity = capacity;
+                this.points = [];
+                this.divided = false;
+                this.northeast = null;
+                this.northwest = null;
+                this.southeast = null;
+                this.southwest = null;
+            }
+
+            subdivide() {
+                let x = this.boundary.x;
+                let y = this.boundary.y;
+                let w = this.boundary.w / 2;
+                let h = this.boundary.h / 2;
+
+                let ne = new Rectangle(x + w, y, w, h);
+                let nw = new Rectangle(x, y, w, h);
+                let se = new Rectangle(x + w, y + h, w, h);
+                let sw = new Rectangle(x, y + h, w, h);
+
+                this.northeast = new QuadTree(ne, this.capacity);
+                this.northwest = new QuadTree(nw, this.capacity);
+                this.southeast = new QuadTree(se, this.capacity);
+                this.southwest = new QuadTree(sw, this.capacity);
+
+                this.divided = true;
+
+                // Redistribute existing points
+                for (let p of this.points) {
+                    this.insertIntoChildren(p);
+                }
+                this.points = [];
+            }
+
+            insertIntoChildren(point) {
+                if (this.northeast.insert(point)) return true;
+                if (this.northwest.insert(point)) return true;
+                if (this.southeast.insert(point)) return true;
+                if (this.southwest.insert(point)) return true;
+                return false;
+            }
+
+            insert(point) {
+                if (!this.boundary.contains(point)) {
+                    return false;
+                }
+
+                if (!this.divided) {
+                    if (this.points.length < this.capacity) {
+                        this.points.push(point);
+                        return true;
+                    }
+                    this.subdivide();
+                }
+
+                return this.insertIntoChildren(point);
+            }
+
+            query(range, found = []) {
+                if (!this.boundary.intersects(range)) {
+                    return found;
+                }
+
+                for (let p of this.points) {
+                    if (range.contains(p)) {
+                        found.push(p);
+                    }
+                }
+
+                if (this.divided) {
+                    this.northwest.query(range, found);
+                    this.northeast.query(range, found);
+                    this.southwest.query(range, found);
+                    this.southeast.query(range, found);
+                }
+
+                return found;
+            }
+
+            countNodes() {
+                let count = 1;
+                if (this.divided) {
+                    count += this.northeast.countNodes();
+                    count += this.northwest.countNodes();
+                    count += this.southeast.countNodes();
+                    count += this.southwest.countNodes();
+                }
+                return count;
+            }
+
+            countLeafNodes() {
+                if (!this.divided) return 1;
+                return this.northeast.countLeafNodes() + 
+                       this.northwest.countLeafNodes() + 
+                       this.southeast.countLeafNodes() + 
+                       this.southwest.countLeafNodes();
+            }
+
+            getDepth() {
+                if (!this.divided) return 0;
+                return 1 + Math.max(
+                    this.northeast.getDepth(),
+                    this.northwest.getDepth(),
+                    this.southeast.getDepth(),
+                    this.southwest.getDepth()
+                );
+            }
+
+            toString(indent = 0) {
+                let str = '  '.repeat(indent);
+                let pointInfo = this.points.length > 0 ? ` (${this.points.length} points)` : '';
+                str += `📦 [${Math.round(this.boundary.x)},${Math.round(this.boundary.y)}] ${this.boundary.w.toFixed(0)}x${this.boundary.h.toFixed(0)}${pointInfo}\n`;
+                
+                if (this.divided) {
+                    str += this.northwest.toString(indent + 1);
+                    str += this.northeast.toString(indent + 1);
+                    str += this.southwest.toString(indent + 1);
+                    str += this.southeast.toString(indent + 1);
+                }
+                return str;
+            }
+        }
+
+        // Visualization
+        const canvas = document.getElementById('quadtreeCanvas');
+        const ctx = canvas.getContext('2d');
+        let capacity = 4;
+        let boundary = new Rectangle(0, 0, canvas.width, canvas.height);
+        let quadtree = new QuadTree(boundary, capacity);
+        let pointId = 0;
+        let searchRange = null;
+        let animationId = null;
+        let isAnimating = false;
+
+        // Handle high DPI displays
+        function setupCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            
+            boundary = new Rectangle(0, 0, rect.width, rect.height);
+        }
+
+        function drawQuadTree(qt) {
+            // Draw boundary
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(qt.boundary.x, qt.boundary.y, qt.boundary.w, qt.boundary.h);
+
+            // Draw points in this node
+            for (let p of qt.points) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+                ctx.fillStyle = p.highlighted ? '#f39c12' : '#e74c3c';
+                ctx.fill();
+                ctx.strokeStyle = '#c0392b';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw building icon
+                ctx.fillStyle = 'white';
+                ctx.font = '10px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('🏢', p.x, p.y);
+            }
+
+            // Recursively draw children
+            if (qt.divided) {
+                drawQuadTree(qt.northeast);
+                drawQuadTree(qt.northwest);
+                drawQuadTree(qt.southeast);
+                drawQuadTree(qt.southwest);
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid background
+            ctx.strokeStyle = '#ecf0f1';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < canvas.width; i += 50) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+            for (let i = 0; i < canvas.height; i += 50) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(canvas.width, i);
+                ctx.stroke();
+            }
+
+            // Draw search range if active
+            if (searchRange) {
+                ctx.fillStyle = 'rgba(52, 152, 219, 0.2)';
+                ctx.fillRect(searchRange.x, searchRange.y, searchRange.w, searchRange.h);
+                ctx.strokeStyle = '#3498db';
+                ctx.lineWidth = 3;
+                ctx.setLineDash([5, 5]);
+                ctx.strokeRect(searchRange.x, searchRange.y, searchRange.w, searchRange.h);
+                ctx.setLineDash([]);
+            }
+
+            drawQuadTree(quadtree);
+            updateStats();
+            updateTreeStructure();
+        }
+
+        function updateStats() {
+            document.getElementById('pointCount').textContent = pointId;
+            document.getElementById('nodeCount').textContent = quadtree.countNodes();
+            document.getElementById('leafCount').textContent = quadtree.countLeafNodes();
+            document.getElementById('depthCount').textContent = quadtree.getDepth();
+        }
+
+        function updateTreeStructure() {
+            const treeDiv = document.getElementById('treeStructure');
+            if (pointId === 0) {
+                treeDiv.textContent = 'Root (empty)';
+            } else {
+                treeDiv.textContent = quadtree.toString();
+            }
+        }
+
+        function updateCapacity(value) {
+            capacity = parseInt(value);
+            document.getElementById('capacityValue').textContent = capacity;
+            // Rebuild tree with new capacity
+            resetTree();
+        }
+
+        function addRandomBuildings(count) {
+            for (let i = 0; i < count; i++) {
+                const x = Math.random() * (canvas.width / window.devicePixelRatio - 20) + 10;
+                const y = Math.random() * (canvas.height / window.devicePixelRatio - 20) + 10;
+                const point = new Point(x, y, pointId++);
+                quadtree.insert(point);
+            }
+            draw();
+        }
+
+        function resetTree() {
+            quadtree = new QuadTree(boundary, capacity);
+            pointId = 0;
+            searchRange = null;
+            isAnimating = false;
+            if (animationId) {
+                clearTimeout(animationId);
+                animationId = null;
+            }
+            draw();
+        }
+
+        function simulateRFQuery() {
+            // Clear previous highlights
+            function clearHighlights(qt) {
+                for (let p of qt.points) {
+                    p.highlighted = false;
+                }
+                if (qt.divided) {
+                    clearHighlights(qt.northeast);
+                    clearHighlights(qt.northwest);
+                    clearHighlights(qt.southeast);
+                    clearHighlights(qt.southwest);
+                }
+            }
+            clearHighlights(quadtree);
+
+            // Create random search range
+            const rangeW = 150 + Math.random() * 200;
+            const rangeH = 150 + Math.random() * 200;
+            const rangeX = Math.random() * (canvas.width / window.devicePixelRatio - rangeW);
+            const rangeY = Math.random() * (canvas.height / window.devicePixelRatio - rangeH);
+            
+            searchRange = new Rectangle(rangeX, rangeY, rangeW, rangeH);
+            
+            // Query the tree
+            const found = quadtree.query(searchRange);
+            
+            // Highlight found points
+            for (let p of found) {
+                p.highlighted = true;
+            }
+            
+            draw();
+            
+            // Show notification
+            setTimeout(() => {
+                alert(`RF Range Query Complete!\nFound ${found.length} buildings in the search area.\n\nWithout Quad Tree: Would check all ${pointId} buildings\nWith Quad Tree: Only checked relevant quadrants!`);
+            }, 100);
+        }
+
+        function toggleAnimation() {
+            isAnimating = !isAnimating;
+            if (isAnimating) {
+                animate();
+            } else {
+                if (animationId) {
+                    clearTimeout(animationId);
+                    animationId = null;
+                }
+            }
+        }
+
+        function animate() {
+            if (!isAnimating) return;
+            
+            addRandomBuildings(1);
+            
+            if (pointId < 200) {
+                animationId = setTimeout(animate, 100);
+            } else {
+                isAnimating = false;
+            }
+        }
+
+        // Mouse interaction
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left);
+            const y = (e.clientY - rect.top);
+            
+            const point = new Point(x, y, pointId++);
+            quadtree.insert(point);
+            draw();
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            setupCanvas();
+            draw();
+        });
+
+        // Initialize
+        setupCanvas();
+        draw();
+
+        // Add some initial buildings
+        addRandomBuildings(20);
+    </script>
+</body>
+</html>
