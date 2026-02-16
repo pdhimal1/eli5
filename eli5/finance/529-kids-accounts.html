@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>529 Plans & Kids Accounts - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #2e7d32, #43a047); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #2e7d32; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a150a; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #81c784; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #81c784; border-radius: 10px; background: #0a150a; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-calc { background: linear-gradient(135deg, #4caf50, #81c784); color: white; }
+        .fact-box { background: #e8f5e9; border-left: 5px solid #43a047; padding: 15px; margin: 15px 0; color: #1b5e20; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Saving for College & Kids! 🎓</h1>
+        <p class="subtitle">Special accounts to help kids succeed!</p>
+        
+        <div class="story-box">
+            <h2>🎁 The Gift That Grows!</h2>
+            <p>Imagine giving your child a gift that grows over time - like a magic money tree!</p>
+            <p><strong>That's what 529 plans and kids accounts do!</strong></p>
+            <p>You put money in, it grows tax-free, and when they're ready for college (or to buy assets), the money is there!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 College Savings Calculator!</h2>
+            <canvas id="collegeCanvas" width="700" height="300"></canvas>
+            <div class="controls">
+                <button class="btn-calc" onclick="calculate()">Calculate! 🧮</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📚 529 Plans: College Savings</h2>
+            <p><strong>What is it?</strong></p>
+            <p>A special savings account just for college expenses!</p>
+            
+            <p><strong>Tax Benefits:</strong></p>
+            <p>✅ Money grows tax-free</p>
+            <p>✅ Withdrawals are tax-free for college</p>
+            <p>✅ Some states give you a tax break for contributing</p>
+            
+            <div class="fact-box">
+                💰 You can contribute up to $18,000 per year without gift tax (2024)!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>👶 UGMA/UTMA Accounts: The "Trump" Style Accounts</h2>
+            <p><strong>What is it?</strong></p>
+            <p>UGMA (Uniform Gift to Minors Act) and UTMA (Uniform Transfer to Minors Act) are accounts where you give money to a child.</p>
+            
+            <p><strong>Key Features:</strong></p>
+            <p>✅ You own the account, but the child is the beneficiary</p>
+            <p>✅ Can be used for ANYTHING that benefits the child</p>
+            <p>✅ Child gains control at age 18-21 (depending on state)</p>
+            <p>✅ Can invest in stocks, ETFs, anything!</p>
+            
+            <div class="fact-box">
+                🎯 These are "Custodial" accounts - the child owns it but can't touch it until adulthood!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📊 529 vs UGMA/UTMA</h2>
+            <p><strong>529 Plan:</strong></p>
+            <p>🎓 Must be used for education</p>
+            <p>📉 Limited investment options</p>
+            <p>🛡️ Can change beneficiary to another family member</p>
+            
+            <p><strong>UGMA/UTMA:</strong></p>
+            <p>💰 Can be used for anything</p>
+            <p>📈 Can invest in stocks/bonds</p>
+            <p>⚠️ Child gains full control at age 18-21</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>💵 How Much Do You Need?</h2>
+            <p><strong>College Costs (per year):</strong></p>
+            <p>🏫 Public in-state: ~$25,000/year</p>
+            <p>🏛️ Public out-of-state: ~$45,000/year</p>
+            <p>🎓 Private university: ~$60,000+/year</p>
+            
+            <p><strong>Total for 4 years:</strong></p>
+            <p>$100,000 - $250,000+</p>
+            
+            <div class="fact-box">
+                🚀 Starting with $100/month from birth → ~$50,000 by age 18 at 7% return!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 Best Strategy</h2>
+            <p><strong>Recommended order:</strong></p>
+            <p>1. 🏁 401k match (free money!)</p>
+            <p>2. 💳 Pay off high-interest debt</p>
+            <p>3. 🎓 529 plan (if planning for college)</p>
+            <p>4. 📈 Roth IRA (flexible, can withdraw contributions anytime)</p>
+            <p>5. 💰 UGMA/UTMA for extra savings</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Finance Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('collegeCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let monthly = 200;
+        let years = 18;
+        
+        function calculate() {
+            years = 0;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a150a';
+            ctx.fillRect(0, 0, 700, 300);
+            
+            // Calculate
+            const rate = 0.07;
+            let total = 0;
+            let contributed = 0;
+            
+            for (let i = 0; i < years; i++) {
+                for (let m = 0; m < 12; m++) {
+                    total += monthly;
+                    contributed += monthly;
+                    total *= (1 + rate/12);
+                }
+            }
+            
+            // Progress bar
+            const progress = Math.min(years / 18, 1);
+            ctx.fillStyle = '#333';
+            ctx.fillRect(50, 100, 600, 40);
+            ctx.fillStyle = '#4caf50';
+            ctx.fillRect(50, 100, 600 * progress, 40);
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '18px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Years: ' + years + '/18', 350, 85);
+            ctx.fillText('$100K - $250K needed for 4 years of college', 350, 170);
+            
+            // Current savings
+            ctx.fillStyle = '#81c784';
+            ctx.font = 'bold 28px Arial';
+            ctx.fillText('Savings: $' + Math.round(total).toLocaleString(), 350, 220);
+            
+            ctx.fillStyle = '#666';
+            ctx.font = '16px Arial';
+            ctx.fillText('You contributed: $' + contributed.toLocaleString(), 350, 250);
+            
+            years = Math.min(years + 0.1, 18);
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>
