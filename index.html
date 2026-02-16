@@ -70,9 +70,9 @@
             padding: 12px 16px;
             border-radius: 6px;
             transition: all 0.3s;
-            min-height: auto;
-            line-height: 1.6;
-            display: block;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
         }
         
         .search-status.info {
@@ -375,13 +375,13 @@
                     </div>
                     <div class="step">
                         <span class="step-number">4</span>
-                        <span>Click <strong>"Simulate Range Query"</strong> to find all buildings in a random area (like "find all restaurants within 5 blocks")</span>
+                        <span>Click <strong>"Find Building"</strong> to search if a random point is inside any building</span>
                     </div>
                 </div>
             </div>
             
             <div class="search-status-panel">
-                <div id="searchStatus" class="search-status">🔍 <strong>Range Query:</strong> Click "✏️ Draw Search Box" to draw your own search area, or "🎲 Random Search" to see a random one. We'll find ALL buildings inside!</div>
+                <div id="searchStatus" class="search-status">🔍 <strong>Point-in-Polygon Search:</strong> We'll drop a random "pin" on the map and check which building (if any) contains that point!</div>
             </div>
             
             <div class="canvas-container">
@@ -393,30 +393,30 @@
                 <div class="works-content">
                     <div class="works-section">
                         <h5>🗺️ What Are We Doing?</h5>
-                        <p>We're simulating a <strong>Range Query</strong> - one of the most common operations in spatial databases. It's like asking:</p>
+                        <p>We're simulating a <strong>Point-in-Polygon</strong> search - checking if a point falls inside a building/area. It's like asking:</p>
                         <ul style="margin-top: 10px;">
-                            <li>"Find all restaurants within 5 blocks of me"</li>
-                            <li>"Show all buildings inside this city block"</li>
-                            <li>"Which trees are in this park area?"</li>
+                            <li>"Is my GPS location inside this building?"</li>
+                            <li>"Which building is this delivery address in?"</li>
+                            <li>"Is this point inside the city limits?"</li>
                         </ul>
-                        <p style="margin-top: 10px;">The app draws a random rectangular search area and finds <strong>ALL</strong> buildings inside it!</p>
+                        <p style="margin-top: 10px;">The app drops a random "pin" on the map and finds <strong>which building contains that point</strong>!</p>
                     </div>
                     <div class="works-section">
                         <h5>📦 What You See:</h5>
                         <ul>
                             <li><strong>Red dots</strong> = Buildings/points on the map</li>
                             <li><strong>Black lines</strong> = Quadrant boundaries</li>
-                            <li><strong>Blue dashed box</strong> = Search area (range query)</li>
+                            <li><strong>Blue dashed box</strong> = Search area around the pin point</li>
                             <li><strong>Yellow highlighted areas</strong> = Quadrants being checked</li>
                             <li><strong>Gray dashed areas</strong> = Quadrants skipped (don't overlap)</li>
-                            <li><strong>Orange dots</strong> = Buildings found inside the search area</li>
+                            <li><strong>Orange dots</strong> = Buildings found containing the point</li>
                         </ul>
                     </div>
                     <div class="works-section">
                         <h5>🚀 Why It Matters:</h5>
                         <p>Instead of checking every building when searching, a Quad Tree splits the map into smaller squares. Think of it like organizing your closet: instead of digging through everything, you divide it into sections (shirts, pants, shoes) and only look where needed!</p>
-                        <p style="margin-top: 10px;"><strong>Without Quad Tree:</strong> Search 10,000 buildings = 10,000 checks</p>
-                        <p><strong>With Quad Tree:</strong> Search 10,000 buildings = ~20 checks</p>
+                        <p style="margin-top: 10px;"><strong>Without Quad Tree:</strong> Check 10,000 buildings = 10,000 checks</p>
+                        <p><strong>With Quad Tree:</strong> Check 10,000 buildings = ~20 checks</p>
                         <p>It's used in GPS, video games, and computer graphics to make things <strong>500x faster!</strong></p>
                     </div>
                 </div>
@@ -451,8 +451,7 @@
                 <div class="controls">
                     <button class="btn-primary" onclick="addRandomBuildings(10)">Add 10 Random Buildings</button>
                     <button class="btn-success" onclick="addRandomBuildings(50)">Add 50 Buildings</button>
-                    <button class="btn-primary" id="drawSearchBtn" onclick="enableDrawMode()">✏️ Draw Search Box</button>
-                    <button class="btn-primary" onclick="simulateRangeQuery()">🎲 Random Search</button>
+                    <button class="btn-primary" onclick="simulateRangeQuery()">📍 Find Building</button>
                     <button class="btn-secondary" onclick="toggleAnimation()">Toggle Auto-Insert</button>
                     <button class="btn-danger" onclick="resetTree()">Reset Everything</button>
                 </div>
@@ -460,10 +459,6 @@
                 <div class="slider-container">
                     <label>Max Points per Node: <span id="capacityValue">4</span></label>
                     <input type="range" id="capacitySlider" min="1" max="10" value="4" oninput="updateCapacity(this.value)">
-                </div>
-                
-                <div class="mode-indicator" id="modeIndicator" style="margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 5px; font-size: 13px; text-align: center; display: none;">
-                    <strong>✏️ Drawing Mode:</strong> Click and drag on the map to draw your search box
                 </div>
             </div>
             
@@ -921,7 +916,7 @@
                 const point = new Point(x, y, pointId++);
                 quadtree.insert(point);
             }
-            updateSearchStatus(`Added ${count} building${count > 1 ? 's' : ''}! Draw a search box or click "🎲 Random Search" to find buildings in an area.`, 'info');
+            updateSearchStatus(`Added ${count} building${count > 1 ? 's' : ''}! Click "📍 Find Building" to search for a point inside a building.`, 'info');
             draw();
         }
 
@@ -931,23 +926,9 @@
             searchRange = null;
             isAnimating = false;
             isSearching = false;
-            isDrawingMode = false;
-            isDrawing = false;
             checkedQuadrants = [];
             foundPoints = [];
             currentStep = 0;
-            
-            // Reset drawing button
-            const btn = document.getElementById('drawSearchBtn');
-            if (btn) {
-                btn.textContent = '✏️ Draw Search Box';
-                btn.style.background = '#3498db';
-            }
-            const indicator = document.getElementById('modeIndicator');
-            if (indicator) {
-                indicator.style.display = 'none';
-            }
-            
             if (animationId) {
                 clearTimeout(animationId);
                 animationId = null;
@@ -956,14 +937,7 @@
                 clearTimeout(searchAnimationId);
                 searchAnimationId = null;
             }
-            updateSearchStatus('🔍 <strong>Range Query:</strong> We\'ll draw a rectangle (search area) and find ALL buildings inside it - like asking "show me all restaurants within 3 blocks of here"', 'info');
-            draw();
-        }
-            if (searchAnimationId) {
-                clearTimeout(searchAnimationId);
-                searchAnimationId = null;
-            }
-            updateSearchStatus('🔍 <strong>Range Query:</strong> We\'ll draw a random rectangle (search area) and find ALL buildings inside it - like asking "show me all restaurants within 3 blocks of here"', 'info');
+            updateSearchStatus('🔍 <strong>Point-in-Polygon:</strong> Drop a random "pin" on the map and find which building contains that point!', 'info');
             draw();
         }
 
@@ -1007,7 +981,7 @@
             
             searchRange = new Rectangle(rangeX, rangeY, rangeW, rangeH);
             
-            updateSearchStatus('🔍 <strong>Starting Range Query:</strong> Drawing a search area (blue box) and finding all buildings inside it...', 'info');
+            updateSearchStatus('🔍 <strong>Searching:</strong> Dropping a pin and checking which building contains that point...', 'info');
             
             // Animate the search step by step
             await animateSearch(quadtree, searchRange);
@@ -1015,12 +989,21 @@
             // Show final results
             const checkedCount = checkedQuadrants.filter(cq => cq.status === 'checking').length;
             const skippedCount = checkedQuadrants.filter(cq => cq.status === 'skipped').length;
-            updateSearchStatus(
-                `✅ <strong>Range Query Complete!</strong><br>
-                Found <strong>${foundPoints.length} building${foundPoints.length !== 1 ? 's' : ''}</strong> inside the search area.<br>
-                <small>Smart search: Only checked ${checkedCount} relevant quadrants, skipped ${skippedCount} quadrants (vs. checking all ${pointId} buildings one by one!)</small>`,
-                'success'
-            );
+            if (foundPoints.length > 0) {
+                updateSearchStatus(
+                    `✅ <strong>Found It!</strong><br>
+                    The pin is inside <strong>${foundPoints.length} building${foundPoints.length !== 1 ? 's' : ''}</strong>.<br>
+                    <small>Smart search: Only checked ${checkedCount} relevant quadrants, skipped ${skippedCount} quadrants (vs. checking all ${pointId} buildings!)</small>`,
+                    'success'
+                );
+            } else {
+                updateSearchStatus(
+                    `❌ <strong>No Building Found</strong><br>
+                    The pin didn't land inside any building.<br>
+                    <small>Smart search: Only checked ${checkedCount} relevant quadrants, skipped ${skippedCount} quadrants</small>`,
+                    'info'
+                );
+            }
             
             isSearching = false;
         }
@@ -1038,7 +1021,7 @@
             // This quadrant is being checked - highlight it
             checkedQuadrants.push({qt: qt, status: 'checking'});
             currentStep++;
-            updateSearchStatus(`<strong>Step ${currentStep}:</strong> Checking if this quadrant overlaps with our search area [${Math.round(qt.boundary.x)}, ${Math.round(qt.boundary.y)}]...`, 'info');
+            updateSearchStatus(`<strong>Step ${currentStep}:</strong> Checking if the pin could be in this area [${Math.round(qt.boundary.x)}, ${Math.round(qt.boundary.y)}]...`, 'info');
             draw();
             await sleep(300);
             
@@ -1053,7 +1036,7 @@
             }
             
             if (pointsInNode.length > 0) {
-                updateSearchStatus(`<strong>Step ${currentStep}:</strong> ✅ Found ${pointsInNode.length} building${pointsInNode.length > 1 ? 's' : ''} inside the search area!`, 'success');
+                updateSearchStatus(`<strong>Step ${currentStep}:</strong> ✅ The pin is inside ${pointsInNode.length} building${pointsInNode.length > 1 ? 's' : ''}!`, 'success');
                 draw();
                 await sleep(400);
             }
@@ -1103,159 +1086,9 @@
             }
         }
 
-        let isDrawingMode = false;
-        let isDrawing = false;
-        let drawStartX = 0;
-        let drawStartY = 0;
-        let drawCurrentX = 0;
-        let drawCurrentY = 0;
-
-        function enableDrawMode() {
-            if (isSearching) return;
-            isDrawingMode = !isDrawingMode;
-            const btn = document.getElementById('drawSearchBtn');
-            const indicator = document.getElementById('modeIndicator');
-            
-            if (isDrawingMode) {
-                btn.textContent = '❌ Cancel Drawing';
-                btn.style.background = '#e74c3c';
-                indicator.style.display = 'block';
-                updateSearchStatus('✏️ <strong>Drawing Mode ON:</strong> Click and drag on the map to draw your search box! Release to search.', 'info');
-                canvas.style.cursor = 'crosshair';
-            } else {
-                btn.textContent = '✏️ Draw Search Box';
-                btn.style.background = '#3498db';
-                indicator.style.display = 'none';
-                updateSearchStatus('🔍 <strong>Range Query:</strong> We\'ll draw a random rectangle (search area) and find ALL buildings inside it - like asking "show me all restaurants within 3 blocks of here"', 'info');
-                canvas.style.cursor = 'crosshair';
-            }
-        }
-
-        // Mouse down - start drawing
-        canvas.addEventListener('mousedown', (e) => {
-            if (!isDrawingMode || isSearching) return;
-            
-            isDrawing = true;
-            const rect = canvas.getBoundingClientRect();
-            drawStartX = e.clientX - rect.left;
-            drawStartY = e.clientY - rect.top;
-            drawCurrentX = drawStartX;
-            drawCurrentY = drawStartY;
-        });
-
-        // Mouse move - update drawing
-        canvas.addEventListener('mousemove', (e) => {
-            if (!isDrawing) return;
-            
-            const rect = canvas.getBoundingClientRect();
-            drawCurrentX = e.clientX - rect.left;
-            drawCurrentY = e.clientY - rect.top;
-            
-            // Redraw with preview
-            draw();
-            drawPreviewBox();
-        });
-
-        // Mouse up - finish drawing
-        canvas.addEventListener('mouseup', async () => {
-            if (!isDrawing) return;
-            
-            isDrawing = false;
-            
-            // Calculate the search box
-            const x = Math.min(drawStartX, drawCurrentX);
-            const y = Math.min(drawStartY, drawCurrentY);
-            const w = Math.abs(drawCurrentX - drawStartX);
-            const h = Math.abs(drawCurrentY - drawStartY);
-            
-            if (w > 20 && h > 20) { // Minimum size
-                // Exit drawing mode
-                isDrawingMode = false;
-                document.getElementById('drawSearchBtn').textContent = '✏️ Draw Search Box';
-                document.getElementById('drawSearchBtn').style.background = '#3498db';
-                document.getElementById('modeIndicator').style.display = 'none';
-                
-                // Perform the search with user-drawn box
-                await performSearchWithBox(x, y, w, h);
-            } else {
-                updateSearchStatus('❌ Search box too small! Draw a larger box.', 'error');
-                searchRange = null;
-                draw();
-            }
-        });
-
-        // Mouse leave - cancel drawing
-        canvas.addEventListener('mouseleave', () => {
-            if (isDrawing) {
-                isDrawing = false;
-                searchRange = null;
-                draw();
-            }
-        });
-
-        function drawPreviewBox() {
-            const x = Math.min(drawStartX, drawCurrentX);
-            const y = Math.min(drawStartY, drawCurrentY);
-            const w = Math.abs(drawCurrentX - drawStartX);
-            const h = Math.abs(drawCurrentY - drawStartY);
-            
-            ctx.fillStyle = 'rgba(52, 152, 219, 0.3)';
-            ctx.fillRect(x, y, w, h);
-            ctx.strokeStyle = '#3498db';
-            ctx.lineWidth = 2;
-            ctx.setLineDash([5, 5]);
-            ctx.strokeRect(x, y, w, h);
-            ctx.setLineDash([]);
-            
-            // Draw dimensions
-            ctx.fillStyle = '#2196f3';
-            ctx.font = 'bold 12px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(`${Math.round(w)} × ${Math.round(h)}`, x + w/2, y - 10);
-        }
-
-        async function performSearchWithBox(x, y, w, h) {
-            // Clear previous highlights
-            function clearHighlights(qt) {
-                for (let p of qt.points) {
-                    p.highlighted = false;
-                }
-                if (qt.divided) {
-                    clearHighlights(qt.northeast);
-                    clearHighlights(qt.northwest);
-                    clearHighlights(qt.southeast);
-                    clearHighlights(qt.southwest);
-                }
-            }
-            clearHighlights(quadtree);
-            
-            searchRange = new Rectangle(x, y, w, h);
-            checkedQuadrants = [];
-            foundPoints = [];
-            currentStep = 0;
-            isSearching = true;
-            
-            updateSearchStatus('🔍 <strong>Starting Range Query:</strong> Searching your custom area...', 'info');
-            
-            // Animate the search
-            await animateSearch(quadtree, searchRange);
-            
-            // Show final results
-            const checkedCount = checkedQuadrants.filter(cq => cq.status === 'checking').length;
-            const skippedCount = checkedQuadrants.filter(cq => cq.status === 'skipped').length;
-            updateSearchStatus(
-                `✅ <strong>Search Complete!</strong><br>
-                Found <strong>${foundPoints.length} building${foundPoints.length !== 1 ? 's' : ''}</strong> in your search area.<br>
-                <small>Smart search: Only checked ${checkedCount} relevant quadrants, skipped ${skippedCount} quadrants</small>`,
-                'success'
-            );
-            
-            isSearching = false;
-        }
-
-        // Click to add buildings (only when not in drawing mode)
+        // Mouse interaction
         canvas.addEventListener('click', (e) => {
-            if (isSearching || isDrawingMode || isDrawing) return; // Don't add while searching or drawing
+            if (isSearching) return; // Don't add while searching
             
             // Clear search visualization when adding new points
             checkedQuadrants = [];
@@ -1268,7 +1101,7 @@
             
             const point = new Point(x, y, pointId++);
             quadtree.insert(point);
-            updateSearchStatus('Building added! Draw a search box or click "Random Search" to find all buildings in an area.', 'info');
+            updateSearchStatus('Building added! Click "📍 Find Building" to drop a pin and find which building contains it.', 'info');
             draw();
         });
 
