@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETFs - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #00695c, #00897b); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #00695c; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a1512; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #4db6ac; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #4db6ac; border-radius: 10px; background: #0a1512; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-invest { background: linear-gradient(135deg, #00897b, #4db6ac); color: white; }
+        .fact-box { background: #e0f2f1; border-left: 5px solid #00897b; padding: 15px; margin: 15px 0; color: #00695c; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 ETFs: Baskets of Stocks! 📦</h1>
+        <p class="subtitle">Invest in lots of companies at once!</p>
+        
+        <div class="story-box">
+            <h2>🧺 The Fruit Basket Analogy!</h2>
+            <p>Instead of buying one apple, you buy a whole basket with 100 different fruits!</p>
+            <p><strong>That's an ETF!</strong></p>
+            <p>Instead of buying one stock, you buy a "basket" that contains hundreds of different stocks!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 ETF vs Single Stock!</h2>
+            <canvas id="etfCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-invest" onclick="simulate()">Simulate 10 Years! 📈</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📊 Why ETFs are Popular</h2>
+            <p>✅ <strong>Diversification:</strong> Don't put all eggs in one basket!</p>
+            <p>✅ <strong>Low Fees:</strong> Much cheaper than hiring a manager</p>
+            <p>✅ <strong>Easy:</strong> Just one purchase gets you hundreds of stocks</p>
+            <p>✅ <strong>Transparent:</strong> You know exactly what's in it</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>📈 Types of ETFs</h2>
+            <p>🗺️ <strong>Index ETFs:</strong> S&P 500, tracks the whole market</p>
+            <p>🏭 <strong>Sector ETFs:</strong> Tech, healthcare, energy</p>
+            <p>🌍 <strong>International:</strong> Stocks from other countries</p>
+            <p>💰 <strong>Bonds:</strong> Safer, steady income</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 ETFs vs Individual Stocks</h2>
+            <p><strong>Single Stock:</strong></p>
+            <p>🚀 Can go up 10x or more!</p>
+            <p>💥 Can also go to zero (company fails)</p>
+            
+            <p><strong>ETF:</strong></p>
+            <p>📊 Grows steadily with the market</p>
+            <p>🛡️ Won't go to zero (too many companies)</p>
+            
+            <div class="fact-box">
+                💡 Most financial experts recommend starting with ETFs for beginners!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('etfCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let etfPrice = 100;
+        let stockPrice = 100;
+        let history = [{ etf: 100, stock: 100 }];
+        let running = false;
+        
+        function simulate() {
+            if (running) return;
+            running = true;
+            etfPrice = 100;
+            stockPrice = 100;
+            history = [{ etf: 100, stock: 100 }];
+            
+            let year = 0;
+            const interval = setInterval(() => {
+                year++;
+                
+                // ETF: steady growth with small volatility
+                etfPrice *= 1 + (0.07 + (Math.random() - 0.5) * 0.1);
+                
+                // Single stock: high volatility
+                stockPrice *= 1 + (0.05 + (Math.random() - 0.5) * 0.4);
+                
+                history.push({ etf: etfPrice, stock: stockPrice });
+                
+                draw();
+                
+                if (year >= 10) clearInterval(interval);
+            }, 500);
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a1512';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            if (history.length === 1) {
+                ctx.fillStyle = '#4db6ac';
+                ctx.font = '24px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Click "Simulate" to see the difference!', 350, 175);
+                return;
+            }
+            
+            // ETF line
+            ctx.strokeStyle = '#4db6ac';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            for (let i = 0; i < history.length; i++) {
+                const x = 50 + i * 60;
+                const y = 300 - history[i].etf * 1.5;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // Stock line
+            ctx.strokeStyle = '#ff9800';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            for (let i = 0; i < history.length; i++) {
+                const x = 50 + i * 60;
+                const y = 300 - history[i].stock * 1.5;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // Legend
+            ctx.fillStyle = '#4db6ac';
+            ctx.font = '16px Arial';
+            ctx.fillText('ETF: $' + Math.round(etfPrice), 200, 30);
+            ctx.fillStyle = '#ff9800';
+            ctx.fillText('Single Stock: $' + Math.round(stockPrice), 500, 30);
+            
+            ctx.fillStyle = '#888';
+            ctx.font = '14px Arial';
+            ctx.fillText('Years: ' + (history.length - 1), 350, 330);
+            
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>

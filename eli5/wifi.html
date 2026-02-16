@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+            min-height: 100vh; padding: 20px;
+        }
+        
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 42px; margin-bottom: 10px; text-shadow: 3px 3px 6px rgba(0,0,0,0.3); }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #1a237e; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        
+        .demo-area { background: #111; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .demo-title { text-align: center; color: #03a9f4; font-size: 28px; margin-bottom: 10px; }
+        .demo-instruction { text-align: center; font-size: 16px; color: #aaa; margin-bottom: 15px; }
+        
+        canvas { display: block; margin: 0 auto; border: 3px solid #03a9f4; border-radius: 10px; background: #0a0a15; }
+        
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        
+        button {
+            padding: 15px 30px; font-size: 18px; font-family: 'Comic Sans MS', sans-serif;
+            border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s;
+            font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-connect { background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%); color: white; }
+        .btn-stream { background: linear-gradient(135deg, #e91e63 0%, #f06292 100%); color: white; }
+        .btn-reset { background: linear-gradient(135deg, #607d8b 0%, #9e9e9e 100%); color: white; }
+        
+        .fact-box { background: #e8eaf6; border-left: 5px solid #3949ab; padding: 15px 20px; margin: 15px 0; border-radius: 0 10px 10px 0; font-size: 16px; color: #1a237e; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📶 How WiFi Works! 📶</h1>
+        <p class="subtitle">The invisible rope that brings internet through the air!</p>
+        
+        <div class="story-box">
+            <h2>🎵 The WiFi Wave Party!</h2>
+            <p>Imagine you're at a party with hundreds of people talking at once - it's really noisy and hard to hear anyone!</p>
+            <p><strong>WiFi is like a very polite conversation system.</strong></p>
+            <p>Your router and phone take turns talking. They use special "wi-fi waves" (which are actually radio waves) to send messages back and forth.</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 WiFi Playground!</h2>
+            <p class="demo-instruction">Watch data flow between your devices!</p>
+            
+            <canvas id="wifiCanvas" width="700" height="350"></canvas>
+            
+            <div class="controls">
+                <button class="btn-connect" onclick="connectDevice()">Add Device 📱</button>
+                <button class="btn-stream" onclick="streamData()">Stream Video 📺</button>
+                <button class="btn-reset" onclick="resetWifi()">Reset 🗑️</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📡 What is WiFi Actually?</h2>
+            <p><strong>WiFi uses radio waves</strong> - the same kind that radios and phones use!</p>
+            <p>But WiFi uses special frequencies (2.4 GHz or 5 GHz) that can carry more information faster.</p>
+            <p>2.4 GHz = Goes further, slower, more crowded (like a crowded highway)</p>
+            <p>5 GHz = Doesn't go as far, but much faster (like an empty race track)</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🏠 WiFi vs Wired Internet</h2>
+            <p><strong>WiFi Pros:</strong></p>
+            <p>✅ No wires needed - use internet anywhere in your house!</p>
+            <p>✅ Great for phones, tablets, and laptops</p>
+            <p><strong>WiFi Cons:</strong></p>
+            <p>❌ Can be slower than wired connections</p>
+            <p>❌ Walls and distance can weaken the signal</p>
+            <p>❌ More prone to interference</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🐌 Why Does WiFi Get Slow?</h2>
+            <p>🤝 <strong>Too many devices:</strong> Just like too many people talking at once</p>
+            <p>🧱 <strong>Walls and distance:</strong> WiFi signals get weaker as they travel</p>
+            <p>📺 <strong>Other electronics:</strong> Microwaves and cordless phones can interfere</p>
+            <p>� соседей <strong>Neighbor's WiFi:</strong> If everyone has WiFi, the airwaves get crowded!</p>
+            <div class="fact-box">
+                📊 A typical WiFi router can handle about 250 devices at once!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('wifiCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let router = { x: 350, y: 175 };
+        let devices = [];
+        let packets = [];
+        let streaming = false;
+        
+        function connectDevice() {
+            if (devices.length < 5) {
+                devices.push({
+                    x: 50 + devices.length * 130,
+                    y: 50 + Math.random() * 200,
+                    name: ['📱', '💻', '📺', '🎮', '⌚'][devices.length],
+                    label: ['Phone', 'Laptop', 'TV', 'Game', 'Watch'][devices.length]
+                });
+            }
+        }
+        
+        function streamData() {
+            streaming = !streaming;
+        }
+        
+        function resetWifi() {
+            devices = [];
+            packets = [];
+            streaming = false;
+        }
+        
+        function drawRouter() {
+            ctx.fillStyle = '#03a9f4';
+            ctx.beginPath();
+            ctx.arc(router.x, router.y, 30, 0, Math.PI * 2);
+            ctx.fill();
+            
+            for (let i = 0; i < 3; i++) {
+                ctx.strokeStyle = `rgba(3, 169, 244, ${0.8 - i * 0.2})`;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(router.x, router.y, 40 + i * 25, -Math.PI/4, Math.PI/4);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(router.x, router.y, 40 + i * 25, Math.PI*3/4, Math.PI*5/4);
+                ctx.stroke();
+            }
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '24px Arial';
+            ctx.fillText('📶', router.x - 12, router.y + 8);
+        }
+        
+        function drawDevices() {
+            for (const dev of devices) {
+                ctx.fillStyle = '#4caf50';
+                ctx.fillRect(dev.x - 25, dev.y - 30, 50, 40);
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = '20px Arial';
+                ctx.fillText(dev.name, dev.x - 10, dev.y + 5);
+                
+                ctx.fillStyle = '#888';
+                ctx.font = '12px Arial';
+                ctx.fillText(dev.label, dev.x - 20, dev.y + 50);
+            }
+        }
+        
+        function update() {
+            ctx.fillStyle = '#0a0a15';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            drawRouter();
+            drawDevices();
+            
+            if (streaming && devices.length > 0) {
+                if (Math.random() < 0.3) {
+                    const dev = devices[Math.floor(Math.random() * devices.length)];
+                    packets.push({
+                        x: router.x, y: router.y,
+                        targetX: dev.x, targetY: dev.y,
+                        progress: 0, color: '#e91e63'
+                    });
+                }
+            }
+            
+            for (let i = packets.length - 1; i >= 0; i--) {
+                const p = packets[i];
+                p.progress += 0.02;
+                
+                const x = p.x + (p.targetX - p.x) * p.progress;
+                const y = p.y + (p.targetY - p.y) * p.progress;
+                
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(x, y, 6, 0, Math.PI * 2);
+                ctx.fill();
+                
+                if (p.progress >= 1) packets.splice(i, 1);
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
+        update();
+    </script>
+</body>
+</html>

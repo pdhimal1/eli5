@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is Radar? - ELI5!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 42px;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .story-box {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .story-box h2 {
+            color: #0f3460;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .story-box p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .demo-area {
+            background: #000;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .demo-title {
+            text-align: center;
+            color: #4caf50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .demo-instruction {
+            text-align: center;
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: #001100;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-family: 'Comic Sans MS', sans-serif;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+        
+        .btn-scan { background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%); color: white; }
+        .btn-plane { background: linear-gradient(135deg, #2196f3 0%, #03a9f4 100%); color: white; }
+        .btn-reset { background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%); color: white; }
+        
+        .fact-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+            font-size: 16px;
+            color: #1565c0;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .back-link a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 18px;
+        }
+        
+        .back-link a:hover {
+            color: white;
+        }
+        
+        .speed-display {
+            text-align: center;
+            color: #4caf50;
+            font-size: 24px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📡 What is Radar? 📡</h1>
+        <p class="subtitle">The super hero vision that can "see" in the dark!</p>
+        
+        <div class="story-box">
+            <h2>🎯 The Echo Game!</h2>
+            <p>Have you ever yelled in a big empty room and heard your voice come back? That's called an <strong>echo</strong>!</p>
+            <p><strong>Radar is like playing echo with radio waves!</strong></p>
+            <p>1. Radar sends out a radio wave (like yelling "HELLO!")</p>
+            <p>2. The wave hits an object (like an airplane)</p>
+            <p>3. The wave bounces back (like an echo)</p>
+            <p>4. Radar hears the echo and says "AHA! Something is out there!"</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Radar Scanner!</h2>
+            <p class="demo-instruction">Click "Scan" to send radio waves, then click "Add Plane" to see how radar finds airplanes!</p>
+            
+            <canvas id="radarCanvas" width="500" height="500"></canvas>
+            
+            <div class="speed-display" id="speedDisplay">Speed: 0 mph</div>
+            
+            <div class="controls">
+                <button class="btn-scan" onclick="startScan()">Scan! 🔊</button>
+                <button class="btn-plane" onclick="addPlane()">Add Plane ✈️</button>
+                <button class="btn-reset" onclick="resetRadar()">Reset 🗑️</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔢 How Radar Knows Distance</h2>
+            <p><strong>It's all about timing!</strong></p>
+            <p>Radio waves travel super fast - about 186,000 miles per SECOND (that's like going around the Earth 7.5 times in one second!)</p>
+            <p>If radar sends a wave and gets the echo back in 0.001 seconds, it can calculate:</p>
+            <div class="fact-box">
+                <strong>Distance = Speed × Time</strong><br>
+                The airplane is about 93 miles away! ✈️
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🚗🚁 Where is Radar Used?</h2>
+            <p>🛫 <strong>Airports:</strong> Finding airplanes and guiding them to land safely</p>
+            <p>🚔 <strong>Police:</strong> Measuring how fast cars are going (don't speed!)</p>
+            <p>🌧️ <strong>Weather:</strong> Finding rain clouds and storms</p>
+            <p>🚗 <strong>Cars:</strong> Self-driving cars use radar to "see" other cars</p>
+            <p>🛡️ <strong>Military:</strong> Finding enemy airplanes and missiles</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎵 Doppler Effect - How Radar Measures Speed!</h2>
+            <p>Here's a cool trick! Remember when an ambulance drives past you and the siren sounds higher-pitched as it comes closer, then lower as it drives away?</p>
+            <p><strong>Radar uses the same idea!</strong></p>
+            <p>When radio waves hit a moving car, the waves get "squished" if the car is coming toward the radar, and "stretched" if it's moving away. By measuring how much the waves changed, radar can calculate the speed!</p>
+            <div class="fact-box">
+                🏎️ Police radar guns can measure your speed from hundreds of feet away!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('radarCanvas');
+        const ctx = canvas.getContext('2d');
+        const centerX = 250;
+        const centerY = 250;
+        
+        let scanAngle = 0;
+        let isScanning = false;
+        let planes = [];
+        let blips = [];
+        
+        function drawRadar() {
+            ctx.fillStyle = '#001100';
+            ctx.fillRect(0, 0, 500, 500);
+            
+            for (let r = 50; r < 250; r += 50) {
+                ctx.strokeStyle = 'rgba(0, 255, 0, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+            
+            for (let a = 0; a < Math.PI * 2; a += Math.PI / 6) {
+                ctx.strokeStyle = 'rgba(0, 255, 0, 0.2)';
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + Math.cos(a) * 250, centerY + Math.sin(a) * 250);
+                ctx.stroke();
+            }
+            
+            ctx.strokeStyle = '#0f0';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 250, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#003300';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#0f0';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('📡', centerX, centerY + 7);
+        }
+        
+        function drawScanLine() {
+            if (!isScanning) return;
+            
+            const gradient = ctx.createLinearGradient(
+                centerX, centerY,
+                centerX + Math.cos(scanAngle) * 250,
+                centerY + Math.sin(scanAngle) * 250
+            );
+            gradient.addColorStop(0, 'rgba(0, 255, 0, 0.8)');
+            gradient.addColorStop(1, 'rgba(0, 255, 0, 0)');
+            
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(
+                centerX + Math.cos(scanAngle) * 250,
+                centerY + Math.sin(scanAngle) * 250
+            );
+            ctx.stroke();
+        }
+        
+        function drawPlanes() {
+            for (const plane of planes) {
+                ctx.fillStyle = '#2196f3';
+                ctx.beginPath();
+                ctx.arc(plane.x, plane.y, 8, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = '14px Arial';
+                ctx.fillText('✈️', plane.x - 7, plane.y + 5);
+            }
+        }
+        
+        function drawBlips() {
+            for (let i = blips.length - 1; i >= 0; i--) {
+                const blip = blips[i];
+                
+                if (blip.type === 'outgoing') {
+                    ctx.strokeStyle = `rgba(0, 255, 0, ${blip.opacity})`;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, blip.radius, blip.angle - 0.1, blip.angle + 0.1);
+                    ctx.stroke();
+                    
+                    blip.radius += 3;
+                    blip.opacity -= 0.02;
+                    
+                    for (const plane of planes) {
+                        const dx = plane.x - centerX;
+                        const dy = plane.y - centerY;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (Math.abs(blip.radius - dist) < 15) {
+                            blips.push({
+                                type: 'return',
+                                x: plane.x,
+                                y: plane.y,
+                                opacity: 1,
+                                targetX: centerX,
+                                targetY: centerY,
+                                speed: plane.speed
+                            });
+                            blips.splice(i, 1);
+                            document.getElementById('speedDisplay').textContent = `Speed: ${plane.speed} mph`;
+                            break;
+                        }
+                    }
+                } else if (blip.type === 'return') {
+                    const dx = blip.targetX - blip.x;
+                    const dy = blip.targetY - blip.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < 20) {
+                        blips.splice(i, 1);
+                        continue;
+                    }
+                    
+                    ctx.fillStyle = `rgba(255, 0, 0, ${blip.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(blip.x, blip.y, 10, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.fillStyle = '#fff';
+                    ctx.font = 'bold 12px Arial';
+                    ctx.fillText(`${blip.speed}`, blip.x - 10, blip.y - 15);
+                    
+                    blip.x += (dx / dist) * 4;
+                    blip.y += (dy / dist) * 4;
+                    blip.opacity -= 0.015;
+                }
+                
+                if (blip.opacity <= 0) {
+                    blips.splice(i, 1);
+                }
+            }
+        }
+        
+        function update() {
+            drawRadar();
+            drawPlanes();
+            drawScanLine();
+            drawBlips();
+            
+            if (isScanning) {
+                scanAngle += 0.05;
+                if (scanAngle > Math.PI * 2) {
+                    scanAngle = 0;
+                }
+            }
+            
+            for (const plane of planes) {
+                const angle = Math.atan2(plane.y - centerY, plane.x - centerX);
+                plane.x += Math.cos(angle) * plane.speed * 0.02;
+                plane.y += Math.sin(angle) * plane.speed * 0.02;
+                
+                const dist = Math.sqrt(
+                    Math.pow(plane.x - centerX, 2) + 
+                    Math.pow(plane.y - centerY, 2)
+                );
+                
+                if (dist > 300) {
+                    plane.x = centerX + (Math.random() - 0.5) * 100;
+                    plane.y = centerY + (Math.random() - 0.5) * 100;
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
+        function startScan() {
+            isScanning = true;
+            blips.push({
+                type: 'outgoing',
+                radius: 30,
+                angle: scanAngle,
+                opacity: 1
+            });
+        }
+        
+        function addPlane() {
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 100 + Math.random() * 150;
+            planes.push({
+                x: centerX + Math.cos(angle) * dist,
+                y: centerY + Math.sin(angle) * dist,
+                speed: 50 + Math.random() * 150
+            });
+        }
+        
+        function resetRadar() {
+            planes = [];
+            blips = [];
+            document.getElementById('speedDisplay').textContent = 'Speed: 0 mph';
+        }
+        
+        update();
+    </script>
+</body>
+</html>

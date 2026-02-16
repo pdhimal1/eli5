@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compound Interest - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #311b92, #4527a0); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #311b92; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0a15; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #b388ff; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #b388ff; border-radius: 10px; background: #0a0a15; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .slider-container { text-align: center; margin: 15px 0; color: #fff; }
+        input[type="range"] { width: 300px; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-calculate { background: linear-gradient(135deg, #7c4dff, #b388ff); color: white; }
+        .fact-box { background: #ede7f6; border-left: 5px solid #7c4dff; padding: 15px; margin: 15px 0; color: #311b92; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💎 Compound Interest: The Eighth Wonder! 💎</h1>
+        <p class="subtitle">Interest on your interest - money multiplying!</p>
+        
+        <div class="story-box">
+            <h2>🐰 The Rabbit Analogy!</h2>
+            <p>Imagine you have 2 rabbits. They have babies, now you have 4 rabbits! Those have babies = 8 rabbits!</p>
+            <p><strong>Compound interest works the same way!</strong></p>
+            <p>You earn interest on your money + interest on the interest you've already earned!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Compound Interest Calculator!</h2>
+            <canvas id="compoundCanvas" width="700" height="350"></canvas>
+            
+            <div class="slider-container">
+                <label>Monthly Investment: $<span id="monthVal">100</span></label><br>
+                <input type="range" id="monthlySlider" min="50" max="1000" value="100" step="50">
+            </div>
+            <div class="slider-container">
+                <label>Interest Rate: <span id="rateVal">7</span>%</label><br>
+                <input type="range" id="rateSlider" min="1" max="15" value="7" step="1">
+            </div>
+            <div class="slider-container">
+                <label>Years: <span id="yearVal">30</span></label><br>
+                <input type="range" id="yearSlider" min="5" max="50" value="30" step="5">
+            </div>
+            
+            <div class="controls">
+                <button class="btn-calculate" onclick="calculate()">Calculate! 🧮</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📐 The Magic Formula</h2>
+            <p><strong>A = P(1 + r/n)^(nt)</strong></p>
+            <p>A = Final Amount</p>
+            <p>P = Principal (starting money)</p>
+            <p>r = Annual interest rate</p>
+            <p>n = Times compounded per year</p>
+            <p>t = Time in years</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🌟 The Power of Time!</h2>
+            <p>Starting with $1,000 at 7% return:</p>
+            <p>📅 10 years: $2,000 (doubled!)</p>
+            <p>📅 20 years: $4,000 (quadrupled!)</p>
+            <p>📅 30 years: $7,600</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>💰 Real Examples</h2>
+            <p><strong>Starting at age 25, investing $200/month at 7%:</strong></p>
+            <p>At age 35 (10 years): $34,000 invested → $41,000</p>
+            <p>At age 45 (20 years): $68,000 invested → $121,000</p>
+            <p>At age 55 (30 years): $102, invested → $243,000</p>
+            <p>At age 65 (40 years): $136,000 invested → $487,000</p>
+            <div class="fact-box">
+                🎯 You put in $136,000 but get $487,000 - that's $351,000 FREE from compound interest!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📊 Rule of 72</h2>
+            <p>Want to know how long it takes to double your money?</p>
+            <p><strong>Divide 72 by your interest rate!</strong></p>
+            <p>At 7% interest: 72 ÷ 7 = ~10 years to double</p>
+            <p>At 10% interest: 72 ÷ 10 = ~7 years to double</p>
+            <p>At 4% interest: 72 ÷ 4 = ~18 years to double</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>⚠️ The Enemy: Inflation!</h2>
+            <p>Inflation is like a slow leak in your money bucket.</p>
+            <p>If inflation is 3% and you only earn 2%, you're actually LOSING money!</p>
+            <p><strong>That's why investing is important - you need to beat inflation!</strong></p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('compoundCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let monthly = 100;
+        let rate = 7;
+        let years = 30;
+        let balances = [];
+        
+        const monthlySlider = document.getElementById('monthlySlider');
+        const rateSlider = document.getElementById('rateSlider');
+        const yearSlider = document.getElementById('yearSlider');
+        
+        monthlySlider.oninput = function() {
+            document.getElementById('monthVal').textContent = this.value;
+            monthly = parseInt(this.value);
+            calculate();
+        }
+        
+        rateSlider.oninput = function() {
+            document.getElementById('rateVal').textContent = this.value;
+            rate = parseInt(this.value);
+            calculate();
+        }
+        
+        yearSlider.oninput = function() {
+            document.getElementById('yearVal').textContent = this.value;
+            years = parseInt(this.value);
+            calculate();
+        }
+        
+        function calculate() {
+            balances = [];
+            let balance = 0;
+            let totalContributed = 0;
+            
+            for (let i = 0; i <= years; i++) {
+                balances.push({ year: i, balance, contributed: totalContributed });
+                for (let m = 0; m < 12; m++) {
+                    balance += monthly;
+                    totalContributed += monthly;
+                    balance *= (1 + rate/100/12);
+                }
+            }
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a0a15';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            if (balances.length === 0) calculate();
+            
+            const maxVal = Math.max(...balances.map(b => b.balance), 1000);
+            const scaleY = 280 / maxVal;
+            
+            // Grid lines
+            ctx.strokeStyle = '#222';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 5; i++) {
+                const y = 320 - i * 60;
+                ctx.beginPath();
+                ctx.moveTo(50, y);
+                ctx.lineTo(650, y);
+                ctx.stroke();
+                ctx.fillStyle = '#666';
+                ctx.font = '12px Arial';
+                ctx.fillText('$' + Math.round(maxVal * i / 5 / 1000) + 'k', 10, y + 4);
+            }
+            
+            // Contributed area
+            ctx.fillStyle = 'rgba(100, 100, 100, 0.5)';
+            ctx.beginPath();
+            ctx.moveTo(50, 320);
+            for (let i = 0; i < balances.length; i++) {
+                const x = 50 + i * (600 / years);
+                const y = 320 - balances[i].contributed * scaleY;
+                ctx.lineTo(x, y);
+            }
+            ctx.lineTo(50 + (balances.length - 1) * (600 / years), 320);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Compound line
+            ctx.strokeStyle = '#b388ff';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            for (let i = 0; i < balances.length; i++) {
+                const x = 50 + i * (600 / years);
+                const y = 320 - balances[i].balance * scaleY;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // Current value
+            const last = balances[balances.length - 1];
+            ctx.fillStyle = '#b388ff';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Total Value: $' + Math.round(last.balance).toLocaleString(), 350, 40);
+            
+            ctx.fillStyle = '#888';
+            ctx.font = '16px Arial';
+            ctx.fillText('You contributed: $' + last.contributed.toLocaleString(), 350, 65);
+            ctx.fillText('Free money (interest): $' + Math.round(last.balance - last.contributed).toLocaleString(), 350, 90);
+            
+            ctx.fillStyle = '#4caf50';
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText('+' + Math.round((last.balance - last.contributed) / last.contributed * 100) + '% return!', 350, 115);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

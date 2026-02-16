@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Internet - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #1b263b; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0a12; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #778da9; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #778da9; border-radius: 10px; background: #0a0a12; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-request { background: linear-gradient(135deg, #415a77, #778da9); color: white; }
+        .fact-box { background: #e0e1dd; border-left: 5px solid #415a77; padding: 15px; margin: 15px 0; color: #1b263b; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 How the Internet Works! 🌐</h1>
+        <p class="subtitle">The world's biggest connected web!</p>
+        
+        <div class="story-box">
+            <h2>📦 Packets: Pieces of Data!</h2>
+            <p>Imagine you want to send a giant puzzle across the country. Instead of sending one big box, you chop it into thousands of tiny pieces and mail each piece separately!</p>
+            <p><strong>That's exactly how the internet works!</strong></p>
+            <p>Your photos, videos, and messages are all chopped into tiny "packets" that travel separately and reassemble at the destination!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Journey of a Packet!</h2>
+            <canvas id="netCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-request" onclick="sendRequest()">Visit Website! 🌐</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔗 The Network of Networks!</h2>
+            <p><strong>Your home network:</strong> Connects your phone, laptop, TV</p>
+            <p><strong>ISP (Internet Service Provider):</strong> Connects your home to the bigger internet</p>
+            <p><strong>Backbone networks:</strong> Giant fiber optic cables crossing oceans</p>
+            <p><strong>Servers:</strong> Big computers that store websites</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🌍 The Physical Internet</h2>
+            <p>📡 <strong>Underwater cables:</strong> 99% of international data!</p>
+            <p>🛰️ <strong>Satellites:</strong> Connect remote areas</p>
+            <p>📶 <strong>Cell towers:</strong> Mobile internet</p>
+            <div class="fact-box">
+                🦑 There are fiber optic cables under the ocean that are as thick as a garden hose!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('netCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const nodes = [
+            { x: 80, y: 280, label: 'You', icon: '📱' },
+            { x: 80, y: 180, label: 'Router', icon: '📶' },
+            { x: 200, y: 180, label: 'ISP', icon: '🏢' },
+            { x: 350, y: 120, label: 'Backbone', icon: '🔗' },
+            { x: 500, y: 180, label: 'Server', icon: '🖥️' },
+            { x: 620, y: 100, label: 'Website', icon: '🌐' }
+        ];
+        
+        let packets = [];
+        
+        function sendRequest() {
+            packets = [{ from: 0, to: 1, progress: 0 }];
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a0a12';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Connections
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < nodes.length - 1; i++) {
+                ctx.beginPath();
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(nodes[i+1].x, nodes[i+1].y);
+                ctx.stroke();
+            }
+            
+            // Nodes
+            for (const n of nodes) {
+                ctx.fillStyle = '#1b263b';
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, 25, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#fff';
+                ctx.font = '20px Arial';
+                ctx.fillText(n.icon, n.x - 10, n.y + 5);
+                ctx.font = '12px Arial';
+                ctx.fillText(n.label, n.x - 20, n.y + 45);
+            }
+            
+            // Packets
+            for (let i = packets.length - 1; i >= 0; i--) {
+                const p = packets[i];
+                p.progress += 0.02;
+                
+                const from = nodes[p.from];
+                const to = nodes[p.to];
+                const x = from.x + (to.x - from.x) * p.progress;
+                const y = from.y + (to.y - from.y) * p.progress;
+                
+                ctx.fillStyle = '#4caf50';
+                ctx.beginPath();
+                ctx.arc(x, y, 6, 0, Math.PI * 2);
+                ctx.fill();
+                
+                if (p.progress >= 1) {
+                    if (p.to < nodes.length - 1) {
+                        packets.push({ from: p.to, to: p.to + 1, progress: 0 });
+                    }
+                    packets.splice(i, 1);
+                }
+            }
+            
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>

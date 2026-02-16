@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cell Towers - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #004d40, #00695c); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #004d40; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a1a15; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #4caf50; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #4caf50; border-radius: 10px; background: #0a1a15; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; font-family: 'Comic Sans MS'; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-call { background: linear-gradient(135deg, #4caf50, #8bc34a); color: white; }
+        .fact-box { background: #e8f5e9; border-left: 5px solid #4caf50; padding: 15px; margin: 15px 0; border-radius: 0 10px 10px 0; font-size: 16px; color: #1b5e20; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📡 Cell Towers: Your Phone's Best Friend! 📡</h1>
+        <p class="subtitle">How your phone connects to the world!</p>
+        
+        <div class="story-box">
+            <h2>🗼 The Cell Network!</h2>
+            <p>Imagine a city divided into small hexagons (like a honeycomb). Each hexagon has a tower in the middle!</p>
+            <p><strong>That's why it's called "cell" phone!</strong></p>
+            <p>Your phone connects to the closest tower. When you move, it automatically switches to a new tower - like passing a baton in a relay race!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Cell Network Simulator!</h2>
+            <canvas id="cellCanvas" width="700" height="400"></canvas>
+            <div class="controls">
+                <button class="btn-call" onclick="makeCall()">Make Call 📞</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📶 Why Towers Need to be Everywhere!</h2>
+            <p>Towers can only reach so far - typically 1-5 miles depending on the terrain.</p>
+            <p>In cities, you need towers every few blocks. In rural areas, fewer towers but they need to be taller!</p>
+            <div class="fact-box">
+                🌍 There are over 5 million cell towers worldwide!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📱 Generations of Cell Service</h2>
+            <p>📱 <strong>1G (1980s):</strong> Just voice calls, analog</p>
+            <p>📱 <strong>2G (1990s):</strong> Digital, SMS text messages</p>
+            <p>📱 <strong>3G (2000s):</strong> Basic internet</p>
+            <p>📱 <strong>4G (2010s):</strong> Fast streaming, apps</p>
+            <p>📱 <strong>5G (2020s):</strong> Super fast, IoT, self-driving cars</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cellCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let towers = [
+            { x: 150, y: 150 }, { x: 350, y: 100 }, { x: 550, y: 150 },
+            { x: 100, y: 300 }, { x: 350, y: 300 }, { x: 600, y: 300 }
+        ];
+        let phoneX = 350, phoneY = 200;
+        let signal = null;
+        
+        function makeCall() {
+            const closest = towers.reduce((a, b) => 
+                Math.hypot(a.x - phoneX, a.y - phoneY) < Math.hypot(b.x - phoneX, b.y - phoneY) ? a : b);
+            signal = { from: closest, progress: 0 };
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a1a15';
+            ctx.fillRect(0, 0, 700, 400);
+            
+            for (const t of towers) {
+                ctx.fillStyle = '#2e7d32';
+                ctx.beginPath();
+                ctx.moveTo(t.x, t.y - 30);
+                ctx.lineTo(t.x - 15, t.y + 10);
+                ctx.lineTo(t.x + 15, t.y + 10);
+                ctx.fill();
+                
+                ctx.strokeStyle = 'rgba(76, 175, 80, 0.3)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(t.x, t.y, 60, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = '20px Arial';
+                ctx.fillText('📡', t.x - 10, t.y + 5);
+            }
+            
+            ctx.fillStyle = '#1976d2';
+            ctx.beginPath();
+            ctx.arc(phoneX, phoneY, 15, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = '16px Arial';
+            ctx.fillText('📱', phoneX - 8, phoneY + 5);
+            
+            if (signal) {
+                ctx.strokeStyle = '#4caf50';
+                ctx.lineWidth = 3;
+                ctx.setLineDash([10, 5]);
+                ctx.beginPath();
+                ctx.moveTo(signal.from.x, signal.from.y);
+                ctx.lineTo(phoneX, phoneY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                ctx.fillStyle = '#4caf50';
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText('📶 Connected!', phoneX - 40, phoneY - 25);
+            }
+            
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>

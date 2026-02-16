@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #263238, #37474f); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #263238; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0a0a; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #90a4ae; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #90a4ae; border-radius: 10px; background: #0a0a0a; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-plan { background: linear-gradient(135deg, #607d8b, #90a4ae); color: white; }
+        .fact-box { background: #eceff1; border-left: 5px solid #607d8b; padding: 15px; margin: 15px 0; color: #263238; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏖️ Retirement Planning! 🏖️</h1>
+        <p class="subtitle">Future you will thank present you!</p>
+        
+        <div class="story-box">
+            <h2>☀️ The Sunshine Fund!</h2>
+            <p>Imagine you're a squirrel storing nuts for winter.</p>
+            <p><strong>Retirement is like that - you're storing money for when you're older!</strong></p>
+            <p>When you stop working, you need money for food, bills, and fun!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Retirement Calculator!</h2>
+            <canvas id="retireCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-plan" onclick="calculate()">Calculate! 🧮</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🏦 Types of Retirement Accounts</h2>
+            <p>🇺🇸 <strong>401k:</strong> Employer-sponsored, often with free money match!</p>
+            <p>🇺🇸 <strong>IRA:</strong> Individual retirement account</p>
+            <p>🇨🇦 <strong>RRSP:</strong> Canadian retirement savings plan</p>
+            <p>🇬🇧 <strong>Pension:</strong> Employer pays you after retirement</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 How Much Do You Need?</h2>
+            <p><strong>The 4% Rule:</strong></p>
+            <p>Multiply your annual expenses by 25 = how much you need saved!</p>
+            <p>If you spend $50,000/year → Need $1,250,000 saved!</p>
+            <div class="fact-box">
+                🏖️ At 7% return, $500/month from age 25 → $1.2M by age 65!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>⏰ Start Early!</h2>
+            <p><strong>Starting at 25 vs 35 (saving $200/month):</strong></p>
+            <p>Start at 25: $487,000 at 65</p>
+            <p>Start at 35: $234,000 at 65</p>
+            <p><strong>10 more years = 2x more money!</strong></p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('retireCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let age = 25;
+        let monthly = 200;
+        let retireAge = 65;
+        
+        function calculate() {
+            age = 25;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Draw timeline
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(50, 175);
+            ctx.lineTo(650, 175);
+            ctx.stroke();
+            
+            // Current age marker
+            const currentX = 50 + ((age - 25) / (retireAge - 25)) * 600;
+            ctx.fillStyle = '#4caf50';
+            ctx.beginPath();
+            ctx.arc(currentX, 175, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = '14px Arial';
+            ctx.fillText('Age ' + age, currentX - 20, 200);
+            
+            // Calculate totals
+            const years = retireAge - age;
+            let total = 0;
+            const monthlyRate = 0.07 / 12;
+            for (let i = 0; i < years * 12; i++) {
+                total = (total + monthly) * (1 + monthlyRate);
+            }
+            
+            ctx.fillStyle = '#90a4ae';
+            ctx.font = 'bold 28px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('At age ' + retireAge + ': $' + Math.round(total).toLocaleString(), 350, 80);
+            
+            ctx.fillStyle = '#666';
+            ctx.font = '16px Arial';
+            ctx.fillText('Monthly savings: $' + monthly, 350, 110);
+            ctx.fillText('Return rate: 7%', 350, 130);
+            
+            // Bars by decade
+            const decades = [25, 35, 45, 55];
+            ctx.textAlign = 'center';
+            for (let i = 0; i < decades.length; i++) {
+                const d = decades[i];
+                const yearsToRetire = Math.max(0, retireAge - d);
+                let decTotal = 0;
+                for (let j = 0; j < yearsToRetire * 12; j++) {
+                    decTotal = (decTotal + monthly) * (1 + monthlyRate);
+                }
+                
+                const x = 100 + i * 150;
+                const h = Math.min(decTotal / 1000, 200);
+                ctx.fillStyle = i === 0 ? '#4caf50' : i === 1 ? '#8bc34a' : i === 2 ? '#ffc107' : '#ff9800';
+                ctx.fillRect(x, 320 - h, 80, h);
+                ctx.fillStyle = '#fff';
+                ctx.fillText('Age ' + d, x + 40, 340);
+                ctx.fillText('$' + Math.round(decTotal/1000) + 'k', x + 40, 315 - h);
+            }
+            
+            age = Math.min(age + 0.2, retireAge);
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compression - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #3e2723, #5d4037); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #3e2723; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #1a1a1a; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ffab91; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ffab91; border-radius: 10px; background: #1a1a1a; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-compress { background: linear-gradient(135deg, #ff5722, #ff8a65); color: white; }
+        .fact-box { background: #fbe9e7; border-left: 5px solid #ff5722; padding: 15px; margin: 15px 0; color: #bf360c; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 Compression: Squishy Data! 📦</h1>
+        <p class="subtitle">Making files smaller!</p>
+        
+        <div class="story-box">
+            <h2>🧸 The Stuffing Trick!</h2>
+            <p>Imagine you have a suitcase with 100 identical t-shirts all crumpled up.</p>
+            <p>Instead of packing each shirt separately, you could say "100 shirts" - that's a lot less space!</p>
+            <p><strong>File compression does the same thing!</strong></p>
+            <p>It finds repeated patterns and represents them with shorter codes.</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Compression Demo!</h2>
+            <canvas id="compCanvas" width="700" height="250"></canvas>
+            <div class="controls">
+                <button class="btn-compress" onclick="compress()">Compress! 🗜️</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔍 Types of Compression</h2>
+            <p><strong>Lossless (ZIP):</strong> You can get back exactly what you put in. Like a puzzle!</p>
+            <p><strong>Lossy (JPEG, MP3):</strong> Some data is thrown away. Like a blurry photo!</p>
+            <p>The smaller you make it, the more quality you lose!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>📁 Common Compressed Formats</h2>
+            <p>🗜️ <strong>ZIP, RAR:</strong> Bundled files</p>
+            <p>🖼️ <strong>JPEG:</strong> Photos (smaller but less detail)</p>
+            <p>🎵 <strong>MP3:</strong> Music (smaller but less quality)</p>
+            <p>🎬 <strong>MP4:</strong> Videos</p>
+            <div class="fact-box">
+                📉 A 1GB movie can be compressed to just 100MB!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('compCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let original = "AAAAAABBBCCDDDEEEEE";
+        let compressed = "A6B3C2D3E5";
+        let isCompressed = false;
+        
+        function compress() {
+            isCompressed = !isCompressed;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(0, 0, 700, 250);
+            
+            // Original
+            ctx.fillStyle = '#666';
+            ctx.font = '18px Arial';
+            ctx.fillText('Original:', 50, 50);
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '24px monospace';
+            ctx.fillText(original, 50, 90);
+            
+            ctx.fillStyle = '#888';
+            ctx.font = '14px Arial';
+            ctx.fillText('Size: 19 characters', 50, 120);
+            
+            // Arrow
+            ctx.font = '40px Arial';
+            ctx.fillText(isCompressed ? '🗜️' : '➡️', 320, 100);
+            
+            // Compressed
+            ctx.fillStyle = '#666';
+            ctx.font = '18px Arial';
+            ctx.fillText('Compressed:', 450, 50);
+            
+            ctx.fillStyle = isCompressed ? '#ff5722' : '#666';
+            ctx.font = '24px monospace';
+            ctx.fillText(isCompressed ? compressed : '---', 450, 90);
+            
+            ctx.fillStyle = isCompressed ? '#ff5722' : '#888';
+            ctx.font = '14px Arial';
+            ctx.fillText(isCompressed ? 'Size: 10 characters (47% saved!)' : '---', 450, 120);
+            
+            // Visual representation
+            const data = isCompressed ? 
+                [{c:'A',n:6,color:'#e91e63'}, {c:'B',n:3,color:'#2196f3'}, {c:'C',n:2,color:'#4caf50'}, {c:'D',n:3,color:'#ff9800'}, {c:'E',n:5,color:'#9c27b0'}] :
+                [{c:'A',n:6,color:'#e91e63'}, {c:'B',n:3,color:'#2196f3'}, {c:'C',n:2,color:'#4caf50'}, {c:'D',n:3,color:'#ff9800'}, {c:'E',n:5,color:'#9c27b0'}];
+            
+            let x = 50;
+            for (const d of data) {
+                const w = isCompressed ? d.n * 5 : d.n * 20;
+                ctx.fillStyle = d.color;
+                ctx.fillRect(x, 170, w, 40);
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 16px Arial';
+                ctx.fillText(d.c, x + (isCompressed ? 5 : 35), 195);
+                x += w + 5;
+            }
+            
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>

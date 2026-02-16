@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Driving Cars: Cameras - ELI5!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 38px;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .story-box {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .story-box h2 {
+            color: #1e3c72;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .story-box p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .demo-area {
+            background: #111;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .demo-title {
+            text-align: center;
+            color: #fff;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .demo-instruction {
+            text-align: center;
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border: 3px solid #1e3c72;
+            border-radius: 10px;
+            background: #222;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-family: 'Comic Sans MS', sans-serif;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+        
+        .btn-drive { background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%); color: white; }
+        .btn-stop { background: linear-gradient(135deg, #f44336 0%, #e91e63 100%); color: white; }
+        .btn-ped { background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%); color: white; }
+        
+        .detection-box {
+            background: rgba(0,0,0,0.8);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            min-height: 80px;
+        }
+        
+        .detection-box .item {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            background: #333;
+        }
+        
+        .fact-box {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+            font-size: 16px;
+            color: #e65100;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .back-link a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 18px;
+        }
+        
+        .ai-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .ai-box h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📷 How Self-Driving Cars "See" 📷</h1>
+        <p class="subtitle">Teaching computers to understand images like humans!</p>
+        
+        <div class="story-box">
+            <h2>🧠 The Human Brain Trick!</h2>
+            <p>When you look at a picture of a cat, your brain instantly knows it's a cat - you don't have to count whiskers or measure ears!</p>
+            <p><strong>How do we teach a computer to do this?</strong></p>
+            <p>We show millions of pictures of cats to a computer and say "THIS IS A CAT" over and over again!</p>
+            <p>Eventually, the computer learns to recognize cats on its own. This is called <strong>Machine Learning</strong> or <strong>AI (Artificial Intelligence)</strong>!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Camera Vision Demo!</h2>
+            <p class="demo-instruction">Click buttons to see what the car "sees"!</p>
+            
+            <canvas id="cameraCanvas" width="700" height">350</canvas>
+            
+            <div class="detection-box" id="detectionBox">
+                <span style="color: #aaa;">Click buttons below to see object detection!</span>
+            </div>
+            
+            <div class="controls">
+                <button class="btn-drive" onclick="addCar()">Add Car 🚗</button>
+                <button class="btn-stop" onclick="addSign()">Add Sign 🛑</button>
+                <button class="btn-ped" onclick="addPedestrian()">Add Person 🚶</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔍 What Can Cameras See?</h2>
+            
+            <p><strong>1. Traffic Signs 🛑</strong></p>
+            <p>Cameras can read stop signs, speed limit signs, and even read "One Way" and "No Parking" signs!</p>
+            
+            <p><strong>2. Other Cars 🚗</strong></p>
+            <p>The car can tell where other cars are and even tell if they're moving or stopped!</p>
+            
+            <p><strong>3. Pedestrians 🚶</strong></p>
+            <p>Cameras can spot people walking and know if they're about to cross the street!</p>
+            
+            <p><strong>4. Lane Lines 🚘</strong></p>
+            <p>The car can "see" the road lines and make sure it stays in its lane!</p>
+            
+            <p><strong>5. Traffic Lights 🚦</strong></p>
+            <p>Red light? Green light? The camera knows!</p>
+        </div>
+        
+        <div class="ai-box">
+            <h3>🧠 Neural Networks - The Brain in the Car!</h3>
+            <p>A self-driving car's camera system is like having a teenager who studied driving for years!</p>
+            <p>Scientists trained the AI by showing it MILLIONS of images:</p>
+            <p>"Here are 100,000 pictures of stop signs - they're all stop signs!"</p>
+            <p>"Here are 100,000 pictures of pedestrians - they're all people!"</p>
+            <p>After seeing so many, the computer learns to recognize them super fast!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>📸 Camera Superpowers!</h2>
+            <p><strong>✅ Can read text and signs</strong></p>
+            <p>Can understand what "STOP" means, not just see the shape</p>
+            
+            <p><strong>✅ Can tell colors apart</strong></strong></p>
+            <p>Knows the difference between a red light and green light</p>
+            
+            <p><strong>✅ Can recognize small details</strong></p>
+            <p>Can see hand signals from construction workers!</p>
+            
+            <p><strong>✅ Cheaper than Lidar</strong></p>
+            <p>Regular cameras are much less expensive than laser sensors!</p>
+            
+            <div class="fact-box">
+                👁️ Tesla's self-driving system mostly relies on cameras - they call it "Vision Only"!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>😱 Camera Weaknesses!</h2>
+            <p><strong>❌ Can't measure distance well</strong></p>
+            <p>Cameras see in 2D (flat), so it's hard to know how far away things are</p>
+            
+            <p><strong>❌ Bad at night</strong></strong></p>
+            <p>Hard to see things in the dark without good lighting</p>
+            
+            <p><strong>❌ Can be confused</strong></p>
+            <p>Bright sun, shadows, or a plastic bag might look like a person!</p>
+            
+            <p><strong>❌ Needs good weather</strong></p>
+            <p>Snow, heavy rain, or fog can block the view!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🆚 Radar + Lidar + Cameras = Super Car!</h2>
+            <p>Each sensor has strengths and weaknesses:</p>
+            <p>📡 <strong>Radar:</strong> Sees far, measures speed, works in weather</p>
+            <p>🔦 <strong>Lidar:</strong> Creates 3D map, super accurate distance</p>
+            <p>📷 <strong>Cameras:</strong> Reads signs, sees colors, understands context</p>
+            <p><strong>Together, they make a self-driving car safer than any human!</strong></p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cameraCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let objects = [];
+        let frameCount = 0;
+        
+        function addCar() {
+            objects.push({
+                type: 'car',
+                x: 100 + Math.random() * 500,
+                y: 200 + Math.random() * 100,
+                label: 'Car 98%',
+                color: '#e74c3c',
+                confidence: 95 + Math.floor(Math.random() * 5)
+            });
+            updateDetection();
+        }
+        
+        function addSign() {
+            const signs = ['Stop', 'Speed 45', 'No Entry', 'Yield'];
+            objects.push({
+                type: 'sign',
+                x: 150 + Math.random() * 400,
+                y: 100 + Math.random() * 100,
+                label: signs[Math.floor(Math.random() * signs.length)],
+                color: '#f39c12',
+                confidence: 90 + Math.floor(Math.random() * 10)
+            });
+            updateDetection();
+        }
+        
+        function addPedestrian() {
+            objects.push({
+                type: 'pedestrian',
+                x: 100 + Math.random() * 500,
+                y: 180 + Math.random() * 120,
+                label: 'Pedestrian 87%',
+                color: '#9c27b0',
+                confidence: 85 + Math.floor(Math.random() * 15)
+            });
+            updateDetection();
+        }
+        
+        function updateDetection() {
+            const box = document.getElementById('detectionBox');
+            if (objects.length === 0) {
+                box.innerHTML = '<span style="color: #aaa;">Click buttons below to see object detection!</span>';
+                return;
+            }
+            
+            let html = '';
+            for (const obj of objects) {
+                const emoji = obj.type === 'car' ? '🚗' : obj.type === 'sign' ? '🛑' : '🚶';
+                html += `<span class="item">${emoji} ${obj.label}</span>`;
+            }
+            box.innerHTML = html;
+        }
+        
+        function drawRoad() {
+            ctx.fillStyle = '#333';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([40, 30]);
+            ctx.beginPath();
+            ctx.moveTo(350, 0);
+            ctx.lineTo(350, 350);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = '#ffeb3b';
+            ctx.fillRect(0, 0, 700, 8);
+            ctx.fillRect(0, 342, 700, 8);
+        }
+        
+        function drawCar() {
+            ctx.fillStyle = '#3498db';
+            ctx.fillRect(300, 220, 100, 60);
+            
+            ctx.fillStyle = '#2980b9';
+            ctx.fillRect(310, 190, 60, 35);
+            
+            ctx.fillStyle = '#2c3e50';
+            ctx.beginPath();
+            ctx.arc(315, 280, 15, 0, Math.PI * 2);
+            ctx.arc(385, 280, 15, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '30px Arial';
+            ctx.fillText('📷', 340, 250);
+            
+            ctx.fillStyle = 'rgba(52, 152, 219, 0.3)';
+            ctx.beginPath();
+            ctx.moveTo(400, 240);
+            ctx.lineTo(550, 180);
+            ctx.lineTo(550, 300);
+            ctx.lineTo(400, 260);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        function drawObjects() {
+            for (const obj of objects) {
+                let width, height;
+                
+                if (obj.type === 'car') {
+                    width = 60;
+                    height = 40;
+                    ctx.fillStyle = '#e74c3c';
+                    ctx.fillRect(obj.x, obj.y, width, height);
+                    ctx.fillStyle = '#c0392b';
+                    ctx.fillRect(obj.x + 10, obj.y - 15, 40, 20);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '16px Arial';
+                    ctx.fillText('🚙', obj.x + 20, obj.y + 25);
+                } else if (obj.type === 'sign') {
+                    width = 40;
+                    height = 40;
+                    ctx.fillStyle = '#f39c12';
+                    ctx.beginPath();
+                    ctx.arc(obj.x + 20, obj.y + 20, 25, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '14px Arial';
+                    ctx.fillText('🛑', obj.x + 8, obj.y + 26);
+                } else if (obj.type === 'pedestrian') {
+                    width = 25;
+                    height = 50;
+                    ctx.fillStyle = '#9c27b0';
+                    ctx.beginPath();
+                    ctx.arc(obj.x + 12, obj.y + 10, 15, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillRect(obj.x, obj.y + 25, 25, 30);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '16px Arial';
+                    ctx.fillText('🚶', obj.x + 5, obj.y + 40);
+                }
+                
+                ctx.strokeStyle = obj.color;
+                ctx.lineWidth = 3;
+                ctx.strokeRect(obj.x - 5, obj.y - 5, width + 10, height + 10);
+                
+                ctx.fillStyle = obj.color;
+                ctx.fillRect(obj.x - 5, obj.y - 25, 70, 20);
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px Arial';
+                ctx.fillText(obj.label, obj.x, obj.y - 10);
+            }
+        }
+        
+        function update() {
+            frameCount++;
+            
+            ctx.fillStyle = '#222';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            if (frameCount % 30 < 15) {
+                drawRoad();
+            }
+            
+            drawCar();
+            drawObjects();
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(10, 10, 180, 80);
+            ctx.fillStyle = '#4caf50';
+            ctx.font = '14px monospace';
+            ctx.fillText('┌─────────────┐', 15, 28);
+            ctx.fillText('│ Neural Net  │', 15, 45);
+            ctx.fillText('│ FPS: 30     │', 15, 62);
+            ctx.fillText(`│ Objects: ${objects.length} │`, 15, 79);
+            ctx.fillText('└─────────────┘', 15, 94);
+            
+            requestAnimationFrame(update);
+        }
+        
+        update();
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1b5e20, #2e7d32); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #1b5e20; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0f0a; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #81c784; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #81c784; border-radius: 10px; background: #0a0f0a; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-encrypt { background: linear-gradient(135deg, #4caf50, #81c784); color: white; }
+        .fact-box { background: #e8f5e9; border-left: 5px solid #2e7d32; padding: 15px; margin: 15px 0; color: #1b5e20; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Encryption: Secret Codes! 🔐</h1>
+        <p class="subtitle">How to send secret messages!</p>
+        
+        <div class="story-box">
+            <h2>📝 The Caesar Cipher!</h2>
+            <p>Imagine you have a secret alphabet where every letter is shifted by 3:</p>
+            <p>A → D, B → E, C → F, etc.</p>
+            <p><strong>"HELLO" becomes "KHOOR"!</strong></p>
+            <p>This is called a cipher - a way to hide the real message!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Secret Message Maker!</h2>
+            <canvas id="encCanvas" width="700" height="300"></canvas>
+            <div class="controls">
+                <button class="btn-encrypt" onclick="encrypt()">Encrypt! 🔒</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔑 Public Key Encryption!</h2>
+            <p>Modern encryption uses really fancy math!</p>
+            <p>Everyone has TWO keys:</p>
+            <p>🔓 <strong>Public Key:</strong> Share with everyone</p>
+            <p>🔒 <strong>Private Key:</strong> Keep secret!</p>
+            <p>Anyone can lock a message with your public key, but only YOU can unlock it with your private key!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🌍 Where is Encryption Used?</h2>
+            <p>💬 <strong>WhatsApp, iMessage:</strong> Only you and recipient can read</p>
+            <p>🔒 <strong>HTTPS:</strong> Secure websites</p>
+            <p>💳 <strong>Banking:</strong> Protects your money</p>
+            <p>🔐 <strong>Passwords:</strong> Stored encrypted</p>
+            <div class="fact-box">
+                🖥️ Modern encryption would take supercomputers millions of years to break!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('encCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let message = "HELLO";
+        let encrypted = "KHOOR";
+        let isEncrypted = false;
+        
+        function encrypt() {
+            isEncrypted = !isEncrypted;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a0f0a';
+            ctx.fillRect(0, 0, 700, 300);
+            
+            // Alice
+            ctx.fillStyle = '#e91e63';
+            ctx.fillRect(50, 100, 80, 60);
+            ctx.fillStyle = '#fff';
+            ctx.font = '16px Arial';
+            ctx.fillText('👩', 65, 135);
+            
+            // Bob
+            ctx.fillStyle = '#2196f3';
+            ctx.fillRect(570, 100, 80, 60);
+            ctx.fillStyle = '#fff';
+            ctx.fillText('👨', 585, 135);
+            
+            // Message
+            ctx.fillStyle = '#333';
+            ctx.fillRect(130, 110, 440, 40);
+            ctx.fillStyle = '#4caf50';
+            ctx.font = '20px monospace';
+            ctx.fillText(isEncrypted ? encrypted : message, 150, 137);
+            
+            // Lock
+            ctx.font = '40px Arial';
+            ctx.fillText(isEncrypted ? '🔒' : '🔓', 320, 130);
+            
+            ctx.fillStyle = '#666';
+            ctx.font = '14px Arial';
+            ctx.fillText(isEncrypted ? 'Message is encrypted!' : 'Message is readable', 270, 200);
+            
+            // Key animation
+            if (Math.random() < 0.05) {
+                ctx.fillStyle = '#ffc107';
+                ctx.font = '20px Arial';
+                ctx.fillText('🔑', Math.random() * 500 + 100, Math.random() * 200 + 50);
+            }
+            
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>

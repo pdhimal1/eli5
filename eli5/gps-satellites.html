@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS & Satellites - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; text-shadow: 3px 3px 6px rgba(0,0,0,0.3); }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        
+        .story-box {
+            background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .story-box h2 { color: #1b263b; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        
+        .demo-area {
+            background: #000; border-radius: 20px; padding: 20px; margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .demo-title { text-align: center; color: #4caf50; font-size: 28px; margin-bottom: 10px; }
+        .demo-instruction { text-align: center; font-size: 16px; color: #aaa; margin-bottom: 15px; }
+        
+        canvas { display: block; margin: 0 auto; border: 3px solid #415a77; border-radius: 10px; background: #0d1b2a; }
+        
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        
+        button {
+            padding: 15px 30px; font-size: 18px; font-family: 'Comic Sans MS', sans-serif;
+            border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s;
+            font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-track { background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%); color: white; }
+        .btn-sat { background: linear-gradient(135deg, #2196f3 0%, #03a9f4 100%); color: white; }
+        .btn-reset { background: linear-gradient(135deg, #607d8b 0%, #9e9e9e 100%); color: white; }
+        
+        .fact-box {
+            background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px 20px;
+            margin: 15px 0; border-radius: 0 10px 10px 0; font-size: 16px; color: #1565c0;
+        }
+        
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛰️ How GPS Knows Where You Are 🛰️</h1>
+        <p class="subtitle">The story of invisible space clocks!</p>
+        
+        <div class="story-box">
+            <h2>🎯 The Blindfolded Friend Trick!</h2>
+            <p>Imagine you're blindfolded in a huge field. Your friends are standing at 3 different spots, each holding a horn.</p>
+            <p>When Friend A blows their horn, you hear it first. Then Friend B, then Friend C.</p>
+            <p><strong>By timing how long each sound took to reach you, you can figure out how far away each friend is!</strong></p>
+            <p>With 3 friends, you can pinpoint exactly where you are in the field!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 GPS Simulator!</h2>
+            <p class="demo-instruction">Watch how satellites pinpoint your location!</p>
+            
+            <canvas id="gpsCanvas" width="700" height="400"></canvas>
+            
+            <div class="controls">
+                <button class="btn-sat" onclick="addSatellite()">Add Satellite 🛰️</button>
+                <button class="btn-track" onclick="startTracking()">Track Me! 📍</button>
+                <button class="btn-reset" onclick="resetGPS()">Reset 🗑️</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🛰️ GPS in Space!</h2>
+            <p><strong>There are about 30 GPS satellites orbiting Earth right now!</strong></p>
+            <p>Each satellite has an atomic clock that's accurate to within a billionth of a second.</p>
+            <p>Your phone listens to signals from these satellites and calculates how long each signal took to arrive.</p>
+            <div class="fact-box">
+                🚀 GPS satellites orbit Earth at 12,500 miles per hour and complete one orbit every 12 hours!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>⏰ Why Atomic Clocks Matter!</h2>
+            <p>Light travels super fast - about 186,000 miles per SECOND!</p>
+            <p>If the satellite's clock is off by just 1 millionth of a second, your location could be wrong by almost 200 meters!</p>
+            <p><strong>That's why GPS satellites need atomic clocks - regular clocks aren't accurate enough!</strong></p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🌍 Uses of GPS!</h2>
+            <p>📍 <strong>Navigation:</strong> Finding your way in a new city</p>
+            <p>🚗 <strong>Ride Share:</strong> Uber and Lyft know where you are</p>
+            <p>✈️ <strong>Airplanes:</strong> Pilots use GPS to navigate</p>
+            <p>🌾 <strong>Farming:</strong> Tractors drive themselves using GPS</p>
+            <p>📱 <strong>Games:</strong> Pokemon GO and Ingress use your location!</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gpsCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let satellites = [];
+        let userX = 350, userY = 280;
+        let isTracking = false;
+        let circles = [];
+        
+        function addSatellite() {
+            if (satellites.length < 4) {
+                const angle = (satellites.length * Math.PI / 2) + Math.random() * 0.5;
+                satellites.push({
+                    x: 350 + Math.cos(angle) * 120,
+                    y: 150 + Math.sin(angle) * 50,
+                    name: 'SAT-' + (satellites.length + 1)
+                });
+            }
+        }
+        
+        function startTracking() {
+            if (satellites.length < 3) {
+                alert('Need at least 3 satellites!');
+                return;
+            }
+            isTracking = true;
+            circles = [];
+        }
+        
+        function resetGPS() {
+            satellites = [];
+            isTracking = false;
+            circles = [];
+        }
+        
+        function drawEarth() {
+            ctx.fillStyle = '#1e3a5f';
+            ctx.beginPath();
+            ctx.arc(350, 350, 150, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.strokeStyle = '#2d5a87';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(350, 350, 100, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.ellipse(350, 350, 150, 60, 0, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        
+        function drawSatellites() {
+            for (const sat of satellites) {
+                ctx.fillStyle = '#2196f3';
+                ctx.beginPath();
+                ctx.arc(sat.x, sat.y, 12, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = '12px Arial';
+                ctx.fillText('🛰️', sat.x - 10, sat.y + 4);
+                
+                ctx.strokeStyle = 'rgba(33, 150, 243, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(sat.x, sat.y);
+                ctx.lineTo(userX, userY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+        }
+        
+        function drawUser() {
+            ctx.fillStyle = '#4caf50';
+            ctx.beginPath();
+            ctx.arc(userX, userY, 15, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '20px Arial';
+            ctx.fillText('📍', userX - 10, userY + 6);
+        }
+        
+        function drawCircles() {
+            for (const c of circles) {
+                ctx.strokeStyle = c.color;
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = c.opacity;
+                ctx.beginPath();
+                ctx.arc(c.x, c.y, c.radius, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+            }
+        }
+        
+        function update() {
+            ctx.fillStyle = '#0d1b2a';
+            ctx.fillRect(0, 0, 700, 400);
+            
+            drawEarth();
+            drawSatellites();
+            drawUser();
+            drawCircles();
+            
+            if (isTracking) {
+                for (let i = 0; i < satellites.length; i++) {
+                    if (!circles[i]) {
+                        circles.push({ x: satellites[i].x, y: satellites[i].y, radius: 0, opacity: 1, color: ['#e91e63', '#9c27b0', '#2196f3', '#4caf50'][i] });
+                    }
+                    if (circles[i].radius < 200) {
+                        circles[i].radius += 2;
+                        circles[i].opacity -= 0.005;
+                    }
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
+        update();
+        addSatellite(); addSatellite(); addSatellite();
+    </script>
+</body>
+</html>

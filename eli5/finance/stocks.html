@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stocks - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1b5e20, #2e7d32); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #1b5e20; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a1a0a; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #81c784; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #81c784; border-radius: 10px; background: #0a1a0a; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-buy { background: linear-gradient(135deg, #4caf50, #81c784); color: white; }
+        .btn-sell { background: linear-gradient(135deg, #f44336, #e57373); color: white; }
+        .fact-box { background: #e8f5e9; border-left: 5px solid #2e7d32; padding: 15px; margin: 15px 0; color: #1b5e20; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📈 What Are Stocks? 📈</h1>
+        <p class="subtitle">Owning a piece of a company!</p>
+        
+        <div class="story-box">
+            <h2>🍕 The Pizza Analogy!</h2>
+            <p>Imagine a pizza shop that sells pizzas for $100.</p>
+            <p>If you buy 1 slice out of 10 slices, you own 10% of the pizza shop!</p>
+            <p><strong>Stocks work the same way!</strong></p>
+            <p>When you buy a stock, you own a tiny piece of that company!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Stock Market Simulator!</h2>
+            <canvas id="stockCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-buy" onclick="buyStock()">Buy 📈</button>
+                <button class="btn-sell" onclick="sellStock()">Sell 📉</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📊 Why Do Prices Change?</h2>
+            <p><strong>Supply and Demand:</strong> More people wanting to buy = price goes up!</p>
+            <p><strong>Company News:</strong> Good news = price up, bad news = price down</p>
+            <p><strong>Economy:</strong> Good times = generally rising, bad times = falling</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>💡 Key Terms</h2>
+            <p>📈 <strong>Bull Market:</strong> Prices rising (optimistic)</p>
+            <p>📉 <strong>Bear Market:</strong> Prices falling (pessimistic)</p>
+            <p>📊 <strong>Dividend:</strong> Company sharing profits with you!</p>
+            <div class="fact-box">
+                🏆 The stock market has returned about 10% per year on average over long periods!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('stockCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let price = 100;
+        let owned = 0;
+        let cash = 1000;
+        let priceHistory = [100];
+        
+        function buyStock() {
+            if (cash >= price) {
+                cash -= price;
+                owned++;
+            }
+        }
+        
+        function sellStock() {
+            if (owned > 0) {
+                cash += price;
+                owned--;
+            }
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a1a0a';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Price chart
+            if (Math.random() < 0.3) {
+                price += (Math.random() - 0.5) * 10;
+                price = Math.max(50, Math.min(200, price));
+                priceHistory.push(price);
+                if (priceHistory.length > 50) priceHistory.shift();
+            }
+            
+            ctx.strokeStyle = '#4caf50';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (let i = 0; i < priceHistory.length; i++) {
+                const x = 100 + i * 12;
+                const y = 250 - (priceHistory[i] - 50) * 1.5;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // Current price
+            ctx.fillStyle = priceHistory[priceHistory.length-1] >= priceHistory[0] ? '#4caf50' : '#f44336';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('$' + price.toFixed(2), 350, 50);
+            
+            // Stats
+            ctx.fillStyle = '#fff';
+            ctx.font = '18px Arial';
+            ctx.fillText('Cash: $' + cash, 150, 300);
+            ctx.fillText('Owned: ' + owned + ' shares', 350, 300);
+            ctx.fillText('Value: $' + (owned * price).toFixed(2), 550, 300);
+            
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>

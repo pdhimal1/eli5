@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary & Bits - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #212121, #424242); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #212121; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #000; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #00e676; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #00e676; border-radius: 10px; background: #0a0a0a; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-count { background: linear-gradient(135deg, #00e676, #69f0ae); color: #000; }
+        .fact-box { background: #e8f5e9; border-left: 5px solid #00e676; padding: 15px; margin: 15px 0; color: #1b5e20; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>0️⃣1️⃣ Binary: The Language of Computers! 0️⃣1️⃣</h1>
+        <p class="subtitle">How computers speak in just two words!</p>
+        
+        <div class="story-box">
+            <h2>💡 Light Switch Logic!</h2>
+            <p>A light switch can only be in two positions: ON or OFF.</p>
+            <p><strong>Computers are the same!</strong></p>
+            <p>Inside every computer are billions of tiny switches called "transistors" that are either ON (1) or OFF (0).</p>
+            <p>This is called <strong>binary</strong> - "two states"!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Binary Counter!</h2>
+            <canvas id="binCanvas" width="700" height=300"></canvas>
+            <div class="controls">
+                <button class="btn-count" onclick="increment()">Count! 🔢</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔢 How Binary Counting Works</h2>
+            <p>In regular counting (decimal), after 9 comes 10.</p>
+            <p>In binary, after 1 comes 10!</p>
+            <p>0 = 0</p>
+            <p>1 = 1</p>
+            <p>10 = 2</p>
+            <p>11 = 3</p>
+            <p>100 = 4</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>💾 What Can You Represent?</h2>
+            <p>With 8 bits (one byte), you can represent 256 different values!</p>
+            <p>🔤 <strong>Letters:</strong> A=65, B=66, etc.</p>
+            <p>🎨 <strong>Colors:</strong> RGB values from 0-255</p>
+            <p>🔊 <strong>Sound:</strong> Audio samples</p>
+            <div class="fact-box">
+                💾 A typical photo is made of millions of bits - ones and zeros!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('binCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let count = 0;
+        
+        function increment() {
+            count++;
+        }
+        
+        function toBinary(n) {
+            return n.toString(2).padStart(8, '0');
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, 700, 300);
+            
+            const bits = toBinary(count);
+            
+            ctx.font = '80px monospace';
+            ctx.textAlign = 'center';
+            
+            for (let i = 0; i < 8; i++) {
+                const x = 120 + i * 60;
+                const y = 150;
+                const bit = bits[i];
+                
+                ctx.fillStyle = bit === '1' ? '#00e676' : '#333';
+                ctx.fillRect(x, y - 50, 50, 80);
+                
+                ctx.fillStyle = bit === '1' ? '#000' : '#666';
+                ctx.fillText(bit, x + 25, y + 20);
+                
+                ctx.fillStyle = '#666';
+                ctx.font = '14px monospace';
+                ctx.fillText(Math.pow(2, 7-i), x + 25, y + 60);
+            }
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '40px monospace';
+            ctx.fillText('= ' + count, 580, 160);
+            
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>

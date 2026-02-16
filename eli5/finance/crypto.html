@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #f57f17, #ff8f00); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #f57f17; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #1a1200; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ffb74d; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ffb74d; border-radius: 10px; background: #1a1200; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-mine { background: linear-gradient(135deg, #ff8f00, #ffb74d); color: white; }
+        .fact-box { background: #fff3e0; border-left: 5px solid #ff8f00; padding: 15px; margin: 15px 0; color: #e65100; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🪙 Crypto: Digital Money! 🪙</h1>
+        <p class="subtitle">The future of money?</p>
+        
+        <div class="story-box">
+            <h2>💎 The Digital Gold!</h2>
+            <p>Imagine regular money is like a paper note that the government controls.</p>
+            <p><strong>Crypto is like digital gold that no one controls!</strong></p>
+            <p>It's a new kind of money that exists only on computers.</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Crypto Price Simulator!</h2>
+            <canvas id="cryptoCanvas" width="700" height="300"></canvas>
+            <div class="controls">
+                <button class="btn-mine" onclick="simulate()">Simulate! 📈</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔗 How Crypto Works: The Blockchain</h2>
+            <p>Imagine a magic notebook that everyone has a copy of.</p>
+            <p>When someone sends money, everyone writes it down.</p>
+            <p><strong>No one can cheat because everyone is watching!</strong></p>
+        </div>
+        
+        <div class="story-box">
+            <h2>⛏️ Mining: Creating New Coins</h2>
+            <p>Just like gold miners dig for gold, crypto miners use computers to solve puzzles.</p>
+            <p>When they solve it, they create new coins and keep some as a reward!</p>
+            <p>This is how new Bitcoin is created!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>📊 Types of Crypto</h2>
+            <p>🪙 <strong>Bitcoin (BTC):</strong> The first and most famous</p>
+            <p>💎 <strong>Ethereum (ETH):</strong> Can run apps on it</p>
+            <p>🪙 <strong>Dogecoin:</strong> Started as a joke!</p>
+            
+            <div class="fact-box">
+                ⚠️ Crypto is VERY risky - prices can crash 90%! Only invest what you can afford to lose.
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 Should You Invest?</h2>
+            <p>✅ <strong>Pros:</strong> High potential, decentralized</p>
+            <p>❌ <strong>Cons:</strong> Very volatile, confusing, risky</p>
+            <p><strong>Expert advice:</strong> Start with ETFs first, then if you want, allocate a SMALL amount (like 5%) to crypto.</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cryptoCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let price = 100;
+        let history = [100];
+        let running = false;
+        
+        function simulate() {
+            if (running) return;
+            running = true;
+            price = 100;
+            history = [100];
+            
+            let day = 0;
+            const interval = setInterval(() => {
+                day++;
+                
+                // Crypto: extremely volatile
+                price *= 1 + (Math.random() - 0.45) * 0.2;
+                price = Math.max(price, 10);
+                
+                history.push(price);
+                if (history.length > 50) history.shift();
+                
+                draw();
+                
+                if (day >= 50) clearInterval(interval);
+            }, 100);
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#1a1200';
+            ctx.fillRect(0, 0, 700, 300);
+            
+            // Grid
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 5; i++) {
+                ctx.beginPath();
+                ctx.moveTo(50, 50 + i * 60);
+                ctx.lineTo(650, 50 + i * 60);
+                ctx.stroke();
+            }
+            
+            // Price line
+            ctx.strokeStyle = price >= 100 ? '#4caf50' : '#f44336';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (let i = 0; i < history.length; i++) {
+                const x = 50 + i * 12;
+                const y = 250 - (history[i] / 200) * 180;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // Current price
+            ctx.fillStyle = price >= 100 ? '#4caf50' : '#f44336';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('$' + Math.round(price), 350, 50);
+            
+            ctx.fillStyle = '#888';
+            ctx.font = '16px Arial';
+            ctx.fillText(history.length + ' days simulated', 350, 280);
+            
+            if (history.length > 1) {
+                const change = ((price - 100) / 100 * 100).toFixed(1);
+                ctx.fillStyle = change >= 0 ? '#4caf50' : '#f44336';
+                ctx.fillText((change >= 0 ? '+' : '') + change + '%', 350, 80);
+            }
+            
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>

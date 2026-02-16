@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronic Warfare - ELI5!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 38px;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .story-box {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .story-box h2 {
+            color: #9c27b0;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .story-box p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .demo-area {
+            background: #0a0a15;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .demo-title {
+            text-align: center;
+            color: #ff5722;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .demo-instruction {
+            text-align: center;
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+        
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border: 3px solid #333;
+            border-radius: 10px;
+            background: #000;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-family: 'Comic Sans MS', sans-serif;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+        
+        .btn-normal { background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%); color: white; }
+        .btn-jam { background: linear-gradient(135deg, #f44336 0%, #ff5722 100%); color: white; }
+        .btn-decept { background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%); color: white; }
+        .btn-reset { background: linear-gradient(135deg, #607d8b 0%, #9e9e9e 100%); color: white; }
+        
+        .fact-box {
+            background: #fce4ec;
+            border-left: 5px solid #e91e63;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+            font-size: 16px;
+            color: #880e4f;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .back-link a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 18px;
+        }
+        
+        .status-text {
+            text-align: center;
+            color: #4caf50;
+            font-size: 20px;
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Electronic Warfare 🎮</h1>
+        <p class="subtitle">The invisible battle with radio waves!</p>
+        
+        <div class="story-box">
+            <h2>🎯 The Radio Hide and Seek!</h2>
+            <p>Imagine you're playing hide and seek, but instead of hiding your body, you're hiding your <strong>radio signals</strong>!</p>
+            <p><strong>Electronic Warfare (EW)</strong> is like a secret battle where countries try to:</p>
+            <p>1. <strong>Jam</strong> - Make enemy radio signals unable to work</p>
+            <p>2. <strong>Deceive</strong> - Send fake signals to confuse the enemy</p>
+            <p>3. <strong>Protect</strong> - Keep your own signals safe from being jammed</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 EW Battle Simulator!</h2>
+            <p class="demo-instruction">Click buttons to see different electronic warfare tactics!</p>
+            
+            <canvas id="ewCanvas" width="700" height="400"></canvas>
+            
+            <div class="status-text" id="statusText">Mode: Normal Communication 📡</div>
+            
+            <div class="controls">
+                <button class="btn-normal" onclick="setMode('normal')">Normal 📡</button>
+                <button class="btn-jam" onclick="setMode('jam')">JAM! 🔥</button>
+                <button class="btn-decept" onclick="setMode('decept')">Deceive! 👻</button>
+                <button class="btn-reset" onclick="resetEW()">Reset 🗑️</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔥 Types of Electronic Warfare</h2>
+            
+            <p><strong>1. Electronic Attack (Jamming) 💥</strong></p>
+            <p>Imagine trying to talk to your friend, but someone else is yelling super loud to drown you out. That's jamming!</p>
+            <div class="fact-box">
+                📺 Ever get static on your TV when someone uses a microwave? That's accidental jamming!
+            </div>
+            
+            <p><strong>2. Electronic Protection (Jamming) 🛡️</strong></p>
+            <p>Using special tricks to make your signals harder to jam - like talking in a secret code!</p>
+            
+            <p><strong>3. Electronic Support (Listening) 👂</strong></p>
+            <p>Using super sensitive ears to hear enemy communications - like being really good at the "Marco Polo" game!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎭 Deception - The Art of Trickery!</h2>
+            <p><strong>False Targets:</strong></p>
+            <p>Imagine setting up fake scarecrows to trick enemies into attacking the wrong thing. Radar deception does this - it creates fake airplane signals!</p>
+            
+            <p><strong>Signal Impersonation:</strong></p>
+            <p>Like pretending to be your friend on the phone to get information. Military can impersonate enemy signals!</p>
+            
+            <div class="fact-box">
+                🎮 Video games use "electronic warfare" too! Ever use a "jammer" power-up to block enemy communications?
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🚁 Real World Examples</h2>
+            <p>🛩️ <strong>Stealth Fighters:</strong> Special planes that absorb radar waves so they don't show up on radar!</p>
+            <p>📱 <strong>Cell Phone Jamming:</strong> Some places block cell signals to prevent cheating on tests!</p>
+            <p>🛡️ <strong>GPS Jamming:</strong> Countries can block GPS signals in certain areas for security!</p>
+            <p>🌐 <strong>Firewalls:</strong> Like digital jammers that block bad stuff from getting into computers!</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('ewCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let mode = 'normal';
+        let signals = [];
+        let particles = [];
+        let time = 0;
+        
+        function setMode(newMode) {
+            mode = newMode;
+            const statusEl = document.getElementById('statusText');
+            
+            if (mode === 'normal') {
+                statusEl.textContent = 'Mode: Normal Communication 📡';
+                statusEl.style.color = '#4caf50';
+            } else if (mode === 'jam') {
+                statusEl.textContent = 'Mode: JAMMING ATTACK! 🔥 Enemies can\'t communicate!';
+                statusEl.style.color = '#f44336';
+            } else if (mode === 'decept') {
+                statusEl.textContent = 'Mode: DECEPTION! 👻 Sending fake signals to confuse!';
+                statusEl.style.color = '#9c27b0';
+            }
+        }
+        
+        function resetEW() {
+            mode = 'normal';
+            signals = [];
+            particles = [];
+            document.getElementById('statusText').textContent = 'Mode: Normal Communication 📡';
+            document.getElementById('statusText').style.color = '#4caf50';
+        }
+        
+        function drawBase(x, y, label, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x - 30, y - 20, 60, 40);
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x, y + 5);
+        }
+        
+        function update() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, 700, 400);
+            
+            time += 0.02;
+            
+            ctx.fillStyle = '#222';
+            ctx.fillRect(0, 350, 700, 50);
+            
+            drawBase(100, 200, 'Friend', '#4caf50');
+            drawBase(600, 200, 'Enemy', '#f44336');
+            
+            if (mode === 'normal') {
+                if (Math.random() < 0.05) {
+                    signals.push({
+                        x: 130,
+                        y: 200,
+                        targetX: 570,
+                        targetY: 200,
+                        type: 'signal',
+                        progress: 0,
+                        color: '#4caf50'
+                    });
+                }
+            } else if (mode === 'jam') {
+                for (let i = 0; i < 3; i++) {
+                    particles.push({
+                        x: 350 + (Math.random() - 0.5) * 100,
+                        y: 200 + (Math.random() - 0.5) * 80,
+                        vx: (Math.random() - 0.5) * 8,
+                        vy: (Math.random() - 0.5) * 8,
+                        life: 1,
+                        size: 5 + Math.random() * 15,
+                        color: Math.random() > 0.5 ? '#f44336' : '#ff5722'
+                    });
+                }
+                
+                ctx.fillStyle = `rgba(255, 0, 0, ${0.1 + Math.sin(time * 5) * 0.05})`;
+                ctx.fillRect(0, 0, 700, 400);
+                
+                ctx.fillStyle = 'rgba(255, 100, 100, 0.8)';
+                ctx.font = 'bold 30px Comic Sans MS';
+                ctx.textAlign = 'center';
+                ctx.fillText('🚫 SIGNAL JAMMED! 🚫', 350, 100);
+            } else if (mode === 'decept') {
+                if (Math.random() < 0.08) {
+                    signals.push({
+                        x: 130,
+                        y: 200,
+                        targetX: 570 + (Math.random() - 0.5) * 100,
+                        targetY: 200 + (Math.random() - 0.5) * 100,
+                        type: 'fake',
+                        progress: 0,
+                        color: '#9c27b0'
+                    });
+                    
+                    signals.push({
+                        x: 130,
+                        y: 200,
+                        targetX: 570,
+                        targetY: 200,
+                        type: 'real',
+                        progress: 0,
+                        color: '#4caf50',
+                        hidden: true
+                    });
+                }
+                
+                ctx.fillStyle = '#9c27b0';
+                ctx.font = 'bold 20px Comic Sans MS';
+                ctx.textAlign = 'center';
+                ctx.fillText('👻 Fake signals misleading enemy!', 350, 80);
+            }
+            
+            for (let i = signals.length - 1; i >= 0; i--) {
+                const s = signals[i];
+                s.progress += 0.02;
+                
+                const x = s.x + (s.targetX - s.x) * s.progress;
+                const y = s.y + (s.targetY - s.y) * s.progress;
+                
+                if (mode === 'decept' && s.type === 'real' && s.progress < 0.5) {
+                    ctx.globalAlpha = 0.3;
+                } else {
+                    ctx.globalAlpha = 1;
+                }
+                
+                ctx.fillStyle = s.color;
+                ctx.beginPath();
+                ctx.arc(x, y, 8, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = s.color;
+                ctx.font = '16px Arial';
+                ctx.fillText(s.type === 'fake' ? '👻' : '📡', x, y - 15);
+                
+                ctx.globalAlpha = 1;
+                
+                if (s.progress >= 1) {
+                    signals.splice(i, 1);
+                    
+                    if (mode === 'decept' && s.type === 'fake') {
+                        for (let j = 0; j < 10; j++) {
+                            particles.push({
+                                x: s.targetX,
+                                y: s.targetY,
+                                vx: (Math.random() - 0.5) * 5,
+                                vy: (Math.random() - 0.5) * 5,
+                                life: 1,
+                                size: 3,
+                                color: '#9c27b0'
+                            });
+                        }
+                    }
+                }
+            }
+            
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= 0.02;
+                
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+                
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
+        update();
+    </script>
+</body>
+</html>

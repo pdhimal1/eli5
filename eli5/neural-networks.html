@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Networks - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a237e, #303f9f); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #1a237e; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0a15; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #7986cb; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #7986cb; border-radius: 10px; background: #0d0d20; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-think { background: linear-gradient(135deg, #7986cb, #5c6bc0); color: white; }
+        .fact-box { background: #e8eaf6; border-left: 5px solid #303f9f; padding: 15px; margin: 15px 0; color: #1a237e; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Neural Networks: Computer Brains! 🧠</h1>
+        <p class="subtitle">How AI "neurons" work!</p>
+        
+        <div class="story-box">
+            <h2>🧠 Like Human Brain Cells!</h2>
+            <p>Your brain has about 86 billion neurons - tiny cells that pass messages to each other!</p>
+            <p><strong>Neural networks are computer programs inspired by real brains!</strong></p>
+            <p>They have "neurons" (circles) connected by "synapses" (lines). Information flows through, getting processed at each step!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Neural Network in Action!</h2>
+            <canvas id="nnCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-think" onclick="processInput()">Think! 💭</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📥 Input → 🧠 Processing → 📤 Output</h2>
+            <p><strong>Input Layer:</strong> Takes in data (like pixels from an image)</p>
+            <p><strong>Hidden Layers:</strong> Process and transform the information</p>
+            <p><strong>Output Layer:</strong> Gives the final answer</p>
+            <div class="fact-box">
+                🔥 Deep Learning uses many hidden layers - that's where "deep" comes from!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 What Can Neural Networks Do?</h2>
+            <p>🖼️ <strong>Image Recognition:</strong> Identify cats, dogs, faces</p>
+            <p>🗣️ <strong>Speech Recognition:</strong> Understand spoken words</p>
+            <p>✍️ <strong>Writing:</strong> Generate human-like text</p>
+            <p>🎨 <strong>Art:</strong> Create images from descriptions</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('nnCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const layers = [4, 6, 6, 3];
+        const neurons = [];
+        const activations = [];
+        
+        function init() {
+            let x = 80;
+            for (let l = 0; l < layers.length; l++) {
+                neurons[l] = [];
+                activations[l] = [];
+                const y = 175 - (layers[l] - 1) * 25;
+                for (let n = 0; n < layers[l]; n++) {
+                    neurons[l][n] = { x, y: y + n * 50 };
+                    activations[l][n] = Math.random() * 0.3;
+                }
+                x += 160;
+            }
+        }
+        
+        function processInput() {
+            for (let n = 0; n < layers[0]; n++) {
+                activations[0][n] = Math.random();
+            }
+            for (let l = 1; l < layers.length; l++) {
+                for (let n = 0; n < layers[l]; n++) {
+                    activations[l][n] = 0;
+                    for (let p = 0; p < layers[l-1]; p++) {
+                        activations[l][n] += activations[l-1][p] * (0.5 + Math.random() * 0.5);
+                    }
+                    activations[l][n] = Math.min(activations[l][n], 1);
+                }
+            }
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0d0d20';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Draw connections
+            ctx.strokeStyle = '#333';
+            for (let l = 0; l < layers.length - 1; l++) {
+                for (let n = 0; n < layers[l]; n++) {
+                    for (let m = 0; m < layers[l+1]; m++) {
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(neurons[l][n].x, neurons[l][n].y);
+                        ctx.lineTo(neurons[l+1][m].x, neurons[l+1][m].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            // Draw neurons
+            for (let l = 0; l < layers.length; l++) {
+                for (let n = 0; n < layers[l]; n++) {
+                    const act = activations[l][n];
+                    const r = 15 + act * 10;
+                    
+                    ctx.fillStyle = `rgba(121, 134, 203, ${0.3 + act * 0.7})`;
+                    ctx.beginPath();
+                    ctx.arc(neurons[l][n].x, neurons[l][n].y, r, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.strokeStyle = '#7986cb';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#fff';
+                    ctx.font = 'bold 10px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(act.toFixed(1), neurons[l][n].x, neurons[l][n].y + 3);
+                }
+            }
+            
+            // Labels
+            ctx.fillStyle = '#aaa';
+            ctx.font = '14px Arial';
+            ctx.fillText('Input', 80, 330);
+            ctx.fillText('Hidden', 240, 330);
+            ctx.fillText('Hidden', 400, 330);
+            ctx.fillText('Output', 560, 330);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        init();
+        draw();
+    </script>
+</body>
+</html>

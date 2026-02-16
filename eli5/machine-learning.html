@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #4a148c, #7b1fa2); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #4a148c; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #1a1a2e; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ce93d8; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ce93d8; border-radius: 10px; background: #0a0a15; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-train { background: linear-gradient(135deg, #7b1fa2, #ba68c8); color: white; }
+        .btn-test { background: linear-gradient(135deg, #4caf50, #81c784); color: white; }
+        .fact-box { background: #f3e5f5; border-left: 5px solid #7b1fa2; padding: 15px; margin: 15px 0; border-radius: 0 10px 10px 0; color: #4a148c; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Machine Learning: Teaching Computers! 🧠</h1>
+        <p class="subtitle">How computers learn from examples!</p>
+        
+        <div class="story-box">
+            <h2>📚 The Learning Student!</h2>
+            <p>Imagine teaching a child to recognize cats. You show them hundreds of pictures of cats and say "CAT" each time!</p>
+            <p><strong>Machine learning is exactly that - but for computers!</strong></p>
+            <p>We show the computer millions of examples, and it learns to find patterns by itself!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Train the AI!</h2>
+            <canvas id="mlCanvas" width="700" height="300"></canvas>
+            <div class="controls">
+                <button class="btn-train" onclick="trainAI()">Learn Examples 📚</button>
+                <button class="btn-test" onclick="testAI()">Test New Data 🧪</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔍 Types of Machine Learning</h2>
+            <p><strong>🟢 Supervised Learning:</strong> Teacher shows answers (like flashcards)</p>
+            <p><strong>🟡 Unsupervised Learning:</strong> Computer finds patterns alone</p>
+            <p><strong>🔴 Reinforcement Learning:</strong> Learning from trial and error (like training a dog!)</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🌍 Real World Uses</h2>
+            <p>📧 <strong>Email Spam Filters:</strong> Learns what's spam</p>
+            <p>🎬 <strong>Netflix Recommendations:</strong> Suggests shows you might like</p>
+            <p>🗣️ <strong>Voice Assistants:</strong> Understands your speech</p>
+            <p>🚗 <strong>Self-Driving Cars:</strong> Recognizes roads and obstacles</p>
+        </div>
+        
+        <div class="fact-box">
+            🏆 In 2016, Google's AI beat the world champion at Go (a complex board game)!
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('mlCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let trainingData = [];
+        let accuracy = 0;
+        let trained = false;
+        
+        function trainAI() {
+            trainingData = [];
+            for (let i = 0; i < 20; i++) {
+                trainingData.push({ x: 100 + Math.random() * 200, y: 150 + Math.random() * 100, label: 'cat' });
+                trainingData.push({ x: 400 + Math.random() * 200, y: 50 + Math.random() * 100, label: 'dog' });
+            }
+            accuracy = Math.floor(60 + Math.random() * 30);
+            trained = true;
+        }
+        
+        function testAI() {
+            if (!trained) return;
+            for (let i = 0; i < 5; i++) {
+                trainingData.push({ 
+                    x: 100 + Math.random() * 500, 
+                    y: 50 + Math.random() * 200, 
+                    label: Math.random() > 0.5 ? 'cat' : 'dog',
+                    isNew: true
+                });
+            }
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a0a15';
+            ctx.fillRect(0, 0, 700, 300);
+            
+            ctx.fillStyle = '#333';
+            ctx.fillRect(250, 20, 200, 40);
+            ctx.fillStyle = '#4caf50';
+            ctx.fillRect(250, 20, 2 * accuracy, 40);
+            ctx.fillStyle = '#fff';
+            ctx.font = '16px Arial';
+            ctx.fillText(`Accuracy: ${accuracy}%`, 320, 45);
+            
+            for (const d of trainingData) {
+                ctx.fillStyle = d.label === 'cat' ? '#e91e63' : '#2196f3';
+                if (d.isNew) ctx.fillStyle = '#ffc107';
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, 10, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.font = '12px Arial';
+                ctx.fillText(d.label === 'cat' ? '🐱' : '🐕', d.x - 8, d.y - 15);
+            }
+            
+            if (trained && trainingData.length > 0) {
+                ctx.fillStyle = '#ba68c8';
+                ctx.font = 'bold 18px Arial';
+                ctx.fillText('🤖 AI is Learning...', 270, 280);
+            }
+            
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>

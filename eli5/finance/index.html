@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELI5 Finance - Money Explained!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a237e, #283593); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 42px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .topic-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
+        .topic-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .topic-icon { font-size: 45px; text-align: center; margin-bottom: 12px; }
+        .topic-card h2 { color: #333; font-size: 18px; margin-bottom: 8px; text-align: center; }
+        .topic-card p { color: #666; font-size: 13px; line-height: 1.4; text-align: center; }
+        .topic-card:nth-child(1) { border-top: 5px solid #4caf50; }
+        .topic-card:nth-child(2) { border-top: 5px solid #2196f3; }
+        .topic-card:nth-child(3) { border-top: 5px solid #ff9800; }
+        .topic-card:nth-child(4) { border-top: 5px solid #9c27b0; }
+        .topic-card:nth-child(5) { border-top: 5px solid #00bcd4; }
+        .topic-card:nth-child(6) { border-top: 5px solid #607d8b; }
+        .topic-card:nth-child(7) { border-top: 5px solid #f44336; }
+        .back-link { text-align: center; margin-top: 40px; }
+        .back-link a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 ELI5 Finance 💰</h1>
+        <p class="subtitle">Learn about money - simply!</p>
+        
+        <div class="topics-grid">
+            <a href="index.html" class="topic-card">
+                <div class="topic-icon">💵</div>
+                <h2>Finance Basics</h2>
+                <p>Income, expenses, and savings!</p>
+            </a>
+            
+            <a href="stocks.html" class="topic-card">
+                <div class="topic-icon">📈</div>
+                <h2>Stocks</h2>
+                <p>Owning a piece of a company!</p>
+            </a>
+            
+            <a href="investing.html" class="topic-card">
+                <div class="topic-icon">🌱</div>
+                <h2>Investing</h2>
+                <p>Making your money grow!</p>
+            </a>
+            
+            <a href="compound-interest.html" class="topic-card">
+                <div class="topic-icon">💎</div>
+                <h2>Compound Interest</h2>
+                <p>Money multiplying over time!</p>
+            </a>
+            
+            <a href="etfs.html" class="topic-card">
+                <div class="topic-icon">📦</div>
+                <h2>ETFs</h2>
+                <p>Baskets of stocks!</p>
+            </a>
+            
+            <a href="retirement.html" class="topic-card">
+                <div class="topic-icon">🏖️</div>
+                <h2>Retirement</h2>
+                <p>Planning for your future!</p>
+            </a>
+            
+            <a href="crypto.html" class="topic-card">
+                <div class="topic-icon">🪙</div>
+                <h2>Crypto</h2>
+                <p>Digital money explained!</p>
+            </a>
+        </div>
+        
+        <div class="back-link">
+            <a href="../index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investing - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #e65100, #f57c00); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25: 20pxpx; margin-bottom; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #e65100; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #1a1000; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ffb74d; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ffb74d; border-radius: 10px; background: #1a1000; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-invest { background: linear-gradient(135deg, #ff9800, #ffb74d); color: white; }
+        .fact-box { background: #fff3e0; border-left: 5px solid #f57c00; padding: 15px; margin: 15px 0; color: #e65100; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 Investing: Growing Your Money! 🌱</h1>
+        <p class="subtitle">Making your money work for you!</p>
+        
+        <div class="story-box">
+            <h2>🌾 The Seed Analogy!</h2>
+            <p>Imagine you have a magic seed that doubles every year!</p>
+            <p>Year 1: 1 seed → 2</p>
+            <p>Year 2: 2 → 4</p>
+            <p>Year 3: 4 → 8</p>
+            <p><strong>That's investing! Your money "grows" over time!</strong></p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Investment Growth!</h2>
+            <canvas id="investCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-invest" onclick="addInvestment()">Invest Monthly! 💰</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📊 Types of Investments</h2>
+            <p>🏦 <strong>Savings Accounts:</strong> Safe but low returns (~0.5-4%)</p>
+            <p>📈 <strong>Stocks:</strong> Higher risk, higher potential returns (~7-10%)</p>
+            <p>🏠 <strong>Real Estate:</strong> Property investments</p>
+            <p>💵 <strong>Bonds:</strong> Lending money, getting interest</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>⚖️ Risk vs Reward</h2>
+            <p><strong>Low Risk:</strong> Savings account - guaranteed, but slow growth</p>
+            <p><strong>High Risk:</strong> Individual stocks - can gain OR lose money</p>
+            <p><strong>Diversification:</strong> Don't put all eggs in one basket!</p>
+            <div class="fact-box">
+                🎯 "Time in the market beats timing the market" - start early!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to ELI5 Home</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('investCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let totalInvested = 0;
+        let totalValue = 0;
+        let years = 0;
+        
+        function addInvestment() {
+            totalInvested += 100;
+            totalValue += 100 * Math.pow(1.08, years);
+            years++;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#1a1000';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Bars
+            const maxVal = Math.max(totalInvested, totalValue) || 1000;
+            const scale = 250 / maxVal;
+            
+            ctx.fillStyle = '#666';
+            ctx.fillRect(200, 300 - totalInvested * scale, 100, totalInvested * scale);
+            ctx.fillStyle = '#ff9800';
+            ctx.fillRect(400, 300 - totalValue * scale, 100, totalValue * scale);
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '18px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Total Invested', 250, 320);
+            ctx.fillText('Current Value', 450, 320);
+            ctx.fillText('$' + totalInvested, 250, 300 - totalInvested * scale - 10);
+            ctx.fillText('$' + Math.round(totalValue), 450, 300 - totalValue * scale - 10);
+            
+            // Info
+            ctx.fillStyle = '#ffb74d';
+            ctx.font = '20px Arial';
+            ctx.fillText('Years invested: ' + years, 350, 50);
+            if (totalValue > 0) {
+                ctx.fillText('Growth: +' + Math.round((totalValue - totalInvested) / totalInvested * 100) + '%', 350, 80);
+            }
+            
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>
