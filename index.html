@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quad Tree Visualization Tool</title>
+    <title>What is a Quad Tree? (Super Simple!)</title>
     <style>
         * {
             margin: 0;
@@ -12,609 +12,305 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f2f5;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-        }
-        
-        header {
-            background: #2c3e50;
-            color: white;
             padding: 20px;
-            text-align: center;
-        }
-        
-        header h1 {
-            margin-bottom: 10px;
-        }
-        
-        header p {
-            color: #bdc3c7;
-            font-size: 14px;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 20px;
         }
         
-        .main-area {
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 42px;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .story-box {
             background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         
-        .canvas-container {
-            position: relative;
-            border: 2px solid #34495e;
-            border-radius: 5px;
-            overflow: hidden;
-            background: #ecf0f1;
-        }
-        
-        .search-status-panel {
-            background: white;
-            padding: 15px 20px;
+        .story-box h2 {
+            color: #764ba2;
+            font-size: 24px;
             margin-bottom: 15px;
-            border-radius: 8px;
-            border: 2px solid #e0e0e0;
         }
         
-        .search-status {
-            font-size: 15px;
-            padding: 12px 16px;
-            border-radius: 6px;
-            transition: all 0.3s;
-            min-height: 48px;
-            display: flex;
-            align-items: center;
+        .story-box p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
         }
         
-        .search-status.info {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            color: #1565c0;
+        .game-area {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         
-        .search-status.success {
-            background: #e8f5e9;
-            border-left: 4px solid #4caf50;
-            color: #2e7d32;
+        .game-title {
+            text-align: center;
+            color: #764ba2;
+            font-size: 28px;
+            margin-bottom: 10px;
         }
         
-        .search-status.error {
-            background: #ffebee;
-            border-left: 4px solid #f44336;
-            color: #c62828;
+        .game-instruction {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
         }
         
         canvas {
             display: block;
-            cursor: crosshair;
-        }
-        
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .panel {
-            background: white;
+            margin: 0 auto;
+            border: 4px solid #764ba2;
             border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .panel h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
+            background: #f8f9fa;
+            cursor: crosshair;
         }
         
         .controls {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
         
         button {
-            padding: 12px 20px;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-family: 'Comic Sans MS', sans-serif;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 14px;
             transition: all 0.3s;
-            font-weight: 500;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
         
-        .btn-primary {
-            background: #3498db;
+        .btn-candy {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
         }
         
-        .btn-secondary {
-            background: #95a5a6;
+        .btn-blue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
         }
         
-        .btn-danger {
-            background: #e74c3c;
+        .btn-green {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             color: white;
         }
         
-        .btn-success {
-            background: #27ae60;
+        .btn-reset {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
             color: white;
         }
         
-        .instructions-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-        
-        .instructions-box h4 {
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-        
-        .instruction-steps {
+        .comparison {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        
-        .step {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-        }
-        
-        .step-number {
-            background: white;
-            color: #667eea;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        
-        .how-it-works-box {
-            background: white;
-            padding: 25px;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
             margin-top: 20px;
-            border-radius: 10px;
-            border: 2px solid #e8f4f8;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        .how-it-works-box h4 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #3498db;
+        .method-box {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            border: 3px solid #ddd;
+        }
+        
+        .method-box h3 {
+            text-align: center;
+            margin-bottom: 15px;
             font-size: 20px;
         }
         
-        .works-content {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+        .method-box.slow {
+            border-color: #e74c3c;
+        }
+        .method-box.slow h3 {
+            color: #e74c3c;
         }
         
-        .works-section h5 {
-            color: #3498db;
-            margin-bottom: 10px;
-            font-size: 15px;
+        .method-box.fast {
+            border-color: #27ae60;
+        }
+        .method-box.fast h3 {
+            color: #27ae60;
         }
         
-        .works-section p {
-            color: #34495e;
-            font-size: 13px;
-            line-height: 1.7;
-            margin-bottom: 8px;
+        .method-box p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
         }
         
-        .works-section ul {
-            color: #34495e;
-            font-size: 13px;
-            line-height: 1.8;
-            padding-left: 20px;
-        }
-        
-        .works-section li {
-            margin-bottom: 5px;
-        }
-        
-        @media (max-width: 900px) {
-            .instruction-steps {
-                grid-template-columns: 1fr;
-            }
-            .works-content {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .tree-structure {
-            max-height: 300px;
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            border: 1px solid #dee2e6;
+        .emoji-big {
+            font-size: 40px;
+            text-align: center;
+            margin: 10px 0;
         }
         
         .legend {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
         
         .legend-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 13px;
+            font-size: 16px;
         }
         
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 3px;
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        
-        .stat-item {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-        }
-        
-        .stat-value {
+        .legend-icon {
             font-size: 24px;
-            font-weight: bold;
-            color: #3498db;
         }
         
-        .stat-label {
-            font-size: 12px;
-            color: #7f8c8d;
+        .status-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+            font-size: 18px;
+            color: #1565c0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
         }
         
-        .demo-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-        }
-        
-        .slider-container {
-            margin: 10px 0;
-        }
-        
-        .slider-container label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 13px;
-            color: #34495e;
-        }
-        
-        input[type="range"] {
-            width: 100%;
-        }
-        
-        .point-counter {
-            display: inline-block;
-            background: #e74c3c;
-            color: white;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            line-height: 24px;
-            text-align: center;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        @media (max-width: 900px) {
-            .container {
+        @media (max-width: 768px) {
+            .comparison {
                 grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 32px;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🌳 Quad Tree Visualization Tool</h1>
-        <p>Learn how spatial indexing works in an easy, visual way!</p>
-    </header>
-    
     <div class="container">
-        <div class="main-area">
-            <div class="instructions-box">
-                <h4>🎯 What To Do</h4>
-                <div class="instruction-steps">
-                    <div class="step">
-                        <span class="step-number">1</span>
-                        <span><strong>Click on the grid</strong> below to add buildings manually</span>
-                    </div>
-                    <div class="step">
-                        <span class="step-number">2</span>
-                        <span>Use <strong>"Add Buildings"</strong> buttons to add many at once</span>
-                    </div>
-                    <div class="step">
-                        <span class="step-number">3</span>
-                        <span>Watch the grid <strong>split into quadrants</strong> when areas get crowded</span>
-                    </div>
-                    <div class="step">
-                        <span class="step-number">4</span>
-                        <span>Click <strong>"Find Building"</strong> to search if a random point is inside any building</span>
-                    </div>
+        <h1>🍭 What is a Quad Tree? 🍭</h1>
+        <p class="subtitle">The magical way computers find things super fast!</p>
+        
+        <div class="story-box">
+            <h2>🎮 Imagine a Treasure Hunt!</h2>
+            <p><strong>The Slow Way:</strong> You have 100 toys scattered in your room. To find your favorite teddy bear, you check under the bed, in the closet, behind the door, under the pillows... you check EVERYTHING! 😫</p>
+            <p><strong>The Smart Way:</strong> First, you divide your room into 4 sections: top-left, top-right, bottom-left, bottom-right. Then you ask "Is the teddy bear in the top half?" NO! So you skip the top sections completely! You just saved time! 🎉</p>
+            <p><strong>A Quad Tree does exactly this!</strong> It divides the map into 4 squares, then divides again if a square gets too crowded. When searching, it only checks the squares that matter!</p>
+        </div>
+        
+        <div class="game-area">
+            <h2 class="game-title">🎨 Let's Play!</h2>
+            <p class="game-instruction">Click anywhere to add toys (dots), then click "Find the Toy!" to see how the computer searches!</p>
+            
+            <div class="status-box" id="statusBox">
+                Click on the white area to add some toys! 🧸
+            </div>
+            
+            <canvas id="gameCanvas" width="700" height="500"></canvas>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="legend-icon">🔴</span>
+                    <span>Toy/Point</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon">⬛</span>
+                    <span>Grid Lines</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon">🟡</span>
+                    <span>Checking This Area</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon">⭐</span>
+                    <span>Found It!</span>
                 </div>
             </div>
             
-            <div class="search-status-panel">
-                <div id="searchStatus" class="search-status">🔍 <strong>Point-in-Polygon Search:</strong> We'll drop a random "pin" on the map and check which building (if any) contains that point!</div>
-            </div>
-            
-            <div class="canvas-container">
-                <canvas id="quadtreeCanvas" width="800" height="600"></canvas>
-            </div>
-            
-            <div class="how-it-works-box">
-                <h4>💡 How It Works (The Simple Version)</h4>
-                <div class="works-content">
-                    <div class="works-section">
-                        <h5>🗺️ What Are We Doing?</h5>
-                        <p>We're simulating a <strong>Point-in-Polygon</strong> search - checking if a point falls inside a building/area. It's like asking:</p>
-                        <ul style="margin-top: 10px;">
-                            <li>"Is my GPS location inside this building?"</li>
-                            <li>"Which building is this delivery address in?"</li>
-                            <li>"Is this point inside the city limits?"</li>
-                        </ul>
-                        <p style="margin-top: 10px;">The app drops a random "pin" on the map and finds <strong>which building contains that point</strong>!</p>
-                    </div>
-                    <div class="works-section">
-                        <h5>📦 What You See:</h5>
-                        <ul>
-                            <li><strong>Red dots</strong> = Buildings/points on the map</li>
-                            <li><strong>Black lines</strong> = Quadrant boundaries</li>
-                            <li><strong>Blue dashed box</strong> = Search area around the pin point</li>
-                            <li><strong>Yellow highlighted areas</strong> = Quadrants being checked</li>
-                            <li><strong>Gray dashed areas</strong> = Quadrants skipped (don't overlap)</li>
-                            <li><strong>Orange dots</strong> = Buildings found containing the point</li>
-                        </ul>
-                    </div>
-                    <div class="works-section">
-                        <h5>🚀 Why It Matters:</h5>
-                        <p>Instead of checking every building when searching, a Quad Tree splits the map into smaller squares. Think of it like organizing your closet: instead of digging through everything, you divide it into sections (shirts, pants, shoes) and only look where needed!</p>
-                        <p style="margin-top: 10px;"><strong>Without Quad Tree:</strong> Check 10,000 buildings = 10,000 checks</p>
-                        <p><strong>With Quad Tree:</strong> Check 10,000 buildings = ~20 checks</p>
-                        <p>It's used in GPS, video games, and computer graphics to make things <strong>500x faster!</strong></p>
-                    </div>
-                </div>
+            <div class="controls">
+                <button class="btn-candy" onclick="addRandomToys(10)">Add 10 Toys 🎲</button>
+                <button class="btn-blue" onclick="findToy()">Find the Toy! 🔍</button>
+                <button class="btn-green" onclick="addRandomToys(50)">Add 50 Toys 🚀</button>
+                <button class="btn-reset" onclick="resetGame()">Start Over 🔄</button>
             </div>
         </div>
         
-        <div class="sidebar">
-            <div class="panel">
-                <h3>📊 Statistics</h3>
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-value" id="pointCount">0</div>
-                        <div class="stat-label">Buildings/Points</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="nodeCount">1</div>
-                        <div class="stat-label">Tree Nodes</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="leafCount">1</div>
-                        <div class="stat-label">Leaf Nodes</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="depthCount">0</div>
-                        <div class="stat-label">Max Depth</div>
-                    </div>
-                </div>
+        <div class="comparison">
+            <div class="method-box slow">
+                <h3>🐌 The Slow Way</h3>
+                <div class="emoji-big">😫</div>
+                <p>Check ALL 100 toys one by one</p>
+                <p><strong>Time:</strong> 100 checks</p>
+                <p><strong>Like looking everywhere!</strong></p>
             </div>
-            
-            <div class="panel">
-                <h3>🎮 Controls</h3>
-                <div class="controls">
-                    <button class="btn-primary" onclick="addRandomBuildings(10)">Add 10 Random Buildings</button>
-                    <button class="btn-success" onclick="addRandomBuildings(50)">Add 50 Buildings</button>
-                    <button class="btn-primary" onclick="simulateRangeQuery()">📍 Find Building</button>
-                    <button class="btn-secondary" onclick="toggleAnimation()">Toggle Auto-Insert</button>
-                    <button class="btn-danger" onclick="resetTree()">Reset Everything</button>
-                </div>
-                
-                <div class="slider-container">
-                    <label>Max Points per Node: <span id="capacityValue">4</span></label>
-                    <input type="range" id="capacitySlider" min="1" max="10" value="4" oninput="updateCapacity(this.value)">
-                </div>
+            <div class="method-box fast">
+                <h3>🚀 The Smart Way (Quad Tree)</h3>
+                <div class="emoji-big">😎</div>
+                <p>Divide and conquer!</p>
+                <p><strong>Time:</strong> Only ~6 checks</p>
+                <p><strong>50x faster! ⚡</strong></p>
             </div>
-            
-            <div class="panel">
-                <h3>🎨 Legend</h3>
-                <div class="legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #e74c3c;"></div>
-                        <span>Building/Point</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #34495e; border: 2px solid #34495e; background: transparent;"></div>
-                        <span>Tree Boundary</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: rgba(52, 152, 219, 0.3);"></div>
-                        <span>Search Area</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #f39c12;"></div>
-                        <span>Found Results</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="panel">
-                <h3>🌲 Tree Structure</h3>
-                <div class="tree-structure" id="treeStructure">
-                    Root (empty)
-                </div>
-            </div>
-            
-
+        </div>
+        
+        <div class="story-box">
+            <h2>🌍 Where is this used?</h2>
+            <p>🎮 <strong>Video Games:</strong> Only show trees and buildings near you (not the whole world!)</p>
+            <p>🗺️ <strong>Google Maps:</strong> Find restaurants near you super fast</p>
+            <p>📸 <strong>Photos:</strong> Compress images by grouping similar colors</p>
+            <p>🔭 <strong>Space:</strong> Track asteroids and stars efficiently</p>
         </div>
     </div>
-
-    <!-- 3D Cityscape Footer -->
-    <div class="cityscape-container">
-        <div class="cityscape">
-            <div class="building building-1"></div>
-            <div class="building building-2"></div>
-            <div class="building building-3"></div>
-            <div class="building building-4"></div>
-            <div class="building building-5"></div>
-            <div class="building building-6"></div>
-            <div class="building building-7"></div>
-            <div class="building building-8"></div>
-            <div class="building building-9"></div>
-            <div class="building building-10"></div>
-            <div class="building building-11"></div>
-            <div class="building building-12"></div>
-        </div>
-    </div>
-
-    <style>
-        .cityscape-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 80px;
-            background: linear-gradient(to top, #1a1a2e, transparent);
-            overflow: hidden;
-            z-index: -1;
-        }
-        
-        .cityscape {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            padding: 0 20px;
-        }
-        
-        .building {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 4px 4px 0 0;
-            position: relative;
-            box-shadow: 
-                inset -5px 0 10px rgba(0,0,0,0.3),
-                inset 5px 0 10px rgba(255,255,255,0.1),
-                0 -10px 20px rgba(102, 126, 234, 0.3);
-            transition: transform 0.3s ease;
-        }
-        
-        .building:hover {
-            transform: translateY(-5px);
-        }
-        
-        .building::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 8px,
-                rgba(255,255,255,0.1) 8px,
-                rgba(255,255,255,0.1) 10px
-            );
-        }
-        
-        .building::after {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
-            background: repeating-linear-gradient(
-                90deg,
-                transparent,
-                transparent 6px,
-                rgba(255,255,255,0.15) 6px,
-                rgba(255,255,255,0.15) 8px
-            );
-        }
-        
-        .building-1 { width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .building-2 { width: 50px; height: 60px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .building-3 { width: 35px; height: 35px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .building-4 { width: 55px; height: 70px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .building-5 { width: 45px; height: 50px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .building-6 { width: 60px; height: 75px; background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
-        .building-7 { width: 40px; height: 45px; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
-        .building-8 { width: 50px; height: 55px; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
-        .building-9 { width: 35px; height: 30px; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
-        .building-10 { width: 45px; height: 65px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .building-11 { width: 55px; height: 45px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-        .building-12 { width: 40px; height: 50px; background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%); }
-        
-        /* Add margin to body to make room for cityscape */
-        body {
-            padding-bottom: 80px;
-        }
-    </style>
 
     <script>
-        // Quad Tree Implementation
+        // Super Simple Classes
         class Point {
             constructor(x, y, id) {
                 this.x = x;
                 this.y = y;
                 this.id = id;
-                this.highlighted = false;
+                this.isTarget = false; // The one we're looking for
+                this.found = false;
             }
         }
 
-        class Rectangle {
+        class Box {
             constructor(x, y, w, h) {
                 this.x = x;
                 this.y = y;
@@ -623,233 +319,184 @@
             }
 
             contains(point) {
-                return point.x >= this.x && point.x < this.x + this.w &&
-                       point.y >= this.y && point.y < this.y + this.h;
-            }
-
-            intersects(range) {
-                return !(range.x > this.x + this.w || 
-                        range.x + range.w < this.x || 
-                        range.y > this.y + this.h || 
-                        range.y + range.h < this.y);
+                return point.x >= this.x && point.x <= this.x + this.w &&
+                       point.y >= this.y && point.y <= this.y + this.h;
             }
         }
 
         class QuadTree {
-            constructor(boundary, capacity) {
-                this.boundary = boundary;
-                this.capacity = capacity;
-                this.points = [];
+            constructor(box, maxToys = 4) {
+                this.box = box;
+                this.maxToys = maxToys;
+                this.toys = [];
                 this.divided = false;
-                this.northeast = null;
-                this.northwest = null;
-                this.southeast = null;
-                this.southwest = null;
+                this.children = []; // 4 children: NW, NE, SW, SE
             }
 
-            subdivide() {
-                let x = this.boundary.x;
-                let y = this.boundary.y;
-                let w = this.boundary.w / 2;
-                let h = this.boundary.h / 2;
+            divide() {
+                const x = this.box.x;
+                const y = this.box.y;
+                const w = this.box.w / 2;
+                const h = this.box.h / 2;
 
-                let ne = new Rectangle(x + w, y, w, h);
-                let nw = new Rectangle(x, y, w, h);
-                let se = new Rectangle(x + w, y + h, w, h);
-                let sw = new Rectangle(x, y + h, w, h);
-
-                this.northeast = new QuadTree(ne, this.capacity);
-                this.northwest = new QuadTree(nw, this.capacity);
-                this.southeast = new QuadTree(se, this.capacity);
-                this.southwest = new QuadTree(sw, this.capacity);
+                // Create 4 smaller boxes
+                this.children = [
+                    new QuadTree(new Box(x, y, w, h), this.maxToys),      // NW
+                    new QuadTree(new Box(x + w, y, w, h), this.maxToys), // NE
+                    new QuadTree(new Box(x, y + h, w, h), this.maxToys), // SW
+                    new QuadTree(new Box(x + w, y + h, w, h), this.maxToys) // SE
+                ];
 
                 this.divided = true;
 
-                // Redistribute existing points
-                for (let p of this.points) {
-                    this.insertIntoChildren(p);
+                // Move toys to children
+                for (const toy of this.toys) {
+                    this.putInChild(toy);
                 }
-                this.points = [];
+                this.toys = [];
             }
 
-            insertIntoChildren(point) {
-                if (this.northeast.insert(point)) return true;
-                if (this.northwest.insert(point)) return true;
-                if (this.southeast.insert(point)) return true;
-                if (this.southwest.insert(point)) return true;
-                return false;
+            putInChild(toy) {
+                for (const child of this.children) {
+                    if (child.box.contains(toy)) {
+                        child.insert(toy);
+                        return;
+                    }
+                }
             }
 
-            insert(point) {
-                if (!this.boundary.contains(point)) {
-                    return false;
-                }
+            insert(toy) {
+                if (!this.box.contains(toy)) return false;
 
                 if (!this.divided) {
-                    if (this.points.length < this.capacity) {
-                        this.points.push(point);
+                    if (this.toys.length < this.maxToys) {
+                        this.toys.push(toy);
                         return true;
                     }
-                    this.subdivide();
+                    this.divide();
                 }
 
-                return this.insertIntoChildren(point);
+                this.putInChild(toy);
+                return true;
             }
 
-            query(range, found = []) {
-                if (!this.boundary.intersects(range)) {
-                    return found;
-                }
-
-                for (let p of this.points) {
-                    if (range.contains(p)) {
-                        found.push(p);
-                    }
-                }
-
-                if (this.divided) {
-                    this.northwest.query(range, found);
-                    this.northeast.query(range, found);
-                    this.southwest.query(range, found);
-                    this.southeast.query(range, found);
-                }
-
-                return found;
-            }
-
-            countNodes() {
+            countBoxes() {
                 let count = 1;
                 if (this.divided) {
-                    count += this.northeast.countNodes();
-                    count += this.northwest.countNodes();
-                    count += this.southeast.countNodes();
-                    count += this.southwest.countNodes();
+                    for (const child of this.children) {
+                        count += child.countBoxes();
+                    }
                 }
                 return count;
             }
-
-            countLeafNodes() {
-                if (!this.divided) return 1;
-                return this.northeast.countLeafNodes() + 
-                       this.northwest.countLeafNodes() + 
-                       this.southeast.countLeafNodes() + 
-                       this.southwest.countLeafNodes();
-            }
-
-            getDepth() {
-                if (!this.divided) return 0;
-                return 1 + Math.max(
-                    this.northeast.getDepth(),
-                    this.northwest.getDepth(),
-                    this.southeast.getDepth(),
-                    this.southwest.getDepth()
-                );
-            }
-
-            toString(indent = 0) {
-                let str = '  '.repeat(indent);
-                let pointInfo = this.points.length > 0 ? ` (${this.points.length} points)` : '';
-                str += `📦 [${Math.round(this.boundary.x)},${Math.round(this.boundary.y)}] ${this.boundary.w.toFixed(0)}x${this.boundary.h.toFixed(0)}${pointInfo}\n`;
-                
-                if (this.divided) {
-                    str += this.northwest.toString(indent + 1);
-                    str += this.northeast.toString(indent + 1);
-                    str += this.southwest.toString(indent + 1);
-                    str += this.southeast.toString(indent + 1);
-                }
-                return str;
-            }
         }
 
-        // Visualization
-        const canvas = document.getElementById('quadtreeCanvas');
+        // Game Setup
+        const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        let capacity = 4;
-        let boundary = new Rectangle(0, 0, canvas.width, canvas.height);
-        let quadtree = new QuadTree(boundary, capacity);
-        let pointId = 0;
-        let searchRange = null;
-        let animationId = null;
-        let isAnimating = false;
+        let toyId = 0;
+        let tree;
+        let isSearching = false;
+        let searchProgress = [];
+        let targetToy = null;
+        let foundToy = null;
+        let searchStep = 0;
 
-        // Handle high DPI displays
-        function setupCanvas() {
-            const dpr = window.devicePixelRatio || 1;
-            const rect = canvas.getBoundingClientRect();
-            
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-            ctx.scale(dpr, dpr);
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
-            
-            boundary = new Rectangle(0, 0, rect.width, rect.height);
+        function initGame() {
+            const box = new Box(0, 0, canvas.width, canvas.height);
+            tree = new QuadTree(box);
+            toyId = 0;
+            isSearching = false;
+            searchProgress = [];
+            targetToy = null;
+            foundToy = null;
+            searchStep = 0;
+            updateStatus('Click on the white area to add some toys! 🧸');
+            draw();
         }
 
-        function drawQuadTree(qt) {
-            // Check if this quadrant is being checked in the search animation
-            let isChecking = false;
-            let isSkipped = false;
-            for (let cq of checkedQuadrants) {
-                if (cq.qt === qt) {
-                    if (cq.status === 'checking') isChecking = true;
-                    if (cq.status === 'skipped') isSkipped = true;
-                    break;
+        function drawBox(qt, depth = 0) {
+            // Draw the box outline
+            const colors = ['#764ba2', '#667eea', '#f093fb', '#f5576c', '#4facfe'];
+            ctx.strokeStyle = colors[depth % colors.length];
+            ctx.lineWidth = 3;
+            ctx.strokeRect(qt.box.x, qt.box.y, qt.box.w, qt.box.h);
+
+            // Check if this box is being searched
+            const searchInfo = searchProgress.find(s => s.box === qt);
+            if (searchInfo) {
+                if (searchInfo.status === 'checking') {
+                    // Highlight in yellow
+                    ctx.fillStyle = 'rgba(255, 235, 59, 0.4)';
+                    ctx.fillRect(qt.box.x, qt.box.y, qt.box.w, qt.box.h);
+                } else if (searchInfo.status === 'skipped') {
+                    // Skipped - light gray
+                    ctx.fillStyle = 'rgba(200, 200, 200, 0.2)';
+                    ctx.fillRect(qt.box.x, qt.box.y, qt.box.w, qt.box.h);
                 }
             }
-            
-            // Draw boundary with color based on search status
-            if (isChecking) {
-                ctx.fillStyle = 'rgba(255, 193, 7, 0.2)'; // Yellow highlight for checking
-                ctx.fillRect(qt.boundary.x, qt.boundary.y, qt.boundary.w, qt.boundary.h);
-                ctx.strokeStyle = '#ffc107';
-                ctx.lineWidth = 3;
-            } else if (isSkipped) {
-                ctx.fillStyle = 'rgba(158, 158, 158, 0.15)'; // Gray for skipped
-                ctx.fillRect(qt.boundary.x, qt.boundary.y, qt.boundary.w, qt.boundary.h);
-                ctx.strokeStyle = '#9e9e9e';
-                ctx.lineWidth = 1;
-                ctx.setLineDash([3, 3]);
-            } else {
-                ctx.strokeStyle = '#34495e';
-                ctx.lineWidth = 2;
-            }
-            
-            ctx.strokeRect(qt.boundary.x, qt.boundary.y, qt.boundary.w, qt.boundary.h);
-            ctx.setLineDash([]);
 
-            // Draw points in this node
-            for (let p of qt.points) {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
-                ctx.fillStyle = p.highlighted ? '#f39c12' : '#e74c3c';
-                ctx.fill();
-                ctx.strokeStyle = '#c0392b';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                
-                // Draw building icon
-                ctx.fillStyle = 'white';
-                ctx.font = '10px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('🏢', p.x, p.y);
+            // Draw toys in this box
+            for (const toy of qt.toys) {
+                drawToy(toy);
             }
 
-            // Recursively draw children
+            // Draw children
             if (qt.divided) {
-                drawQuadTree(qt.northeast);
-                drawQuadTree(qt.northwest);
-                drawQuadTree(qt.southeast);
-                drawQuadTree(qt.southwest);
+                for (const child of qt.children) {
+                    drawBox(child, depth + 1);
+                }
             }
+        }
+
+        function drawToy(toy) {
+            ctx.beginPath();
+            ctx.arc(toy.x, toy.y, 8, 0, Math.PI * 2);
+            
+            if (toy === targetToy) {
+                // The one we're looking for - pulsing effect
+                const pulse = Math.sin(Date.now() / 200) * 3 + 15;
+                ctx.fillStyle = '#ffeb3b';
+                ctx.shadowColor = '#ffeb3b';
+                ctx.shadowBlur = 20;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                
+                // Draw star around target
+                ctx.strokeStyle = '#ff9800';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(toy.x, toy.y, pulse, 0, Math.PI * 2);
+                ctx.stroke();
+            } else if (toy.found) {
+                // Found it!
+                ctx.fillStyle = '#4caf50';
+                ctx.fill();
+                // Green glow
+                ctx.shadowColor = '#4caf50';
+                ctx.shadowBlur = 15;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            } else {
+                // Regular toy
+                ctx.fillStyle = '#e91e63';
+                ctx.fill();
+            }
+
+            // Toy center
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(toy.x, toy.y, 3, 0, Math.PI * 2);
+            ctx.fill();
         }
 
         function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+            // Clear canvas
+            ctx.fillStyle = '#f8f9fa';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
             // Draw grid background
-            ctx.strokeStyle = '#ecf0f1';
+            ctx.strokeStyle = '#e0e0e0';
             ctx.lineWidth = 1;
             for (let i = 0; i < canvas.width; i += 50) {
                 ctx.beginPath();
@@ -864,259 +511,163 @@
                 ctx.stroke();
             }
 
-            // Draw search range if active
-            if (searchRange) {
-                ctx.fillStyle = 'rgba(52, 152, 219, 0.2)';
-                ctx.fillRect(searchRange.x, searchRange.y, searchRange.w, searchRange.h);
-                ctx.strokeStyle = '#3498db';
-                ctx.lineWidth = 3;
-                ctx.setLineDash([5, 5]);
-                ctx.strokeRect(searchRange.x, searchRange.y, searchRange.w, searchRange.h);
-                ctx.setLineDash([]);
+            // Draw the quad tree
+            drawBox(tree);
+
+            // Draw search animation target
+            if (isSearching && targetToy) {
+                drawToy(targetToy);
             }
 
-            drawQuadTree(quadtree);
-            updateStats();
-            updateTreeStructure();
-        }
-
-        function updateStats() {
-            document.getElementById('pointCount').textContent = pointId;
-            document.getElementById('nodeCount').textContent = quadtree.countNodes();
-            document.getElementById('leafCount').textContent = quadtree.countLeafNodes();
-            document.getElementById('depthCount').textContent = quadtree.getDepth();
-        }
-
-        function updateTreeStructure() {
-            const treeDiv = document.getElementById('treeStructure');
-            if (pointId === 0) {
-                treeDiv.textContent = 'Root (empty)';
-            } else {
-                treeDiv.textContent = quadtree.toString();
+            // Animation loop
+            if (isSearching) {
+                requestAnimationFrame(draw);
             }
         }
 
-        function updateCapacity(value) {
-            capacity = parseInt(value);
-            document.getElementById('capacityValue').textContent = capacity;
-            // Rebuild tree with new capacity
-            resetTree();
-        }
-
-        function addRandomBuildings(count) {
-            // Clear search visualization when adding new buildings
-            if (isSearching) return; // Don't add while searching
-            checkedQuadrants = [];
-            foundPoints = [];
-            searchRange = null;
+        function addRandomToys(count) {
+            if (isSearching) return;
+            
+            // Clear any previous search
+            searchProgress = [];
+            targetToy = null;
+            foundToy = null;
             
             for (let i = 0; i < count; i++) {
-                const x = Math.random() * (canvas.width / window.devicePixelRatio - 20) + 10;
-                const y = Math.random() * (canvas.height / window.devicePixelRatio - 20) + 10;
-                const point = new Point(x, y, pointId++);
-                quadtree.insert(point);
-            }
-            updateSearchStatus(`Added ${count} building${count > 1 ? 's' : ''}! Click "📍 Find Building" to search for a point inside a building.`, 'info');
-            draw();
-        }
-
-        function resetTree() {
-            quadtree = new QuadTree(boundary, capacity);
-            pointId = 0;
-            searchRange = null;
-            isAnimating = false;
-            isSearching = false;
-            checkedQuadrants = [];
-            foundPoints = [];
-            currentStep = 0;
-            if (animationId) {
-                clearTimeout(animationId);
-                animationId = null;
-            }
-            if (searchAnimationId) {
-                clearTimeout(searchAnimationId);
-                searchAnimationId = null;
-            }
-            updateSearchStatus('🔍 <strong>Point-in-Polygon:</strong> Drop a random "pin" on the map and find which building contains that point!', 'info');
-            draw();
-        }
-
-        let isSearching = false;
-        let searchAnimationId = null;
-        let checkedQuadrants = [];
-        let currentStep = 0;
-        let foundPoints = [];
-        
-        async function simulateRangeQuery() {
-            if (isSearching) return;
-            if (pointId === 0) {
-                updateSearchStatus('❌ No buildings to search! Add some buildings first.', 'error');
-                return;
+                const x = Math.random() * (canvas.width - 40) + 20;
+                const y = Math.random() * (canvas.height - 40) + 20;
+                const toy = new Point(x, y, toyId++);
+                tree.insert(toy);
             }
             
+            updateStatus(`Added ${count} toys! Total boxes: ${tree.countBoxes()}. Click "Find the Toy!" to search! 🎯`);
+            draw();
+        }
+
+        async function findToy() {
+            if (isSearching || toyId === 0) {
+                if (toyId === 0) {
+                    updateStatus('Add some toys first! Click on the white area or "Add 10 Toys" 🧸');
+                }
+                return;
+            }
+
             isSearching = true;
-            currentStep = 0;
-            checkedQuadrants = [];
-            foundPoints = [];
+            searchProgress = [];
+            searchStep = 0;
+
+            // Pick a random toy to find
+            const allToys = [];
+            collectToys(tree, allToys);
+            targetToy = allToys[Math.floor(Math.random() * allToys.length)];
             
-            // Clear previous highlights
-            function clearHighlights(qt) {
-                for (let p of qt.points) {
-                    p.highlighted = false;
-                }
-                if (qt.divided) {
-                    clearHighlights(qt.northeast);
-                    clearHighlights(qt.northwest);
-                    clearHighlights(qt.southeast);
-                    clearHighlights(qt.southwest);
-                }
-            }
-            clearHighlights(quadtree);
-            
-            // Create random search range
-            const rangeW = 150 + Math.random() * 200;
-            const rangeH = 150 + Math.random() * 200;
-            const rangeX = Math.random() * (canvas.width / window.devicePixelRatio - rangeW);
-            const rangeY = Math.random() * (canvas.height / window.devicePixelRatio - rangeH);
-            
-            searchRange = new Rectangle(rangeX, rangeY, rangeW, rangeH);
-            
-            updateSearchStatus('🔍 <strong>Searching:</strong> Dropping a pin and checking which building contains that point...', 'info');
-            
-            // Animate the search step by step
-            await animateSearch(quadtree, searchRange);
-            
-            // Show final results
-            const checkedCount = checkedQuadrants.filter(cq => cq.status === 'checking').length;
-            const skippedCount = checkedQuadrants.filter(cq => cq.status === 'skipped').length;
-            if (foundPoints.length > 0) {
-                updateSearchStatus(
-                    `✅ <strong>Found It!</strong><br>
-                    The pin is inside <strong>${foundPoints.length} building${foundPoints.length !== 1 ? 's' : ''}</strong>.<br>
-                    <small>Smart search: Only checked ${checkedCount} relevant quadrants, skipped ${skippedCount} quadrants (vs. checking all ${pointId} buildings!)</small>`,
-                    'success'
-                );
-            } else {
-                updateSearchStatus(
-                    `❌ <strong>No Building Found</strong><br>
-                    The pin didn't land inside any building.<br>
-                    <small>Smart search: Only checked ${checkedCount} relevant quadrants, skipped ${skippedCount} quadrants</small>`,
-                    'info'
-                );
-            }
-            
-            isSearching = false;
-        }
-        
-        async function animateSearch(qt, range) {
-            // Check if current quadrant intersects with search range
-            if (!qt.boundary.intersects(range)) {
-                // Skip this quadrant - draw it in gray to show it's being skipped
-                checkedQuadrants.push({qt: qt, status: 'skipped'});
-                draw();
-                await sleep(200);
-                return;
-            }
-            
-            // This quadrant is being checked - highlight it
-            checkedQuadrants.push({qt: qt, status: 'checking'});
-            currentStep++;
-            updateSearchStatus(`<strong>Step ${currentStep}:</strong> Checking if the pin could be in this area [${Math.round(qt.boundary.x)}, ${Math.round(qt.boundary.y)}]...`, 'info');
+            updateStatus(`🔍 Looking for toy #${targetToy.id}... Let's see how the computer searches!`);
             draw();
-            await sleep(300);
-            
-            // Check points in this node
-            let pointsInNode = [];
-            for (let p of qt.points) {
-                if (range.contains(p)) {
-                    p.highlighted = true;
-                    foundPoints.push(p);
-                    pointsInNode.push(p);
+
+            // Animate the search
+            await searchTree(tree, targetToy);
+
+            // Done!
+            if (foundToy) {
+                updateStatus(`✅ Found it! Only checked ${searchStep} boxes instead of all ${toyId} toys! 50x faster! 🚀`);
+            } else {
+                updateStatus(`❌ Hmm, couldn't find it. Let me try again!`);
+            }
+
+            isSearching = false;
+            draw();
+        }
+
+        function collectToys(qt, toys) {
+            toys.push(...qt.toys);
+            if (qt.divided) {
+                for (const child of qt.children) {
+                    collectToys(child, toys);
                 }
             }
+        }
+
+        async function searchTree(qt, target) {
+            searchStep++;
             
-            if (pointsInNode.length > 0) {
-                updateSearchStatus(`<strong>Step ${currentStep}:</strong> ✅ The pin is inside ${pointsInNode.length} building${pointsInNode.length > 1 ? 's' : ''}!`, 'success');
+            // Check if target could be in this box
+            if (!qt.box.contains(target)) {
+                searchProgress.push({ box: qt, status: 'skipped' });
+                updateStatus(`Step ${searchStep}: This box doesn't contain our toy. SKIP! ⏭️`);
                 draw();
                 await sleep(400);
+                return false;
             }
-            
-            // Recursively check children
+
+            // Check this box
+            searchProgress.push({ box: qt, status: 'checking' });
+            updateStatus(`Step ${searchStep}: Checking this box... 👀`);
+            draw();
+            await sleep(600);
+
+            // Check toys in this box
+            for (const toy of qt.toys) {
+                if (toy === target) {
+                    toy.found = true;
+                    foundToy = toy;
+                    updateStatus(`Step ${searchStep}: FOUND IT! 🎉 Toy #${toy.id} is here!`);
+                    draw();
+                    await sleep(500);
+                    return true;
+                }
+            }
+
+            // Check children
             if (qt.divided) {
-                await animateSearch(qt.northwest, range);
-                await animateSearch(qt.northeast, range);
-                await animateSearch(qt.southwest, range);
-                await animateSearch(qt.southeast, range);
+                for (const child of qt.children) {
+                    if (await searchTree(child, target)) {
+                        return true;
+                    }
+                }
             }
+
+            return false;
         }
-        
+
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-        
-        function updateSearchStatus(message, type) {
-            const statusDiv = document.getElementById('searchStatus');
-            if (statusDiv) {
-                statusDiv.innerHTML = message;
-                statusDiv.className = 'search-status ' + type;
-            }
+
+        function updateStatus(message) {
+            document.getElementById('statusBox').textContent = message;
         }
 
-        function toggleAnimation() {
-            isAnimating = !isAnimating;
-            if (isAnimating) {
-                animate();
-            } else {
-                if (animationId) {
-                    clearTimeout(animationId);
-                    animationId = null;
-                }
-            }
+        function resetGame() {
+            isSearching = false;
+            initGame();
         }
 
-        function animate() {
-            if (!isAnimating) return;
-            
-            addRandomBuildings(1);
-            
-            if (pointId < 200) {
-                animationId = setTimeout(animate, 100);
-            } else {
-                isAnimating = false;
-            }
-        }
-
-        // Mouse interaction
+        // Click to add toys
         canvas.addEventListener('click', (e) => {
-            if (isSearching) return; // Don't add while searching
-            
-            // Clear search visualization when adding new points
-            checkedQuadrants = [];
-            foundPoints = [];
-            searchRange = null;
-            
+            if (isSearching) return;
+
+            // Clear search
+            searchProgress = [];
+            targetToy = null;
+            foundToy = null;
+
             const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left);
-            const y = (e.clientY - rect.top);
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const toy = new Point(x, y, toyId++);
+            tree.insert(toy);
             
-            const point = new Point(x, y, pointId++);
-            quadtree.insert(point);
-            updateSearchStatus('Building added! Click "📍 Find Building" to drop a pin and find which building contains it.', 'info');
+            const boxCount = tree.countBoxes();
+            updateStatus(`Added toy #${toy.id}! Total: ${toyId} toys, ${boxCount} boxes. Click "Find the Toy!" 🔍`);
             draw();
         });
 
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            setupCanvas();
-            draw();
-        });
-
-        // Initialize
-        setupCanvas();
-        draw();
-
-        // Add some initial buildings
-        addRandomBuildings(20);
+        // Start
+        initGame();
+        
+        // Add some starter toys
+        addRandomToys(8);
     </script>
 </body>
 </html>
