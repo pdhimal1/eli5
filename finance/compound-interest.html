@@ -18,13 +18,50 @@
         canvas { display: block; margin: 0 auto; border: 3px solid #b388ff; border-radius: 10px; background: #0a0a15; }
         .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
         .slider-container { text-align: center; margin: 15px 0; color: #fff; }
+        .slider-container label { display: block; margin-bottom: 8px; }
         input[type="range"] { width: 300px; }
+        input[type="number"], input[type="text"] { 
+            width: 100%; 
+            padding: 12px 15px; 
+            font-size: 16px; 
+            border: 2px solid #b388ff; 
+            border-radius: 10px; 
+            background: #1a1a2e; 
+            color: #fff;
+            margin-top: 5px;
+        }
+        input[type="number"]:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #7c4dff;
+        }
+        .input-row { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .input-row > div { flex: 1; min-width: 150px; max-width: 200px; text-align: left; }
+        .input-row label { color: #b388ff; font-size: 14px; display: block; margin-bottom: 5px; }
         button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
         button:hover { transform: translateY(-3px) scale(1.05); }
         .btn-calculate { background: linear-gradient(135deg, #7c4dff, #b388ff); color: white; }
         .fact-box { background: #ede7f6; border-left: 5px solid #7c4dff; padding: 15px; margin: 15px 0; color: #311b92; }
-        .back-link { text-align: center; margin-top: 30px; }
-        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        .back-link a { text-align: center; margin-top: 30px; }
+        .back-link a a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 28px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            .slider-container { margin: 12px 0; }
+            .slider-container label { font-size: 16px; }
+            input[type="range"] { width: 100%; max-width: 280px; }
+            input[type="number"] { width: 100%; padding: 12px; font-size: 16px; }
+            button { padding: 12px 24px; font-size: 16px; }
+            .input-group { flex-direction: column; }
+            .input-row { flex-direction: column; gap: 10px; }
+            .input-row > div { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -38,29 +75,7 @@
             <p><strong>Compound interest works the same way!</strong></p>
             <p>You earn interest on your money + interest on the interest you've already earned!</p>
         </div>
-        
-        <div class="demo-area">
-            <h2 class="demo-title">🎮 Compound Interest Calculator!</h2>
-            <canvas id="compoundCanvas" width="700" height="350"></canvas>
-            
-            <div class="slider-container">
-                <label>Monthly Investment: $<span id="monthVal">100</span></label><br>
-                <input type="range" id="monthlySlider" min="50" max="1000" value="100" step="50">
-            </div>
-            <div class="slider-container">
-                <label>Interest Rate: <span id="rateVal">7</span>%</label><br>
-                <input type="range" id="rateSlider" min="1" max="15" value="7" step="1">
-            </div>
-            <div class="slider-container">
-                <label>Years: <span id="yearVal">30</span></label><br>
-                <input type="range" id="yearSlider" min="5" max="50" value="30" step="5">
-            </div>
-            
-            <div class="controls">
-                <button class="btn-calculate" onclick="calculate()">Calculate! 🧮</button>
-            </div>
-        </div>
-        
+         
         <div class="story-box">
             <h2>📐 The Magic Formula</h2>
             <p><strong>A = P(1 + r/n)^(nt)</strong></p>
@@ -107,6 +122,43 @@
             <p><strong>That's why investing is important - you need to beat inflation!</strong></p>
         </div>
         
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Compound Interest Calculator!</h2>
+            <canvas id="compoundCanvas" width="700" height="350"></canvas>
+            
+            <div class="input-row">
+                <div>
+                    <label>Monthly Investment ($)</label>
+                    <input type="number" id="monthInput" value="100" min="1" max="10000" step="1">
+                </div>
+                <div>
+                    <label>Annual Rate of Return (%)</label>
+                    <input type="number" id="rateInput" value="7" min="0.1" max="30" step="0.1">
+                </div>
+                <div>
+                    <label>Years to Invest</label>
+                    <input type="number" id="yearInput" value="30" min="1" max="50" step="1">
+                </div>
+            </div>
+            
+            <div class="slider-container">
+                <label>Monthly Investment: $<span id="monthVal">100</span></label>
+                <input type="range" id="monthlySlider" min="50" max="1000" value="100" step="50">
+            </div>
+            <div class="slider-container">
+                <label>Interest Rate: <span id="rateVal">7</span>%</label>
+                <input type="range" id="rateSlider" min="1" max="15" value="7" step="1">
+            </div>
+            <div class="slider-container">
+                <label>Years: <span id="yearVal">30</span></label>
+                <input type="range" id="yearSlider" min="5" max="50" value="30" step="5">
+            </div>
+            
+            <div class="controls">
+                <button class="btn-calculate" onclick="calculate()">Calculate! 🧮</button>
+            </div>
+        </div>
+        
         <div class="back-link">
             <a href="index.html">← Back to ELI5 Home</a>
         </div>
@@ -124,24 +176,50 @@
         const monthlySlider = document.getElementById('monthlySlider');
         const rateSlider = document.getElementById('rateSlider');
         const yearSlider = document.getElementById('yearSlider');
+        const monthInput = document.getElementById('monthInput');
+        const rateInput = document.getElementById('rateInput');
+        const yearInput = document.getElementById('yearInput');
+        
+        function syncFromSliders() {
+            monthInput.value = monthly;
+            rateInput.value = rate;
+            yearInput.value = years;
+        }
+        
+        function syncFromInputs() {
+            monthly = parseFloat(monthInput.value) || 100;
+            rate = parseFloat(rateInput.value) || 7;
+            years = parseInt(yearInput.value) || 30;
+            document.getElementById('monthVal').textContent = monthly;
+            document.getElementById('rateVal').textContent = rate;
+            document.getElementById('yearVal').textContent = years;
+            calculate();
+        }
         
         monthlySlider.oninput = function() {
             document.getElementById('monthVal').textContent = this.value;
             monthly = parseInt(this.value);
+            monthInput.value = monthly;
             calculate();
         }
         
         rateSlider.oninput = function() {
             document.getElementById('rateVal').textContent = this.value;
             rate = parseInt(this.value);
+            rateInput.value = rate;
             calculate();
         }
         
         yearSlider.oninput = function() {
             document.getElementById('yearVal').textContent = this.value;
             years = parseInt(this.value);
+            yearInput.value = years;
             calculate();
         }
+        
+        monthInput.addEventListener('input', syncFromInputs);
+        rateInput.addEventListener('input', syncFromInputs);
+        yearInput.addEventListener('input', syncFromInputs);
         
         function calculate() {
             balances = [];

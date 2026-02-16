@@ -10,7 +10,7 @@
         .container { max-width: 900px; margin: 0 auto; }
         h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
         .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
-        .story-box { background: white; border-radius: 20px; padding: 25: 20pxpx; margin-bottom; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .story-box h2 { color: #e65100; font-size: 24px; margin-bottom: 15px; }
         .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
         .demo-area { background: #1a1000; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
@@ -23,6 +23,18 @@
         .fact-box { background: #fff3e0; border-left: 5px solid #f57c00; padding: 15px; margin: 15px 0; color: #e65100; }
         .back-link { text-align: center; margin-top: 30px; }
         .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
     </style>
 </head>
 <body>
