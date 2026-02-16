@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Mining - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #f57f17, #ffb300); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #f57f17; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #1a1200; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ffb300; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ffb300; border-radius: 10px; background: #1a1200; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-mine { background: linear-gradient(135deg, #ff8f00, #ffb300); color: white; }
+        .fact-box { background: #fff8e1; border-left: 5px solid #ff8f00; padding: 15px; margin: 15px 0; color: #e65100; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⛏️ Data Mining: Finding Treasure in Data! ⛏️</h1>
+        <p class="subtitle">Digging for gold in mountains of information!</p>
+        
+        <div class="story-box">
+            <h2>🏖️ The Beach Analogy!</h2>
+            <p>Imagine walking on a beach looking for shiny rocks.</p>
+            <p>Most rocks look the same, but occasionally you find a special one!</p>
+            <p><strong>Data mining is like that - searching through lots of data to find something valuable!</strong></p>
+        </div>
+        
+        <div class="story-box">
+            <h2>📊 What's the Big Deal?</h2>
+            <p>Companies collect TONS of data about us:</p>
+            <p>🛒 What we buy</p>
+            <p>🔍 What we search for</p>
+            <p>❤️ What we like</p>
+            <p>There's too much data for humans to look at - we need computers to help find patterns!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">⛏️ Mine for Patterns!</h2>
+            <canvas id="miningCanvas" width="700" height="300"></canvas>
+            <div class="controls">
+                <button class="btn-mine" onclick="mineData()">Mine Data! ⛏️</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔍 Types of Patterns We Find</h2>
+            <p>🔮 <strong>Predictions:</strong> "What movies will this person like?"</p>
+            <p>👥 <strong>Groups:</strong> "What types of customers do we have?"</p>
+            <p>⬆️ <strong>Trends:</strong> "Are ice cream sales going up in summer?"</p>
+            <p>🔗 <strong>Connections:</strong> "People who buy diapers also buy beer!"</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🏢 Real Examples</h2>
+            <p>🛒 <strong>Walmart:</strong> Discovered people buy flashlights before hurricanes!</p>
+            <p>📱 <strong>Netflix:</strong> Predicts what shows you'll watch</p>
+            <p>🏥 <strong>Hospitals:</strong> Find patients at risk for diseases</p>
+            <p>🚨 <strong>Police:</strong> Predict where crimes might happen</p>
+            <p>📱 <strong>Instagram:</strong> Shows you content you'll likely enjoy</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>⚖️ Privacy Concerns</h2>
+            <p>Data mining can be controversial:</p>
+            <p>❓ Who has access to your data?</p>
+            <p>❓ Is it fair to predict things about you?</p>
+            <p>❓ Should companies know so much about us?</p>
+            <div class="fact-box">
+                🎯 Many countries have laws about data privacy - like GDPR in Europe!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to AI Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('miningCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let data = [];
+        let mined = false;
+        let goldFound = 0;
+        
+        for(let i = 0; i < 50; i++) {
+            data.push({
+                x: 50 + Math.random() * 600,
+                y: 50 + Math.random() * 200,
+                value: Math.random()
+            });
+        }
+        
+        function mineData() {
+            mined = true;
+            goldFound++;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#1a1200';
+            ctx.fillRect(0, 0, 700, 300);
+            
+            ctx.fillStyle = '#ffb300';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('⛏️ Data Mining', 350, 35);
+            
+            for(let d of data) {
+                let color;
+                if(mined && d.value > 0.8) {
+                    color = '#ffd700';
+                } else if(d.value > 0.8) {
+                    color = '#888';
+                } else {
+                    color = '#444';
+                }
+                
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, d.value > 0.8 ? 8 : 4, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+            }
+            
+            if(mined) {
+                ctx.fillStyle = '#ffd700';
+                ctx.font = 'bold 20px Arial';
+                ctx.fillText('✨ Found ' + goldFound + ' gold nugget(s)!', 350, 270);
+                
+                let pattern = goldFound > 0 ? '🎯 High-value customers!' : 'Keep mining...';
+                ctx.font = '16px Arial';
+                ctx.fillText(pattern, 350, 295);
+            } else {
+                ctx.fillStyle = '#888';
+                ctx.font = '14px Arial';
+                ctx.fillText('Click to mine the data! Each dot = one data point', 350, 280);
+            }
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

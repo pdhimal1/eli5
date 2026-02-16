@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is AI? - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #6a1b9a, #8e24aa); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #6a1b9a; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #1a1a2e; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ce93d8; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ce93d8; border-radius: 10px; background: #0a0a15; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-ask { background: linear-gradient(135deg, #7c4dff, #b388ff); color: white; }
+        .fact-box { background: #f3e5f5; border-left: 5px solid #7c4dff; padding: 15px; margin: 15px 0; color: #4a148c; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 What is AI? 🧠</h1>
+        <p class="subtitle">Teaching computers to think!</p>
+        
+        <div class="story-box">
+            <h2>🤖 The Smart Robot Friend!</h2>
+            <p>Imagine you have a robot friend. You teach it to play checkers by showing it thousands of games.</p>
+            <p><strong>That's AI - Artificial Intelligence!</strong></p>
+            <p>AI is when computers learn to do things that normally only humans can do - like recognizing faces, playing chess, or having a conversation!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🧑‍🏫 The Student Analogy!</h2>
+            <p>When you learn in school, your brain sees many examples and learns patterns.</p>
+            <p><strong>AI works the same way!</strong></p>
+            <p>We show computers millions of pictures of cats, and it learns what makes a cat look like a cat!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 AI Thinker!</h2>
+            <canvas id="aiCanvas" width="700" height="300"></canvas>
+            <div class="controls">
+                <button class="btn-ask" onclick="askAI()">Ask AI a Question! 💬</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🌟 Types of AI</h2>
+            <p><strong>Narrow AI:</strong> AI that's good at ONE thing (like Netflix recommending movies)</p>
+            <p><strong>General AI:</strong> AI that can do ANYTHING a human can (like robots in movies!)</p>
+            <p><strong>We're still working on General AI!</strong></p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 What Can AI Do?</h2>
+            <p>🤖 <strong>Play games:</strong> Beat humans at chess, Go, and video games!</p>
+            <p>🗣️ <strong>Talk:</strong> Chatbots that answer your questions</p>
+            <p>🎨 <strong>Create:</strong> Draw pictures, write stories, compose music</p>
+            <p>👀 <strong>See:</strong> Recognize faces, self-driving cars</p>
+            <p>🎵 <strong>Listen:</strong> Voice assistants like Siri and Alexa</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>⚠️ AI Limitations</h2>
+            <p>AI isn't perfect! It can:</p>
+            <p>❌ Make mistakes it doesn't know about</p>
+            <p>❌ Be biased if trained on biased data</p>
+            <p>❌ Not really "understand" like humans do</p>
+            <div class="fact-box">
+                🎯 AI is a tool - it's only as good as the humans who create it!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to AI Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('aiCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let questions = [
+            "What is 2+2?",
+            "Tell me about cats",
+            "How does AI learn?",
+            "What is your favorite color?"
+        ];
+        let currentQ = 0;
+        
+        function askAI() {
+            currentQ = (currentQ + 1) % questions.length;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a0a15';
+            ctx.fillRect(0, 0, 700, 300);
+            
+            ctx.fillStyle = '#ce93d8';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🧠 AI Brain', 350, 40);
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '18px Arial';
+            ctx.fillText('Question: ' + questions[currentQ], 350, 80);
+            
+            let answers = [
+                "4 - simple math!",
+                "Cats are furry felines that meow!",
+                "By seeing lots of examples!",
+                "I like purple - very royal!"
+            ];
+            
+            ctx.fillStyle = '#b388ff';
+            ctx.font = '20px Arial';
+            ctx.fillText('AI Answer:', 350, 140);
+            ctx.fillStyle = '#fff';
+            ctx.fillText(answers[currentQ], 350, 175);
+            
+            ctx.fillStyle = '#7c4dff';
+            ctx.beginPath();
+            ctx.arc(350, 240, 40, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = '30px Arial';
+            ctx.fillText('🧠', 350, 252);
+            
+            ctx.fillStyle = '#888';
+            ctx.font = '14px Arial';
+            ctx.fillText('Click to ask another question!', 350, 285);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nearest Neighbor - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #c62828, #ef5350); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #c62828; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #1a0a0a; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ef5350; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ef5350; border-radius: 10px; background: #1a0a0a; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-find { background: linear-gradient(135deg, #f44336, #e57373); color: white; }
+        .fact-box { background: #ffebee; border-left: 5px solid #f44336; padding: 15px; margin: 15px 0; color: #c62828; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Nearest Neighbor: Finding Similar Things! 🔍</h1>
+        <p class="subtitle">The simplest AI algorithm!</p>
+        
+        <div class="story-box">
+            <h2>👫 The Friend Group Analogy!</h2>
+            <p>Imagine you're new at school. You meet two groups of kids:</p>
+            <p>🍎 One group loves sports</p>
+            <p>📚 One group loves reading</p>
+            <p>You talk to both groups. Which one will you probably join?</p>
+            <p><strong>The one closest to your interests!</strong></p>
+            <p>That's nearest neighbor - finding what's most similar!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>📊 How It Works</h2>
+            <p>We can put things on a "map" based on their traits:</p>
+            <p>🎮 If you like video games AND sports → closer to the "sports kids"</p>
+            <p>📚 If you like reading AND math → closer to the "nerd group"</p>
+            <p>The computer just measures the distance between points!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Find the Nearest Neighbor!</h2>
+            <canvas id="nnCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-find" onclick="findNearest()">Find Nearest! 🔍</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 Real World Uses</h2>
+            <p>📺 <strong>Netflix:</strong> "People who liked what you liked also liked..."</p>
+            <p>🛒 <strong>Amazon:</strong> "Customers who bought this also bought..."</p>
+            <p>🎵 <strong>Spotify:</strong> Finding songs similar to what you like</p>
+            <p>🔍 <strong>Google:</strong> Finding web pages similar to your search</p>
+            <p>🏥 <strong>Medical:</strong> Finding similar patient cases</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🐕 Cat vs Dog Example</h2>
+            <p>Imagine plotting animals on a chart:</p>
+            <p>🐱 Cats: More "cuddly" (high) vs "energetic" (low)</p>
+            <p>🐕 Dogs: More "energetic" (high) vs "cuddly" (high)</p>
+            <p>When you see a new furry creature, just find the closest point!</p>
+            <div class="fact-box">
+                🎯 Nearest neighbor is SUPER simple but works great!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>👍 Pros and 👎 Cons</h2>
+            <p>✅ Easy to understand and explain</p>
+            <p>✅ Fast to calculate</p>
+            <p>✅ Works with any type of data</p>
+            <p>❌ Can be slow with millions of data points</p>
+            <p>❌ Sensitive to noisy data</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to AI Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('nnCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let points = [
+            {x: 150, y: 100, label: 'Cat'},
+            {x: 200, y: 150, label: 'Cat'},
+            {x: 120, y: 180, label: 'Cat'},
+            {x: 500, y: 120, label: 'Dog'},
+            {x: 550, y: 80, label: 'Dog'},
+            {x: 480, y: 160, label: 'Dog'}
+        ];
+        
+        let newPoint = {x: 350, y: 130};
+        let found = false;
+        
+        function findNearest() {
+            found = true;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#1a0a0a';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            ctx.fillStyle = '#ef5350';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🔍 Nearest Neighbor Algorithm', 350, 30);
+            
+            ctx.fillStyle = '#888';
+            ctx.font = '14px Arial';
+            ctx.fillText('Cuddly ← → Energetic', 350, 330);
+            ctx.save();
+            ctx.translate(20, 175);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('Small ← → Large', 0, 0);
+            ctx.restore();
+            
+            for(let p of points) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 15, 0, Math.PI * 2);
+                ctx.fillStyle = p.label === 'Cat' ? '#ff9800' : '#2196f3';
+                ctx.fill();
+                ctx.fillStyle = '#fff';
+                ctx.font = '12px Arial';
+                ctx.fillText(p.label === 'Cat' ? '🐱' : '🐕', p.x, p.y + 5);
+            }
+            
+            ctx.beginPath();
+            ctx.arc(newPoint.x, newPoint.y, 20, 0, Math.PI * 2);
+            ctx.fillStyle = '#4caf50';
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = '20px Arial';
+            ctx.fillText('❓', newPoint.x, newPoint.y + 7);
+            
+            if(found) {
+                let nearest = null;
+                let minDist = Infinity;
+                for(let p of points) {
+                    let dist = Math.sqrt((p.x - newPoint.x)**2 + (p.y - newPoint.y)**2);
+                    if(dist < minDist) {
+                        minDist = dist;
+                        nearest = p;
+                    }
+                }
+                
+                ctx.strokeStyle = '#4caf50';
+                ctx.lineWidth = 3;
+                ctx.setLineDash([10, 5]);
+                ctx.beginPath();
+                ctx.moveTo(newPoint.x, newPoint.y);
+                ctx.lineTo(nearest.x, nearest.y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                ctx.fillStyle = '#4caf50';
+                ctx.font = 'bold 18px Arial';
+                ctx.fillText('Nearest: ' + nearest.label + '!', 350, 300);
+            }
+            
+            ctx.fillStyle = '#888';
+            ctx.font = '14px Arial';
+            ctx.fillText('Click to find what this mystery animal is!', 350, 55);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

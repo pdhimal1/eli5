@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Vision - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #0d47a1, #1565c0); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #0d47a1; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0a1a; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #42a5f5; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #42a5f5; border-radius: 10px; background: #0a0a1a; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-detect { background: linear-gradient(135deg, #2196f3, #64b5f6); color: white; }
+        .fact-box { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px; margin: 15px 0; color: #0d47a1; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👁️ Computer Vision: Teaching Computers to See! 👁️</h1>
+        <p class="subtitle">How computers understand pictures!</p>
+        
+        <div class="story-box">
+            <h2>🔍 The Puzzle Piece Analogy!</h2>
+            <p>Imagine a jigsaw puzzle. When you see a finished puzzle, you can tell what's in the picture!</p>
+            <p><strong>Computer vision works like that!</strong></p>
+            <p>Computers break images into tiny pieces (pixels) and figure out what's in them - just like solving a puzzle!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🖼️ How Computers See Images</h2>
+            <p>Images on a computer are just numbers!</p>
+            <p>📊 Each pixel has a number representing its color</p>
+            <p>🖤 A black pixel might be number 0</p>
+            <p>⚪ A white pixel might be number 255</p>
+            <p>The computer looks at all these numbers and finds patterns!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Object Detector!</h2>
+            <canvas id="visionCanvas" width="700" height="300"></canvas>
+            <div class="controls">
+                <button class="btn-detect" onclick="detectObject()">Detect Objects! 🔍</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 Things Computer Vision Can Do</h2>
+            <p>🚗 <strong>Self-driving cars:</strong> See roads, other cars, pedestrians</p>
+            <p>📱 <strong>Face unlock:</strong> Recognize your face to unlock your phone</p>
+            <p>🏥 <strong>Medical scans:</strong> Find diseases in X-rays and MRIs</p>
+            <p>📸 <strong>Photo filters:</strong> Add funny ears to your selfie!</p>
+            <p>🤖 <strong>Robots:</strong> Help robots navigate the world</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🧠 How It Learns</h2>
+            <p>We show computers millions of pictures that are already labeled!</p>
+            <p>"This is a cat" - 100,000 times!</p>
+            <p>"This is a dog" - 100,000 times!</p>
+            <p>Eventually, the computer learns to tell them apart by itself!</p>
+            <div class="fact-box">
+                🎯 This is called "training" - just like practice makes perfect for humans!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>⚠️ Challenges</h2>
+            <p>Computer vision isn't perfect:</p>
+            <p>❌ Can be confused by weird angles</p>
+            <p>❌ Hard to see in poor lighting</p>
+            <p>❌ Might confuse similar objects (bus vs truck)</p>
+            <p>But it's getting better every day!</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to AI Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('visionCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let objects = ['Car', 'Person', 'Traffic Light', 'Cat'];
+        let current = 0;
+        
+        function detectObject() {
+            current = (current + 1) % objects.length;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, 700, 300);
+            
+            ctx.fillStyle = '#42a5f5';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('👁️ Computer Vision Demo', 350, 40);
+            
+            let icons = ['🚗', '🚶', '🚦', '🐱'];
+            let colors = ['#f44336', '#4caf50', '#ff9800', '#9c27b0'];
+            
+            ctx.font = '80px Arial';
+            ctx.fillText(icons[current], 350, 150);
+            
+            ctx.strokeStyle = colors[current];
+            ctx.lineWidth = 4;
+            ctx.strokeRect(250, 80, 200, 150);
+            
+            ctx.fillStyle = colors[current];
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText(objects[current] + ' - 98%', 350, 260);
+            
+            ctx.fillStyle = '#888';
+            ctx.font = '14px Arial';
+            ctx.fillText('Click to detect another object!', 350, 285);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>
