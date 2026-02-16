@@ -57,6 +57,42 @@
             background: #ecf0f1;
         }
         
+        .search-status-panel {
+            background: white;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .search-status {
+            font-size: 15px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-status.info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            color: #1565c0;
+        }
+        
+        .search-status.success {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            color: #2e7d32;
+        }
+        
+        .search-status.error {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+        }
+        
         canvas {
             display: block;
             cursor: crosshair;
@@ -342,6 +378,10 @@
                         <span>Click <strong>"Simulate Range Query"</strong> to see how it searches efficiently</span>
                     </div>
                 </div>
+            </div>
+            
+            <div class="search-status-panel">
+                <div id="searchStatus" class="search-status">Click "Simulate Range Query" to see how the quad tree searches efficiently!</div>
             </div>
             
             <div class="canvas-container">
@@ -738,10 +778,36 @@
         }
 
         function drawQuadTree(qt) {
-            // Draw boundary
-            ctx.strokeStyle = '#34495e';
-            ctx.lineWidth = 2;
+            // Check if this quadrant is being checked in the search animation
+            let isChecking = false;
+            let isSkipped = false;
+            for (let cq of checkedQuadrants) {
+                if (cq.qt === qt) {
+                    if (cq.status === 'checking') isChecking = true;
+                    if (cq.status === 'skipped') isSkipped = true;
+                    break;
+                }
+            }
+            
+            // Draw boundary with color based on search status
+            if (isChecking) {
+                ctx.fillStyle = 'rgba(255, 193, 7, 0.2)'; // Yellow highlight for checking
+                ctx.fillRect(qt.boundary.x, qt.boundary.y, qt.boundary.w, qt.boundary.h);
+                ctx.strokeStyle = '#ffc107';
+                ctx.lineWidth = 3;
+            } else if (isSkipped) {
+                ctx.fillStyle = 'rgba(158, 158, 158, 0.15)'; // Gray for skipped
+                ctx.fillRect(qt.boundary.x, qt.boundary.y, qt.boundary.w, qt.boundary.h);
+                ctx.strokeStyle = '#9e9e9e';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([3, 3]);
+            } else {
+                ctx.strokeStyle = '#34495e';
+                ctx.lineWidth = 2;
+            }
+            
             ctx.strokeRect(qt.boundary.x, qt.boundary.y, qt.boundary.w, qt.boundary.h);
+            ctx.setLineDash([]);
 
             // Draw points in this node
             for (let p of qt.points) {
@@ -829,12 +895,19 @@
         }
 
         function addRandomBuildings(count) {
+            // Clear search visualization when adding new buildings
+            if (isSearching) return; // Don't add while searching
+            checkedQuadrants = [];
+            foundPoints = [];
+            searchRange = null;
+            
             for (let i = 0; i < count; i++) {
                 const x = Math.random() * (canvas.width / window.devicePixelRatio - 20) + 10;
                 const y = Math.random() * (canvas.height / window.devicePixelRatio - 20) + 10;
                 const point = new Point(x, y, pointId++);
                 quadtree.insert(point);
             }
+            updateSearchStatus(`Added ${count} buildings! Click "Simulate Range Query" to search.`, 'info');
             draw();
         }
 
@@ -843,14 +916,40 @@
             pointId = 0;
             searchRange = null;
             isAnimating = false;
+            isSearching = false;
+            checkedQuadrants = [];
+            foundPoints = [];
+            currentStep = 0;
             if (animationId) {
                 clearTimeout(animationId);
                 animationId = null;
             }
+            if (searchAnimationId) {
+                clearTimeout(searchAnimationId);
+                searchAnimationId = null;
+            }
+            updateSearchStatus('Click "Simulate Range Query" to see how the quad tree searches efficiently!', 'info');
             draw();
         }
 
-        function simulateRangeQuery() {
+        let isSearching = false;
+        let searchAnimationId = null;
+        let checkedQuadrants = [];
+        let currentStep = 0;
+        let foundPoints = [];
+        
+        async function simulateRangeQuery() {
+            if (isSearching) return;
+            if (pointId === 0) {
+                updateSearchStatus('❌ No buildings to search! Add some buildings first.', 'error');
+                return;
+            }
+            
+            isSearching = true;
+            currentStep = 0;
+            checkedQuadrants = [];
+            foundPoints = [];
+            
             // Clear previous highlights
             function clearHighlights(qt) {
                 for (let p of qt.points) {
@@ -864,7 +963,7 @@
                 }
             }
             clearHighlights(quadtree);
-
+            
             // Create random search range
             const rangeW = 150 + Math.random() * 200;
             const rangeH = 150 + Math.random() * 200;
@@ -873,20 +972,73 @@
             
             searchRange = new Rectangle(rangeX, rangeY, rangeW, rangeH);
             
-            // Query the tree
-            const found = quadtree.query(searchRange);
+            updateSearchStatus('🔍 Starting search...', 'info');
             
-            // Highlight found points
-            for (let p of found) {
-                p.highlighted = true;
+            // Animate the search step by step
+            await animateSearch(quadtree, searchRange);
+            
+            // Show final results
+            updateSearchStatus(
+                `✅ Search complete! Found ${foundPoints.length} buildings.<br>
+                <small>Checked ${checkedQuadrants.length} quadrants instead of all ${pointId} buildings</small>`,
+                'success'
+            );
+            
+            isSearching = false;
+        }
+        
+        async function animateSearch(qt, range) {
+            // Check if current quadrant intersects with search range
+            if (!qt.boundary.intersects(range)) {
+                // Skip this quadrant - draw it in gray to show it's being skipped
+                checkedQuadrants.push({qt: qt, status: 'skipped'});
+                draw();
+                await sleep(200);
+                return;
             }
             
+            // This quadrant is being checked - highlight it
+            checkedQuadrants.push({qt: qt, status: 'checking'});
+            currentStep++;
+            updateSearchStatus(`Step ${currentStep}: Checking quadrant at [${Math.round(qt.boundary.x)}, ${Math.round(qt.boundary.y)}]...`, 'info');
             draw();
+            await sleep(300);
             
-            // Show notification
-            setTimeout(() => {
-                alert(`Range Query Complete!\nFound ${found.length} buildings in the search area.\n\nWithout Quad Tree: Would check all ${pointId} buildings\nWith Quad Tree: Only checked relevant quadrants!`);
-            }, 100);
+            // Check points in this node
+            let pointsInNode = [];
+            for (let p of qt.points) {
+                if (range.contains(p)) {
+                    p.highlighted = true;
+                    foundPoints.push(p);
+                    pointsInNode.push(p);
+                }
+            }
+            
+            if (pointsInNode.length > 0) {
+                updateSearchStatus(`Step ${currentStep}: Found ${pointsInNode.length} buildings!`, 'success');
+                draw();
+                await sleep(400);
+            }
+            
+            // Recursively check children
+            if (qt.divided) {
+                await animateSearch(qt.northwest, range);
+                await animateSearch(qt.northeast, range);
+                await animateSearch(qt.southwest, range);
+                await animateSearch(qt.southeast, range);
+            }
+        }
+        
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        function updateSearchStatus(message, type) {
+            const statusDiv = document.getElementById('searchStatus');
+            if (statusDiv) {
+                statusDiv.innerHTML = message;
+                statusDiv.className = 'search-status ' + type;
+            }
         }
 
         function toggleAnimation() {
@@ -915,12 +1067,20 @@
 
         // Mouse interaction
         canvas.addEventListener('click', (e) => {
+            if (isSearching) return; // Don't add while searching
+            
+            // Clear search visualization when adding new points
+            checkedQuadrants = [];
+            foundPoints = [];
+            searchRange = null;
+            
             const rect = canvas.getBoundingClientRect();
             const x = (e.clientX - rect.left);
             const y = (e.clientY - rect.top);
             
             const point = new Point(x, y, pointId++);
             quadtree.insert(point);
+            updateSearchStatus('Building added! Click "Simulate Range Query" to search.', 'info');
             draw();
         });
 
