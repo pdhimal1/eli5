@@ -375,13 +375,13 @@
                     </div>
                     <div class="step">
                         <span class="step-number">4</span>
-                        <span>Click <strong>"Simulate Range Query"</strong> to see how it searches efficiently</span>
+                        <span>Click <strong>"Simulate Range Query"</strong> to find all buildings in a random area (like "find all restaurants within 5 blocks")</span>
                     </div>
                 </div>
             </div>
             
             <div class="search-status-panel">
-                <div id="searchStatus" class="search-status">Click "Simulate Range Query" to see how the quad tree searches efficiently!</div>
+                <div id="searchStatus" class="search-status">🔍 <strong>Range Query:</strong> We'll draw a random rectangle (search area) and find ALL buildings inside it - like asking "show me all restaurants within 3 blocks of here"</div>
             </div>
             
             <div class="canvas-container">
@@ -392,21 +392,30 @@
                 <h4>💡 How It Works (The Simple Version)</h4>
                 <div class="works-content">
                     <div class="works-section">
-                        <h5>🗺️ The Big Idea:</h5>
-                        <p>Instead of checking every building when searching, a Quad Tree splits the map into smaller squares. Think of it like organizing your closet: instead of digging through everything, you divide it into sections (shirts, pants, shoes) and only look where needed!</p>
+                        <h5>🗺️ What Are We Doing?</h5>
+                        <p>We're simulating a <strong>Range Query</strong> - one of the most common operations in spatial databases. It's like asking:</p>
+                        <ul style="margin-top: 10px;">
+                            <li>"Find all restaurants within 5 blocks of me"</li>
+                            <li>"Show all buildings inside this city block"</li>
+                            <li>"Which trees are in this park area?"</li>
+                        </ul>
+                        <p style="margin-top: 10px;">The app draws a random rectangular search area and finds <strong>ALL</strong> buildings inside it!</p>
                     </div>
                     <div class="works-section">
                         <h5>📦 What You See:</h5>
                         <ul>
                             <li><strong>Red dots</strong> = Buildings/points on the map</li>
                             <li><strong>Black lines</strong> = Quadrant boundaries</li>
-                            <li><strong>Blue area</strong> = Search range</li>
-                            <li><strong>Orange dots</strong> = Buildings found in search</li>
+                            <li><strong>Blue dashed box</strong> = Search area (range query)</li>
+                            <li><strong>Yellow highlighted areas</strong> = Quadrants being checked</li>
+                            <li><strong>Gray dashed areas</strong> = Quadrants skipped (don't overlap)</li>
+                            <li><strong>Orange dots</strong> = Buildings found inside the search area</li>
                         </ul>
                     </div>
                     <div class="works-section">
                         <h5>🚀 Why It Matters:</h5>
-                        <p><strong>Without Quad Tree:</strong> Search 10,000 buildings = 10,000 checks</p>
+                        <p>Instead of checking every building when searching, a Quad Tree splits the map into smaller squares. Think of it like organizing your closet: instead of digging through everything, you divide it into sections (shirts, pants, shoes) and only look where needed!</p>
+                        <p style="margin-top: 10px;"><strong>Without Quad Tree:</strong> Search 10,000 buildings = 10,000 checks</p>
                         <p><strong>With Quad Tree:</strong> Search 10,000 buildings = ~20 checks</p>
                         <p>It's used in GPS, video games, and computer graphics to make things <strong>500x faster!</strong></p>
                     </div>
@@ -907,7 +916,7 @@
                 const point = new Point(x, y, pointId++);
                 quadtree.insert(point);
             }
-            updateSearchStatus(`Added ${count} buildings! Click "Simulate Range Query" to search.`, 'info');
+            updateSearchStatus(`Added ${count} building${count > 1 ? 's' : ''}! Click "Simulate Range Query" to find all buildings in a random search area.`, 'info');
             draw();
         }
 
@@ -928,7 +937,7 @@
                 clearTimeout(searchAnimationId);
                 searchAnimationId = null;
             }
-            updateSearchStatus('Click "Simulate Range Query" to see how the quad tree searches efficiently!', 'info');
+            updateSearchStatus('🔍 <strong>Range Query:</strong> We\'ll draw a random rectangle (search area) and find ALL buildings inside it - like asking "show me all restaurants within 3 blocks of here"', 'info');
             draw();
         }
 
@@ -972,15 +981,18 @@
             
             searchRange = new Rectangle(rangeX, rangeY, rangeW, rangeH);
             
-            updateSearchStatus('🔍 Starting search...', 'info');
+            updateSearchStatus('🔍 <strong>Starting Range Query:</strong> Drawing a search area (blue box) and finding all buildings inside it...', 'info');
             
             // Animate the search step by step
             await animateSearch(quadtree, searchRange);
             
             // Show final results
+            const checkedCount = checkedQuadrants.filter(cq => cq.status === 'checking').length;
+            const skippedCount = checkedQuadrants.filter(cq => cq.status === 'skipped').length;
             updateSearchStatus(
-                `✅ Search complete! Found ${foundPoints.length} buildings.<br>
-                <small>Checked ${checkedQuadrants.length} quadrants instead of all ${pointId} buildings</small>`,
+                `✅ <strong>Range Query Complete!</strong><br>
+                Found <strong>${foundPoints.length} building${foundPoints.length !== 1 ? 's' : ''}</strong> inside the search area.<br>
+                <small>Smart search: Only checked ${checkedCount} relevant quadrants, skipped ${skippedCount} quadrants (vs. checking all ${pointId} buildings one by one!)</small>`,
                 'success'
             );
             
@@ -1000,7 +1012,7 @@
             // This quadrant is being checked - highlight it
             checkedQuadrants.push({qt: qt, status: 'checking'});
             currentStep++;
-            updateSearchStatus(`Step ${currentStep}: Checking quadrant at [${Math.round(qt.boundary.x)}, ${Math.round(qt.boundary.y)}]...`, 'info');
+            updateSearchStatus(`<strong>Step ${currentStep}:</strong> Checking if this quadrant overlaps with our search area [${Math.round(qt.boundary.x)}, ${Math.round(qt.boundary.y)}]...`, 'info');
             draw();
             await sleep(300);
             
@@ -1015,7 +1027,7 @@
             }
             
             if (pointsInNode.length > 0) {
-                updateSearchStatus(`Step ${currentStep}: Found ${pointsInNode.length} buildings!`, 'success');
+                updateSearchStatus(`<strong>Step ${currentStep}:</strong> ✅ Found ${pointsInNode.length} building${pointsInNode.length > 1 ? 's' : ''} inside the search area!`, 'success');
                 draw();
                 await sleep(400);
             }
@@ -1080,7 +1092,7 @@
             
             const point = new Point(x, y, pointId++);
             quadtree.insert(point);
-            updateSearchStatus('Building added! Click "Simulate Range Query" to search.', 'info');
+            updateSearchStatus('Building added! Click "Simulate Range Query" to find all buildings within a random search area.', 'info');
             draw();
         });
 
