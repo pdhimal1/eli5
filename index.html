@@ -123,23 +123,100 @@
             color: white;
         }
         
-        .info-box {
-            background: #e8f4f8;
-            border-left: 4px solid #3498db;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 0 5px 5px 0;
+        .instructions-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
         
-        .info-box h4 {
+        .instructions-box h4 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .instruction-steps {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+        
+        .step-number {
+            background: white;
+            color: #667eea;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .how-it-works-box {
+            background: white;
+            padding: 25px;
+            margin-top: 20px;
+            border-radius: 10px;
+            border: 2px solid #e8f4f8;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .how-it-works-box h4 {
             color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            font-size: 20px;
+        }
+        
+        .works-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .works-section h5 {
+            color: #3498db;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .works-section p {
+            color: #34495e;
+            font-size: 13px;
+            line-height: 1.7;
             margin-bottom: 8px;
         }
         
-        .info-box p {
+        .works-section ul {
             color: #34495e;
             font-size: 13px;
-            line-height: 1.6;
+            line-height: 1.8;
+            padding-left: 20px;
+        }
+        
+        .works-section li {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 900px) {
+            .instruction-steps {
+                grid-template-columns: 1fr;
+            }
+            .works-content {
+                grid-template-columns: 1fr;
+            }
         }
         
         .tree-structure {
@@ -245,13 +322,55 @@
     
     <div class="container">
         <div class="main-area">
-            <div class="info-box">
-                <h4>🤔 What is a Quad Tree? (In Simple Terms)</h4>
-                <p>Imagine you have a map with lots of buildings on it. Instead of searching through ALL the buildings every time you want to find something, a <strong>Quad Tree</strong> splits the map into smaller and smaller squares (quadrants). Think of it like organizing a messy room by dividing it into sections, then subsections. When you need to find something, you only look in the relevant section!</p>
+            <div class="instructions-box">
+                <h4>🎯 What To Do</h4>
+                <div class="instruction-steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span><strong>Click on the grid</strong> below to add buildings manually</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Use <strong>"Add Buildings"</strong> buttons to add many at once</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>Watch the grid <strong>split into quadrants</strong> when areas get crowded</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>Click <strong>"Simulate Range Query"</strong> to see how it searches efficiently</span>
+                    </div>
+                </div>
             </div>
             
             <div class="canvas-container">
                 <canvas id="quadtreeCanvas" width="800" height="600"></canvas>
+            </div>
+            
+            <div class="how-it-works-box">
+                <h4>💡 How It Works (The Simple Version)</h4>
+                <div class="works-content">
+                    <div class="works-section">
+                        <h5>🗺️ The Big Idea:</h5>
+                        <p>Instead of checking every building when searching, a Quad Tree splits the map into smaller squares. Think of it like organizing your closet: instead of digging through everything, you divide it into sections (shirts, pants, shoes) and only look where needed!</p>
+                    </div>
+                    <div class="works-section">
+                        <h5>📦 What You See:</h5>
+                        <ul>
+                            <li><strong>Red dots</strong> = Buildings/points on the map</li>
+                            <li><strong>Black lines</strong> = Quadrant boundaries</li>
+                            <li><strong>Blue area</strong> = Search range</li>
+                            <li><strong>Orange dots</strong> = Buildings found in search</li>
+                        </ul>
+                    </div>
+                    <div class="works-section">
+                        <h5>🚀 Why It Matters:</h5>
+                        <p><strong>Without Quad Tree:</strong> Search 10,000 buildings = 10,000 checks</p>
+                        <p><strong>With Quad Tree:</strong> Search 10,000 buildings = ~20 checks</p>
+                        <p>It's used in GPS, video games, and computer graphics to make things <strong>500x faster!</strong></p>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -323,22 +442,7 @@
                 </div>
             </div>
             
-            <div class="panel">
-                <h3>💡 How It Works (Like a Boss)</h3>
-                <div style="font-size: 13px; line-height: 1.8; color: #34495e;">
-                    <p><strong>🗺️ Think of it like this:</strong></p>
-                    <p>1. You have one big map covering everything</p>
-                    <p>2. When an area gets crowded with buildings, you split it into 4 smaller squares (like cutting a pizza into 4 slices)</p>
-                    <p>3. Each small square can split again if it gets too crowded</p>
-                    <p>4. Now when you search, you only check the squares that matter - way faster than checking everything!</p>
-                    <br>
-                    <p><strong>🎯 Real World Uses:</strong></p>
-                    <p>• GPS navigation finding nearby restaurants</p>
-                    <p>• Video games loading only visible terrain</p>
-                    <p>• Computer graphics rendering</p>
-                    <p>• Image compression</p>
-                </div>
-            </div>
+
         </div>
     </div>
 
