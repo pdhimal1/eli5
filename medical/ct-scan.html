@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CT Scan - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #455a64, #546e7a); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #455a64; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0a15; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #b0bec5; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #b0bec5; border-radius: 10px; background: #0d0d20; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-scan { background: linear-gradient(135deg, #90a4ae, #78909c); color: white; }
+        .btn-3d { background: linear-gradient(135deg, #7c4dff, #651fff); color: white; }
+        .fact-box { background: #eceff1; border-left: 5px solid #546e7a; padding: 15px; margin: 15px 0; color: #455a64; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 CT Scan: 3D X-Ray! 🔄</h1>
+        <p class="subtitle">Taking hundreds of X-rays to build a 3D model of your body!</p>
+        
+        <div class="story-box">
+            <h2>📸 Many X-Rays from All Angles!</h2>
+            <p>CT stands for "Computed Tomography." It's like a super-advanced X-ray machine!</p>
+            <p><strong>Instead of one picture, the machine spins around you taking hundreds of X-rays from every angle!</strong></p>
+            <p>A computer then puts all these pictures together like a puzzle to create a 3D model!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 The Scanning Ring!</h2>
+            <canvas id="ctCanvas" width="700" height="400"></canvas>
+            <div class="controls">
+                <button class="btn-scan" onclick="startScan()">Start Scan! 🔄</button>
+                <button class="btn-3d" onclick="show3D()">View 3D!</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔬 How CT Scans Work</h2>
+            <p><strong>1. Gantry Ring:</strong> A big donut-shaped machine spins around you</p>
+            <p><strong>2. X-Ray Tube:</strong> Sends X-rays from many angles</p>
+            <p><strong>3. Detectors:</strong> Capture the X-rays that pass through</p>
+            <p><strong>4. Computer:</strong> Reconstructs 3D images from all the slices!</p>
+            <div class="fact-box">
+                🔥 CT scans can take 100-1000+ pictures in just a few seconds!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🏥 What Can CT Scans See?</h2>
+            <p>🧠 <strong>Brain:</strong> Bleeding, tumors, strokes</p>
+            <p>🫁 <strong>Chest:</strong> Lungs, heart, blood clots</p>
+            <p>🦴 <strong>Bones:</strong> Complex fractures, arthritis</p>
+            <p>🫀 <strong>Organs:</strong> Detailed views of all organs</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Medical Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('ctCanvas');
+        const ctx = canvas.getContext('2d');
+        let scanning = false;
+        let show3DView = false;
+        let scanAngle = 0;
+        let slices = [];
+        
+        function startScan() {
+            scanning = !scanning;
+            show3DView = false;
+        }
+        
+        function show3D() {
+            show3DView = true;
+            scanning = false;
+        }
+        
+        function drawGantry() {
+            const centerX = 350;
+            const centerY = 200;
+            const radius = 120;
+            
+            // Outer ring
+            ctx.strokeStyle = '#607d8b';
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Inner ring
+            ctx.strokeStyle = '#455a64';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius - 15, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // X-ray source (rotates)
+            if (scanning) {
+                const sourceX = centerX + Math.cos(scanAngle) * (radius - 8);
+                const sourceY = centerY + Math.sin(scanAngle) * (radius - 8);
+                
+                // X-ray tube
+                ctx.fillStyle = '#ff5722';
+                ctx.beginPath();
+                ctx.arc(sourceX, sourceY, 12, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // X-ray beam
+                ctx.strokeStyle = 'rgba(255, 87, 34, 0.3)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(sourceX, sourceY);
+                ctx.lineTo(centerX, centerY);
+                ctx.stroke();
+                
+                scanAngle += 0.02;
+            } else {
+                // Static source
+                ctx.fillStyle = '#ff5722';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY - radius + 8, 12, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Detector array
+            for (let i = 0; i < 8; i++) {
+                const detectorAngle = (i / 8) * Math.PI * 2;
+                const detectorX = centerX + Math.cos(detectorAngle) * (radius - 5);
+                const detectorY = centerY + Math.sin(detectorAngle) * (radius - 5);
+                
+                ctx.fillStyle = '#4caf50';
+                ctx.beginPath();
+                ctx.arc(detectorX, detectorY, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Patient bed
+            ctx.fillStyle = '#795548';
+            ctx.fillRect(150, centerY - 15, 400, 30);
+            
+            // Patient body (simplified)
+            ctx.fillStyle = '#d7ccc8';
+            ctx.beginPath();
+            ctx.ellipse(centerX, centerY, 50, 80, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Organs (simplified)
+            ctx.fillStyle = '#e57373';
+            ctx.beginPath();
+            ctx.ellipse(centerX - 20, centerY - 20, 15, 20, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#81c784';
+            ctx.beginPath();
+            ctx.ellipse(centerX + 20, centerY - 10, 18, 25, 0, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        function drawSlices() {
+            // Draw scan slices on the right
+            const sliceX = 550;
+            
+            ctx.fillStyle = '#37474f';
+            ctx.fillRect(sliceX - 10, 50, 130, 300);
+            
+            if (scanning) {
+                // Add new slice occasionally
+                if (Math.random() < 0.1) {
+                    slices.push({
+                        y: 300,
+                        opacity: 1,
+                        noise: Math.random()
+                    });
+                }
+            }
+            
+            // Draw and update slices
+            slices.forEach((slice, index) => {
+                ctx.fillStyle = `rgba(255, 255, 255, ${slice.opacity})`;
+                ctx.fillRect(sliceX, slice.y, 100, 2);
+                
+                // Add some "scan lines"
+                ctx.strokeStyle = `rgba(128, 203, 196, ${slice.opacity * 0.5})`;
+                ctx.lineWidth = 1;
+                for (let i = 0; i < 10; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(sliceX + i * 10, slice.y);
+                    ctx.lineTo(sliceX + i * 10 + 5, slice.y);
+                    ctx.stroke();
+                }
+                
+                // Move up
+                slice.y -= 2;
+                slice.opacity -= 0.005;
+            });
+            
+            // Remove faded slices
+            slices = slices.filter(s => s.opacity > 0);
+            
+            // Label
+            ctx.fillStyle = '#aaa';
+            ctx.font = '14px Arial';
+            ctx.fillText('Slices', sliceX + 30, 370);
+        }
+        
+        function draw3DView() {
+            if (!show3DView) return;
+            
+            // Simple 3D body visualization
+            const centerX = 350;
+            const centerY = 200;
+            
+            // Body outline
+            ctx.strokeStyle = '#90a4ae';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.ellipse(centerX, centerY, 60, 100, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // 3D organs
+            // Heart
+            ctx.fillStyle = 'rgba(229, 115, 115, 0.7)';
+            ctx.beginPath();
+            ctx.ellipse(centerX - 25, centerY - 30, 20, 25, -0.3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Lungs
+            ctx.fillStyle = 'rgba(129, 199, 132, 0.5)';
+            ctx.beginPath();
+            ctx.ellipse(centerX - 35, centerY - 50, 18, 30, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.ellipse(centerX + 35, centerY - 50, 18, 30, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Liver
+            ctx.fillStyle = 'rgba(255, 183, 77, 0.6)';
+            ctx.beginPath();
+            ctx.ellipse(centerX + 30, centerY, 25, 30, 0.3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Spine
+            ctx.fillStyle = 'rgba(224, 224, 224, 0.8)';
+            for (let i = 0; i < 5; i++) {
+                ctx.fillRect(centerX - 5, centerY - 60 + i * 25, 10, 15);
+            }
+            
+            // Label
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('3D Body Model', centerX - 60, centerY + 140);
+        }
+        
+        function draw() {
+            // Clear canvas
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, 700, 400);
+            
+            if (show3DView) {
+                draw3DView();
+            } else {
+                drawGantry();
+                drawSlices();
+            }
+            
+            // Status
+            ctx.fillStyle = scanning ? '#4caf50' : '#78909c';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText(scanning ? 'Scanning...' : (show3DView ? '3D View' : 'Ready'), 20, 30);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

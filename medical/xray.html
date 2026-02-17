@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-Rays - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #37474f, #455a64); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #37474f; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0a15; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #b0bec5; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #b0bec5; border-radius: 10px; background: #0d0d20; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-xray { background: linear-gradient(135deg, #90a4ae, #78909c); color: white; }
+        .btn-reset { background: linear-gradient(135deg, #ff7043, #f4511e); color: white; }
+        .fact-box { background: #eceff1; border-left: 5px solid #455a64; padding: 15px; margin: 15px 0; color: #37474f; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📷 X-Rays: Seeing Through You! 📷</h1>
+        <p class="subtitle">Super-powered light that shows your bones!</p>
+        
+        <div class="story-box">
+            <h2>🌟 Special Light We Can't See!</h2>
+            <p>X-rays are like super-powerful light that can pass through your skin and muscles!</p>
+            <p><strong>But bones are too thick for X-rays to pass through!</strong> That's why bones show up white on X-ray pictures!</p>
+            <p>It's like shining a flashlight through your hand - light passes through, but bones block it!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Hand X-Ray Simulator!</h2>
+            <canvas id="xrayCanvas" width="700" height="400"></canvas>
+            <div class="controls">
+                <button class="btn-xray" onclick="toggleXray()">Toggle X-Ray! 📷</button>
+                <button class="btn-reset" onclick="resetDemo()">Reset</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📸 How X-Rays Work</h2>
+            <p><strong>1. X-Ray Machine:</strong> Sends invisible X-ray beams through your body</p>
+            <p><strong>2. Soft Tissue:</strong> Skin and muscles let X-rays pass through (appear dark)</p>
+            <p><strong>3. Bones:</strong> Block X-rays and appear white!</p>
+            <p><strong>4. Film/Detector:</strong> Captures the shadow image!</p>
+            <div class="fact-box">
+                🔥 Fun Fact: X-rays were discovered by accident in 1895 by Wilhelm Röntgen!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🏥 What Are X-Rays Used For?</h2>
+            <p>🦴 <strong>Broken Bones:</strong> Finding cracks and fractures</p>
+            <p>🦷 <strong>Dental:</strong> Checking teeth for cavities</p>
+            <p>🫁 <strong>Chest:</strong> Looking at lungs and heart</p>
+            <p>✈️ <strong>Security:</strong> Checking bags at airports!</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Medical Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('xrayCanvas');
+        const ctx = canvas.getContext('2d');
+        let xrayOn = false;
+        let particles = [];
+        
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: 50,
+                    y: 50 + Math.random() * 300,
+                    vx: 8 + Math.random() * 4,
+                    vy: (Math.random() - 0.5) * 2
+                });
+            }
+        }
+        
+        function toggleXray() {
+            xrayOn = !xrayOn;
+            if (xrayOn) {
+                initParticles();
+            }
+        }
+        
+        function resetDemo() {
+            xrayOn = false;
+            particles = [];
+        }
+        
+        function drawHand() {
+            // Draw hand shape
+            ctx.fillStyle = xrayOn ? '#90a4ae' : '#d7ccc8';
+            ctx.fillRect(200, 80, 80, 200);
+            
+            // Draw fingers
+            ctx.fillStyle = xrayOn ? '#90a4ae' : '#d7ccc8';
+            ctx.fillRect(210, 40, 15, 40);
+            ctx.fillRect(230, 30, 15, 50);
+            ctx.fillRect(250, 40, 15, 40);
+            ctx.fillRect(270, 60, 15, 30);
+            
+            // Draw bones (only visible when X-ray is on)
+            if (xrayOn) {
+                ctx.fillStyle = '#e3f2fd';
+                // Palm bones
+                ctx.fillRect(220, 150, 20, 100);
+                ctx.fillRect(245, 150, 20, 100);
+                ctx.fillRect(270, 150, 15, 100);
+                
+                // Finger bones
+                ctx.fillRect(215, 50, 8, 30);
+                ctx.fillRect(235, 40, 8, 35);
+                ctx.fillRect(255, 50, 8, 30);
+                ctx.fillRect(275, 70, 8, 20);
+                
+                // Bone tips
+                ctx.fillRect(215, 45, 6, 5);
+                ctx.fillRect(235, 35, 6, 5);
+                ctx.fillRect(255, 45, 6, 5);
+                ctx.fillRect(275, 65, 6, 5);
+            }
+        }
+        
+        function draw() {
+            // Clear canvas
+            ctx.fillStyle = xrayOn ? '#1a1a2e' : '#3e2723';
+            ctx.fillRect(0, 0, 700, 400);
+            
+            // Draw hand
+            drawHand();
+            
+            // Draw X-ray particles
+            if (xrayOn) {
+                ctx.strokeStyle = '#64b5f6';
+                ctx.lineWidth = 2;
+                
+                particles.forEach(p => {
+                    // Draw particle beam
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p.x + p.vx, p.y);
+                    ctx.stroke();
+                    
+                    // Update particle
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    
+                    // Reset if off screen
+                    if (p.x > 700) {
+                        p.x = 50;
+                        p.y = 50 + Math.random() * 300;
+                    }
+                    
+                    // Bounce off hand
+                    if (p.x > 200 && p.x < 300 && p.y > 80 && p.y < 280) {
+                        p.x = 50;
+                        p.y = 50 + Math.random() * 300;
+                    }
+                });
+            }
+            
+            // Labels
+            ctx.fillStyle = '#aaa';
+            ctx.font = '16px Arial';
+            ctx.fillText(xrayOn ? 'X-Ray Beam' : 'Normal Light', 50, 30);
+            ctx.fillText('Hand', 230, 380);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        initParticles();
+        draw();
+    </script>
+</body>
+</html>
