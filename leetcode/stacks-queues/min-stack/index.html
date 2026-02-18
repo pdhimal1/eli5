@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Min Stack - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+        .glow-lime { box-shadow: 0 0 20px #84cc16; }
+        .glow-pink { box-shadow: 0 0 20px #ec4899; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Stacks & Queues</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-green-400">Min Stack</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-green-600 text-white px-3 py-1 rounded text-lg font-bold">Easy</span>
+            <h1 class="text-4xl font-bold text-white">Min Stack</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                You have a special box that holds a stack of numbers. Not only can you add and remove numbers, 
+                but it also tells you the smallest number in the whole box - instantly!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            <p class="text-gray-400 mb-4">Try adding numbers and see how we track the minimum!</p>
+            
+            <div class="flex gap-2 mb-4 justify-center">
+                <input type="number" id="pushValue" value="5" class="bg-gray-700 text-white px-3 py-2 rounded border border-gray-600 w-24">
+                <button onclick="push()" class="bg-cyan-600 hover:bg-cyan-500 px-4 py-2 rounded font-bold text-white">Push</button>
+                <button onclick="pop()" class="bg-pink-600 hover:bg-pink-500 px-4 py-2 rounded font-bold text-white">Pop</button>
+                <button onclick="getMin()" class="bg-lime-600 hover:bg-lime-500 px-4 py-2 rounded font-bold text-white">GetMin</button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div id="stackDisplay" class="p-4 bg-gray-900 rounded-lg min-h-[200px]">
+                    <p class="text-gray-500 text-center">Main Stack:</p>
+                    <div id="stackContent" class="flex flex-col-reverse gap-1 mt-2 items-center"></div>
+                </div>
+                <div id="minStackDisplay" class="p-4 bg-gray-900 rounded-lg min-h-[200px]">
+                    <p class="text-gray-500 text-center">Min Stack (tracking mins):</p>
+                    <div id="minStackContent" class="flex flex-col-reverse gap-1 mt-2 items-center"></div>
+                </div>
+            </div>
+
+            <div id="resultDisplay" class="mt-4 p-3 bg-gray-700 rounded-lg text-center text-lg font-bold text-cyan-400"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                The trick: <strong>keep TWO stacks!</strong> One for the actual values, and one that only keeps 
+                the minimums. When you push, also push to min-stack if it's <= current min. When you pop, 
+                pop from both!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+    
+    def push(self, val):
+        self.stack.append(val)
+        # Push to min_stack if it's empty or val is smaller
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+        else:
+            # Otherwise repeat the current min
+            self.min_stack.append(self.min_stack[-1])
+    
+    def pop(self):
+        self.stack.pop()
+        self.min_stack.pop()
+    
+    def top(self):
+        return self.stack[-1]
+    
+    def getMin(self):
+        return self.min_stack[-1]
+
+# Try it!
+ms = MinStack()
+ms.push(5)
+ms.push(2)
+ms.push(8)
+print(ms.getMin())  # 2
+ms.pop()
+print(ms.getMin())  # 2
+ms.pop()
+print(ms.getMin())  # 5</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(1) for all operations!</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(n) - extra stack for mins</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let stack = [];
+        let minStack = [];
+
+        function renderStack() {
+            const container = document.getElementById('stackContent');
+            const minContainer = document.getElementById('minStackContent');
+            
+            if (stack.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">(empty)</p>';
+                minContainer.innerHTML = '<p class="text-gray-500">(empty)</p>';
+                return;
+            }
+            
+            container.innerHTML = stack.map((val, idx) => 
+                `<div class="bg-cyan-600 px-4 py-2 rounded text-white font-bold w-20 text-center">${val}</div>`
+            ).join('');
+            
+            minContainer.innerHTML = minStack.map((val, idx) => 
+                `<div class="${val === Math.min(...stack) ? 'bg-lime-500 text-black' : 'bg-gray-600 text-gray-400'} px-4 py-2 rounded font-bold w-20 text-center">${val}</div>`
+            ).join('');
+        }
+
+        function push() {
+            const val = parseInt(document.getElementById('pushValue').value);
+            stack.push(val);
+            if (minStack.length === 0 || val <= Math.min(...stack.slice(0, -1))) {
+                minStack.push(val);
+            } else {
+                minStack.push(minStack[minStack.length - 1]);
+            }
+            renderStack();
+            document.getElementById('resultDisplay').innerText = `Pushed ${val}`;
+        }
+
+        function pop() {
+            if (stack.length === 0) return;
+            const val = stack.pop();
+            minStack.pop();
+            renderStack();
+            document.getElementById('resultDisplay').innerText = `Popped ${val}`;
+        }
+
+        function getMin() {
+            if (stack.length === 0) return;
+            const min = Math.min(...stack);
+            document.getElementById('resultDisplay').innerText = `Current minimum: ${min}`;
+        }
+
+        renderStack();
+    </script>
+</body>
+</html>

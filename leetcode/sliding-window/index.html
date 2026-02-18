@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sliding Window - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">LeetCode</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-cyan-400">Sliding Window</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-white mb-4">🔍 Sliding Window</h1>
+            <p class="text-xl text-gray-400">The "Moving Magnifying Glass" Chapter</p>
+            <p class="mt-4 text-gray-300">
+                Like looking through a moving magnifying glass! A window slides across the array,
+                growing and shrinking as needed. Perfect for "subarray" problems!
+            </p>
+        </div>
+
+        <div class="grid gap-4">
+            <a href="best-time-to-buy-sell-stock/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-cyan-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-green-600 text-white px-2 py-1 rounded text-sm font-bold">Easy</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Best Time to Buy/Sell Stock</h2>
+                        <p class="text-gray-400 mt-1">Max profit with one transaction!</p>
+                    </div>
+                    <span class="text-cyan-400 text-2xl">→</span>
+                </div>
+            </a>
+
+            <a href="longest-substring-without-repeating/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-yellow-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-yellow-600 text-white px-2 py-1 rounded text-sm font-bold">Medium</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Longest Substring Without Repeating</h2>
+                        <p class="text-gray-400 mt-1">Longest unique character substring!</p>
+                    </div>
+                    <span class="text-yellow-400 text-2xl">→</span>
+                </div>
+            </a>
+
+            <a href="minimum-window-substring/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-yellow-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-yellow-600 text-white px-2 py-1 rounded text-sm font-bold">Medium</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Minimum Window Substring</h2>
+                        <p class="text-gray-400 mt-1">Smallest window containing all chars!</p>
+                    </div>
+                    <span class="text-yellow-400 text-2xl">→</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-12 p-6 bg-gray-800 rounded-lg border border-lime-400">
+            <h3 class="text-xl font-bold text-lime-400 mb-2">🎯 Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Expand, then shrink!</strong> Add elements to right, update window info.
+                When condition violated, shrink from left. O(n) instead of O(n²)!
+            </p>
+        </div>
+    </main>
+</body>
+</html>

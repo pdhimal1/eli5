@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Tree Level Order - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Trees & Graphs</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-green-400">Binary Tree Level Order</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-green-600 text-white px-3 py-1 rounded text-lg font-bold">Easy</span>
+            <h1 class="text-4xl font-bold text-white">Binary Tree Level Order</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                Visit a tree level by level! First the grandparents, then parents, then children!
+                Like taking an elevator that stops at each floor!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            <p class="text-gray-400 mb-4">Breadth-First Search (BFS) with a queue!</p>
+            
+            <div class="mb-4 flex justify-center">
+                <svg width="350" height="180" id="treeSvg"></svg>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="p-3 bg-gray-900 rounded-lg">
+                    <p class="text-gray-500 text-center">Queue:</p>
+                    <div id="queueDisplay" class="flex justify-center gap-1 flex-wrap mt-1"></div>
+                </div>
+                <div class="p-3 bg-gray-900 rounded-lg">
+                    <p class="text-lime-400 text-center">Result Levels:</p>
+                    <div id="resultDisplay2" class="flex flex-col gap-1 mt-1"></div>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Process Level ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Use a QUEUE!</strong> Add root to queue. While queue not empty, 
+                process all items in queue (that's one level!), add their children for next level!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">from collections import deque
+
+def level_order(root):
+    if not root: return []
+    
+    result = []
+    queue = deque([root])
+    
+    while queue:
+        level_size = len(queue)
+        level = []
+        
+        for _ in range(level_size):
+            node = queue.popleft()
+            level.append(node.val)
+            
+            if node.left: queue.append(node.left)
+            if node.right: queue.append(node.right)
+        
+        result.append(level)
+    
+    return result
+
+# Tree:     3
+#          / \
+#         9  20
+#           /  \
+#          15   7
+# Result: [[3], [9, 20], [15, 7]]</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n)</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(w) - max width</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const tree = { val: 3, left: { val: 9 }, right: { val: 20, left: {val: 15}, right: {val: 7} } };
+        let queue = [];
+        let result = [];
+        let completed = false;
+
+        function drawTree(node, x, y, dx, visited = false) {
+            if (!node) return '';
+            const inQueue = queue.includes(node.val);
+            const color = inQueue ? '#06b6d4' : '#4b5563';
+            let html = `<circle cx="${x}" cy="${y}" r="18" fill="${color}" />
+                <text x="${x}" y="${y + 5}" text-anchor="middle" fill="white" font-size="12">${node.val}</text>`;
+            if (node.left) {
+                html += `<line x1="${x-15}" y1="${y-8}" x2="${x-dx}" y2="${y+25}" stroke="#6b7280" />`;
+                html += drawTree(node.left, x-dx, y+30, dx/2);
+            }
+            if (node.right) {
+                html += `<line x1="${x+15}" y1="${y-8}" x2="${x+dx}" y2="${y+25}" stroke="#6b7280" />`;
+                html += drawTree(node.right, x+dx, y+30, dx/2);
+            }
+            return html;
+        }
+
+        function render() {
+            document.getElementById('treeSvg').innerHTML = drawTree(tree, 175, 30, 50);
+            
+            document.getElementById('queueDisplay').innerHTML = queue.length === 0 
+                ? '<span class="text-gray-500">(empty)</span>' 
+                : queue.map(v => `<div class="bg-cyan-600 px-2 py-1 rounded text-white text-sm">${v}</div>`).join(' → ');
+            
+            document.getElementById('resultDisplay2').innerHTML = result.length === 0
+                ? '<span class="text-gray-500">(waiting)</span>'
+                : result.map((level, idx) => `<div class="flex gap-1 justify-center"><span class="text-gray-500 text-sm">L${idx}:</span>${level.map(v => `<span class="bg-lime-600 px-2 py-0.5 rounded text-white text-xs">${v}</span>`).join(' ')}</div>`).join('');
+        }
+
+        function stepForward() {
+            if (completed) return;
+            
+            if (queue.length === 0) queue = [3];
+            else if (queue.length > 0) {
+                result.push([...queue]);
+                queue = queue.flatMap(v => {
+                    const children = [];
+                    if (v === 3) { if (tree.left) children.push(9); if (tree.right) children.push(20); }
+                    else if (v === 20) { if (tree.right.left) children.push(15); if (tree.right.right) children.push(7); }
+                    return children;
+                });
+                if (queue.length === 0) completed = true;
+            }
+            
+            if (completed) document.getElementById('stepBtn').disabled = true;
+            render();
+        }
+
+        function resetVisualizer() {
+            queue = [];
+            result = [];
+            completed = false;
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>

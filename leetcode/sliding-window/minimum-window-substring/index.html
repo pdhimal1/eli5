@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimum Window Substring - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Sliding Window</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-yellow-400">Minimum Window Substring</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-lg font-bold">Medium</span>
+            <h1 class="text-4xl font-bold text-white">Minimum Window Substring</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                Find smallest window containing all characters of "t"! "ADOBECODEBANC" with "ABC" → "BANC"!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            
+            <div class="text-center mb-4">
+                <p class="text-gray-300">s = "ADOBECODEBANC", t = "ABC"</p>
+                <div id="sDisplay" class="flex justify-center gap-1 flex-wrap mt-2"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Expand/Shrink ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Expand right, shrink left!</strong> Use hash map to count required chars.
+                When all chars found, shrink from left while still valid. Track smallest window!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def min_window(s, t):
+    if not t or not s: return ""
+    
+    # Count required chars
+    need = Counter(t)
+    window = {}
+    
+    have, needlen = 0, len(need)
+    left = 0
+    result = float('inf'), None
+    
+    for right in range(len(s)):
+        c = s[right]
+        window[c] = window.get(c, 0) + 1
+        
+        if c in need and window[c] == need[c]:
+            have += 1
+        
+        while have == needlen:
+            # Update result
+            if right - left + 1 < result[0]:
+                result = (right - left + 1, s[left:right+1])
+            
+            # Shrink window from left
+           [s[left]] -= 1
+            if s[left] in need and window[s[left]] < need[s[left]]:
+                have -= 1
+            left += 1
+    
+    return result[1] if result[1] else ""
+
+# "ADOBECODEBANC", "ABC" → "BANC"</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n)</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(alphabet)</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let step = 0;
+
+        function render() {
+            const s = "ADOBECODEBANC";
+            document.getElementById('sDisplay').innerHTML = s.split('').map((c, i) => {
+                let bg = 'bg-gray-700';
+                const windows = ["A", "AD", "ADO", "ADOB", "ADOBE", "ADOBEC", "ADOBECO", "ADOBECOD", "CODEB", "BANC"];
+                if (step > 0 && step <= windows.length) {
+                    const w = windows[step - 1] || "BANC";
+                    if (w.includes(c)) bg = 'bg-cyan-600';
+                }
+                return `<div class="${bg} px-2 py-1 rounded text-white">${c}</div>`;
+            }).join('');
+        }
+
+        function stepForward() {
+            if (step >= 10) return;
+            step++;
+            if (step >= 10) document.getElementById('stepBtn').disabled = true;
+            render();
+        }
+
+        function resetVisualizer() {
+            step = 0;
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+        render();
+    </script>
+</body>
+</html>

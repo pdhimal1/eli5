@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valid Anagram - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+        .glow-lime { box-shadow: 0 0 20px #84cc16; }
+        .glow-pink { box-shadow: 0 0 20px #ec4899; }
+        .letter-box { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Arrays & Hashing</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-green-400">Valid Anagram</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-green-600 text-white px-3 py-1 rounded text-lg font-bold">Easy</span>
+            <h1 class="text-4xl font-bold text-white">Valid Anagram</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                Someone gives you two bags of letter magnets. Can you make the same word from both bags? 
+                "listen" and "silent" use the same letters - they're anagrams!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            <p class="text-gray-400 mb-4">Click "Step" to compare letter counts!</p>
+            
+            <div class="grid grid-cols-2 gap-8 mb-4">
+                <div>
+                    <p class="text-center text-gray-300 mb-2">String 1: "anagram"</p>
+                    <div id="string1Display" class="flex gap-1 flex-wrap justify-center"></div>
+                </div>
+                <div>
+                    <p class="text-center text-gray-300 mb-2">String 2: "nagaram"</p>
+                    <div id="string2Display" class="flex gap-1 flex-wrap justify-center"></div>
+                </div>
+            </div>
+
+            <div id="countDisplay" class="mb-4 p-4 bg-gray-900 rounded-lg">
+                <p class="text-gray-500 text-center mb-2">Letter Counts:</p>
+                <div id="countContent" class="flex gap-2 flex-wrap justify-center"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Step ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+
+            <div id="resultDisplay" class="mt-4 text-center text-xl font-bold hidden"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                For "is this an anagram?" problems, count letters! Use an array of size 26 (alphabet) 
+                or a hash map. <strong>+1 for string1, -1 for string2</strong> - all zeros means it's an anagram!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def is_anagram(s, t):
+    # Quick check: same length?
+    if len(s) != len(t):
+        return False
+    
+    # A counter for each letter (a-z)
+    count = [0] * 26
+    
+    # Count letters in first word (+1)
+    # Count letters in second word (-1)
+    for i in range(len(s)):
+        count[ord(s[i]) - ord('a')] += 1
+        count[ord(t[i]) - ord('a')] -= 1
+    
+    # If all zeros, they're anagrams!
+    return count == [0] * 26
+
+# Try it!
+print(is_anagram("anagram", "nagaram"))  # Output: True
+print(is_anagram("rat", "car"))           # Output: False</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n) - We walk through both strings once!</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(1) - Fixed array of 26 letters!</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const str1 = "anagram";
+        const str2 = "nagaram";
+        let currentIndex = 0;
+        let count = new Array(26).fill(0);
+        let completed = false;
+
+        function renderStrings() {
+            const container1 = document.getElementById('string1Display');
+            const container2 = document.getElementById('string2Display');
+            
+            container1.innerHTML = str1.split('').map((char, idx) => {
+                let classes = 'letter-box w-8 h-8 flex items-center justify-center text-lg font-bold rounded ';
+                if (idx < currentIndex) classes += 'bg-lime-600 text-white';
+                else classes += 'bg-gray-700 text-gray-300';
+                return `<div class="${classes}">${char}</div>`;
+            }).join('');
+            
+            container2.innerHTML = str2.split('').map((char, idx) => {
+                let classes = 'letter-box w-8 h-8 flex items-center justify-center text-lg font-bold rounded ';
+                if (idx < currentIndex) classes += 'bg-cyan-600 text-white';
+                else classes += 'bg-gray-700 text-gray-300';
+                return `<div class="${classes}">${char}</div>`;
+            }).join('');
+        }
+
+        function renderCount() {
+            const container = document.getElementById('countContent');
+            const activeChars = [];
+            
+            for (let i = 0; i < 26; i++) {
+                if (count[i] !== 0 || (str1 + str2).includes(String.fromCharCode(97 + i))) {
+                    activeChars.push({ char: String.fromCharCode(97 + i), count: count[i] });
+                }
+            }
+            
+            container.innerHTML = activeChars.map(({char, count: c}) => {
+                let bgClass = c === 0 ? 'bg-lime-600' : c > 0 ? 'bg-cyan-600' : 'bg-pink-600';
+                return `<div class="${bgClass} px-2 py-1 rounded text-white text-sm">${char}: ${c > 0 ? '+' : ''}${c}</div>`;
+            }).join('');
+        }
+
+        function renderResult() {
+            const resultDisplay = document.getElementById('resultDisplay');
+            if (completed) {
+                const allZero = count.every(c => c === 0);
+                if (allZero) {
+                    resultDisplay.innerHTML = `✅ Valid Anagram! Both strings use the same letters!`;
+                    resultDisplay.className = 'mt-4 text-center text-xl font-bold text-lime-400';
+                } else {
+                    resultDisplay.innerHTML = `❌ Not an anagram - different letters!`;
+                    resultDisplay.className = 'mt-4 text-center text-xl font-bold text-red-400';
+                }
+            } else {
+                resultDisplay.className = 'mt-4 text-center text-xl font-bold hidden';
+            }
+        }
+
+        function stepForward() {
+            if (completed || currentIndex >= str1.length) return;
+            
+            const idx1 = str1.charCodeAt(currentIndex) - 97;
+            const idx2 = str2.charCodeAt(currentIndex) - 97;
+            
+            count[idx1]++;
+            count[idx2]--;
+            
+            currentIndex++;
+            
+            if (currentIndex >= str1.length) {
+                completed = true;
+                document.getElementById('stepBtn').disabled = true;
+            }
+            
+            renderStrings();
+            renderCount();
+            renderResult();
+        }
+
+        function resetVisualizer() {
+            currentIndex = 0;
+            count = new Array(26).fill(0);
+            completed = false;
+            document.getElementById('stepBtn').disabled = false;
+            
+            renderStrings();
+            renderCount();
+            renderResult();
+        }
+
+        // Initialize
+        renderStrings();
+        renderCount();
+    </script>
+</body>
+</html>

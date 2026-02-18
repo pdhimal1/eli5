@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longest Increasing Subsequence - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Dynamic Programming</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-yellow-400">Longest Increasing Subsequence</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-lg font-bold">Medium</span>
+            <h1 class="text-4xl font-bold text-white">Longest Increasing Subsequence</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                Find the longest chain that keeps growing! [10,9,2,5,3,7,101,18] → 
+                [2,3,7,101] or [2,5,7,101] = length 4!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            
+            <div class="mb-4 text-center">
+                <p class="text-gray-300 mb-2">nums = [10, 9, 2, 5, 3, 7, 101, 18]</p>
+                <div id="numsDisplay" class="flex justify-center gap-1 flex-wrap mb-2"></div>
+                <div id="dpDisplay" class="flex justify-center gap-1 flex-wrap"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Find LIS ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>For each element, find the longest chain ending there!</strong>
+                dp[i] = 1 + max(dp[j]) for all j < i where nums[j] < nums[i]!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def length_of_lis(nums):
+    if not nums: return 0
+    
+    dp = [1] * len(nums)
+    
+    for i in range(1, len(nums)):
+        for j in range(i):
+            if nums[j] < nums[i]:
+                dp[i] = max(dp[i], dp[j] + 1)
+    
+    return max(dp)
+
+# [10,9,2,5,3,7,101,18] → 4
+# LIS: [2,3,7,101] or [2,3,7,18]</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n²) basic, O(n log n) optimized</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(n)</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const nums = [10, 9, 2, 5, 3, 7, 101, 18];
+        const dp = [1, 1, 1, 2, 2, 3, 4, 4];
+        let step = 0;
+
+        function render() {
+            document.getElementById('numsDisplay').innerHTML = nums.map((val, idx) => 
+                `<div class="bg-gray-700 px-2 py-1 rounded text-white text-sm">${val}</div>`
+            ).join('');
+            
+            document.getElementById('dpDisplay').innerHTML = dp.slice(0, step+1).map((val, idx) => 
+                `<div class="${idx === step ? 'bg-lime-600' : 'bg-cyan-600'} px-2 py-1 rounded text-white text-sm">${val}</div>`
+            ).join('');
+        }
+
+        function stepForward() {
+            if (step >= 7) return;
+            step++;
+            if (step >= 7) document.getElementById('stepBtn').disabled = true;
+            render();
+        }
+
+        function resetVisualizer() {
+            step = 0;
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>

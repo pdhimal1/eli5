@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climbing Stairs - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-lime { box-shadow: 0 0 20px #84cc16; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Dynamic Programming</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-green-400">Climbing Stairs</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-green-600 text-white px-3 py-1 rounded text-lg font-bold">Easy</span>
+            <h1 class="text-4xl font-bold text-white">Climbing Stairs</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                You can take 1 or 2 steps at a time. How many ways to reach the top of 5 stairs?
+                To reach step 5, you came from step 4 (taking 1) OR step 3 (taking 2)!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            
+            <div class="mb-4 text-center">
+                <p class="text-gray-300 mb-2">n = 5 stairs</p>
+                <div id="dpDisplay" class="flex justify-center gap-2 flex-wrap"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Compute ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+
+            <div id="formulaDisplay" class="mt-4 p-3 bg-gray-900 rounded-lg text-center text-gray-400 font-mono"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Fibonacci pattern!</strong> ways(n) = ways(n-1) + ways(n-2).
+                It's exactly the Fibonacci sequence! Just remember: step 1 = 1 way, step 2 = 2 ways!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def climb_stairs(n):
+    # Base cases
+    if n <= 2:
+        return n
+    
+    # Build up from bottom
+    prev2, prev1 = 1, 2
+    
+    for i in range(3, n + 1):
+        current = prev1 + prev2
+        prev2 = prev1
+        prev1 = current
+    
+    return prev1
+
+# n=1: 1 way (1)
+// n=2: 2 ways (1+1, 2)
+// n=3: 3 ways (1+1+1, 1+2, 2+1)
+// n=5: 8 ways!</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n)</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(1)</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const dp = [0, 1, 2, 3, 5, 8];
+        let step = 0;
+
+        function render() {
+            const display = document.getElementById('dpDisplay');
+            display.innerHTML = dp.slice(0, step+1).map((val, idx) => 
+                `<div class="${idx === step ? 'bg-lime-600 glow-lime' : 'bg-gray-700'} px-3 py-2 rounded text-white font-bold">stairs ${idx}: ${val}</div>`
+            ).join('');
+
+            const formula = document.getElementById('formulaDisplay');
+            if (step > 0) {
+                formula.innerText = `dp[${step}] = dp[${step-1}] + dp[${Math.max(0, step-2)}] = ${dp[step]}`;
+            } else {
+                formula.innerText = 'Starting computation...';
+            }
+        }
+
+        function stepForward() {
+            if (step >= 5) return;
+            step++;
+            if (step >= 5) document.getElementById('stepBtn').disabled = true;
+            render();
+        }
+
+        function resetVisualizer() {
+            step = 0;
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>

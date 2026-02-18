@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+        .glow-lime { box-shadow: 0 0 20px #84cc16; }
+        .glow-yellow { box-shadow: 0 0 20px #eab308; }
+        .glow-red { box-shadow: 0 0 20px #ef4444; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-3xl font-bold text-white">LeetCode</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="mb-8">
+            <h1 class="text-5xl font-bold text-white mb-4">🧩 LeetCode Curriculum</h1>
+            <p class="text-xl text-gray-400">
+                Welcome to the ultimate coding theme park! Each section is an "attraction" that teaches 
+                a fundamental algorithm concept through interactive visualizations.
+            </p>
+        </div>
+
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold text-green-400 mb-6">🟢 Phase 1: The Basics (The Toolbox)</h2>
+            <p class="text-gray-400 mb-4">Learn the fundamental tools every coder needs. Like learning to use a hammer before building a house!</p>
+            
+            <a href="arrays/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-cyan-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-cyan-600 text-white px-3 py-1 rounded text-sm font-bold">5 Problems</span>
+                        <h3 class="text-2xl font-bold text-white mt-2">📦 Arrays & Hashing</h3>
+                        <p class="text-gray-400 mt-1">Organizing a closet - the fundamentals of data storage</p>
+                    </div>
+                    <span class="text-cyan-400 text-3xl">→</span>
+                </div>
+            </a>
+
+            <a href="two-pointers/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-cyan-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-cyan-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
+                        <h3 class="text-2xl font-bold text-white mt-2">👫 Two Pointers</h3>
+                        <p class="text-gray-400 mt-1">Two people walking toward each other on a bridge</p>
+                    </div>
+                    <span class="text-cyan-400 text-3xl">→</span>
+                </div>
+            </a>
+
+            <a href="sliding-window/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-cyan-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-cyan-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
+                        <h3 class="text-2xl font-bold text-white mt-2">🔍 Sliding Window</h3>
+                        <p class="text-gray-400 mt-1">Looking through a moving magnifying glass</p>
+                    </div>
+                    <span class="text-cyan-400 text-3xl">→</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold text-yellow-400 mb-6">🟡 Phase 2: The Structures (The Buildings)</h2>
+            <p class="text-gray-400 mb-4">Now we're building! Learn how to organize data into powerful structures.</p>
+            
+            <div class="grid gap-4">
+                <a href="stacks-queues/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-yellow-400 transition-all">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
+                            <h3 class="text-2xl font-bold text-white mt-2">🗃️ Stacks & Queues</h3>
+                            <p class="text-gray-400 mt-1">Like cafeteria trays or a checkout line</p>
+                        </div>
+                        <span class="text-yellow-400 text-3xl">→</span>
+                    </div>
+                </a>
+
+                <a href="linked-lists/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-yellow-400 transition-all">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
+                            <h3 class="text-2xl font-bold text-white mt-2">🔗 Linked Lists</h3>
+                            <p class="text-gray-400 mt-1">A treasure hunt where each clue leads to the next</p>
+                        </div>
+                        <span class="text-yellow-400 text-3xl">→</span>
+                    </div>
+                </a>
+
+                <a href="trees-graphs/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-yellow-400 transition-all">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-sm font-bold">4 Problems</span>
+                            <h3 class="text-2xl font-bold text-white mt-2">🌳 Trees & Graphs</h3>
+                            <p class="text-gray-400 mt-1">Family trees or subway maps - connected data!</p>
+                        </div>
+                        <span class="text-yellow-400 text-3xl">→</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold text-red-400 mb-6">🔴 Phase 3: The Logic (The Engine)</h2>
+            <p class="text-gray-400 mb-4">The really cool stuff! These patterns will make you a coding wizard.</p>
+            
+            <div class="grid gap-4">
+                <a href="binary-search/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-red-400 transition-all">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="bg-red-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
+                            <h3 class="text-2xl font-bold text-white mt-2">🔍 Binary Search</h3>
+                            <p class="text-gray-400 mt-1">Finding a word in a dictionary efficiently</p>
+                        </div>
+                        <span class="text-red-400 text-3xl">→</span>
+                    </div>
+                </a>
+
+                <a href="backtracking/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-red-400 transition-all">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="bg-red-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
+                            <h3 class="text-2xl font-bold text-white mt-2">↩️ Backtracking</h3>
+                            <p class="text-gray-400 mt-1">Exploring a maze and drawing a map</p>
+                        </div>
+                        <span class="text-red-400 text-3xl">→</span>
+                    </div>
+                </a>
+
+                <a href="dynamic-programming/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-red-400 transition-all">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="bg-red-600 text-white px-3 py-1 rounded text-sm font-bold">4 Problems</span>
+                            <h3 class="text-2xl font-bold text-white mt-2">💾 Dynamic Programming</h3>
+                            <p class="text-gray-400 mt-1">Writing down answers so you don't recalculate!</p>
+                        </div>
+                        <span class="text-red-400 text-3xl">→</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invert Binary Tree - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Trees & Graphs</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-green-400">Invert Binary Tree</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-green-600 text-white px-3 py-1 rounded text-lg font-bold">Easy</span>
+            <h1 class="text-4xl font-bold text-white">Invert Binary Tree</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                Flip a tree like a mirror! Every left child becomes right, every right becomes left!
+                Like swapping left and right hands!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            
+            <div class="grid grid-cols-2 gap-8 mb-4">
+                <div class="text-center">
+                    <p class="text-gray-400 mb-2">Before:</p>
+                    <svg width="180" height="150" id="beforeSvg"></svg>
+                </div>
+                <div class="text-center">
+                    <p class="text-lime-400 mb-2">After (in progress):</p>
+                    <svg width="180" height="150" id="afterSvg"></svg>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Swap ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Recursive swap!</strong> For each node: swap its children, then recursively 
+                invert left and right. Base case: null node = just return it!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def invert_tree(root):
+    # Base case: empty tree
+    if not root:
+        return root
+    
+    # Swap left and right children
+    root.left, root.right = root.right, root.left
+    
+    # Recursively invert children
+    invert_tree(root.left)
+    invert_tree(root.right)
+    
+    return root
+
+#     4         →       4
+#    / \               / \
+#   2   7             7   2
+#  / \               / \
+# 1   3             3   1</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n)</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(h)</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const beforeTree = { val: 4, left: { val: 2, left: {val:1}, right: {val:3} }, right: { val: 7, left: null, right: null } };
+        
+        let inverted = null;
+        let step = 0;
+        let currentSwap = null;
+
+        function drawTree(node, x, y, dx, highlight = null) {
+            if (!node) return '';
+            const color = node === currentSwap ? '#06b6d4' : '#4b5563';
+            let html = `<circle cx="${x}" cy="${y}" r="18" fill="${color}" />
+                <text x="${x}" y="${y + 5}" text-anchor="middle" fill="white" font-size="12">${node.val}</text>`;
+            if (node.left) {
+                html += `<line x1="${x-15}" y1="${y-8}" x2="${x-dx}" y2="${y+25}" stroke="#6b7280" />`;
+                html += drawTree(node.left, x-dx, y+30, dx/2, highlight);
+            }
+            if (node.right) {
+                html += `<line x1="${x+15}" y1="${y-8}" x2="${x+dx}" y2="${y+25}" stroke="#6b7280" />`;
+                html += drawTree(node.right, x+dx, y+30, dx/2, highlight);
+            }
+            return html;
+        }
+
+        function deepCopy(node) {
+            if (!node) return null;
+            return { 
+                val: node.val, 
+                left: deepCopy(node.left), 
+                right: deepCopy(node.right) 
+            };
+        }
+
+        function invert(node) {
+            if (!node) return null;
+            node.left, node.right = node.right, node.left;
+            invert(node.left);
+            invert(node.right);
+            return node;
+        }
+
+        function render() {
+            document.getElementById('beforeSvg').innerHTML = drawTree(beforeTree, 90, 30, 40);
+            
+            let afterTree = deepCopy(beforeTree);
+            if (step >= 1) {
+                [afterTree.left, afterTree.right] = [afterTree.right, afterTree.left];
+                currentSwap = afterTree;
+            }
+            if (step >= 2) {
+                if (afterTree.left) [afterTree.left.left, afterTree.left.right] = [afterTree.left.right, afterTree.left.left];
+            }
+            
+            document.getElementById('afterSvg').innerHTML = drawTree(afterTree, 90, 30, 40);
+            
+            if (step >= 2) {
+                currentSwap = null;
+                document.getElementById('afterSvg').innerHTML = drawTree(afterTree, 90, 30, 40);
+            }
+        }
+
+        function stepForward() {
+            step++;
+            if (step > 2) document.getElementById('stepBtn').disabled = true;
+            render();
+        }
+
+        function resetVisualizer() {
+            step = 0;
+            currentSwap = null;
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Sum - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+        .glow-lime { box-shadow: 0 0 20px #84cc16; }
+        .glow-pink { box-shadow: 0 0 20px #ec4899; }
+        .array-cell { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Arrays & Hashing</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-green-400">Two Sum</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-green-600 text-white px-3 py-1 rounded text-lg font-bold">Easy</span>
+            <h1 class="text-4xl font-bold text-white">Two Sum</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                You have a bunch of toys, and someone tells you "Find two toys that together cost exactly $9!" 
+                You look at each toy and think "If I have this one, what other one do I need?"
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            <p class="text-gray-400 mb-4">Click "Step" to watch how the algorithm finds the answer!</p>
+            
+            <div class="mb-4">
+                <label class="text-gray-300">Target Sum: </label>
+                <input type="number" id="targetInput" value="9" class="bg-gray-700 text-white px-3 py-2 rounded border border-gray-600 w-24">
+                <button onclick="resetVisualizer()" class="ml-2 bg-gray-600 hover:bg-gray-500 px-4 py-2 rounded text-white">Reset</button>
+            </div>
+
+            <div id="arrayDisplay" class="flex gap-2 mb-4 flex-wrap justify-center">
+            </div>
+
+            <div id="hashDisplay" class="mb-4 p-4 bg-gray-900 rounded-lg min-h-[80px]">
+                <p class="text-gray-500 text-center">Hash Map (what we've seen):</p>
+                <div id="hashMapDisplay" class="flex gap-2 flex-wrap justify-center mt-2"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Step ▶</button>
+            </div>
+
+            <div id="resultDisplay" class="mt-4 text-center text-xl font-bold text-lime-400 hidden"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                When a problem asks you to "find two numbers that add to X," think: 
+                <strong>"For each number, what do I need?"</strong> 
+                Use a hash map to remember what you've seen - it's like a cheat sheet!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def two_sum(nums, target):
+    # A notebook to remember what we've seen
+    seen = {}  # key: number, value: its index
+    
+    # Go through each number one by one
+    for i, num in enumerate(nums):
+        # What number do we need to reach the target?
+        needed = target - num
+        
+        # Have we seen that number before?
+        if needed in seen:
+            # Found it! Return the pair
+            return [seen[needed], i]
+        
+        # Write this number in our notebook
+        seen[num] = i
+    
+    # No solution found (shouldn't happen for valid input)
+    return []
+
+# Try it!
+nums = [2, 7, 11, 15]
+target = 9
+print(two_sum(nums, target))  # Output: [0, 1]</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n) - We only walk through the list once!</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(n) - We use extra memory for the notebook.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const defaultNums = [2, 7, 11, 15];
+        let nums = [...defaultNums];
+        let target = 9;
+        let currentIndex = 0;
+        let seen = {};
+        let step = 0;
+        let found = false;
+
+        function renderArray() {
+            const container = document.getElementById('arrayDisplay');
+            container.innerHTML = nums.map((num, idx) => {
+                let classes = 'array-cell w-16 h-16 flex items-center justify-center text-xl font-bold rounded-lg ';
+                
+                if (found && (idx === currentIndex || idx === seen[target - nums[currentIndex]])) {
+                    classes += 'bg-lime-500 text-black glow-lime';
+                } else if (idx === currentIndex && !found) {
+                    classes += 'bg-cyan-400 text-black glow-cyan';
+                } else if (idx < currentIndex) {
+                    classes += 'bg-gray-600 text-white';
+                } else {
+                    classes += 'bg-gray-700 text-gray-300';
+                }
+                
+                return `<div class="${classes}">${num}</div>`;
+            }).join('');
+        }
+
+        function renderHashMap() {
+            const container = document.getElementById('hashMapDisplay');
+            const entries = Object.entries(seen);
+            
+            if (entries.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">(empty)</p>';
+                return;
+            }
+            
+            container.innerHTML = entries.map(([key, val]) => 
+                `<div class="bg-pink-600 px-3 py-1 rounded text-white">${key}: idx${val}</div>`
+            ).join('');
+        }
+
+        function renderResult() {
+            const resultDisplay = document.getElementById('resultDisplay');
+            if (found) {
+                const needed = target - nums[currentIndex];
+                resultDisplay.innerHTML = `🎉 Found! Indices [${seen[needed]}, ${currentIndex}] sum to ${target}!`;
+                resultDisplay.classList.remove('hidden');
+            } else {
+                resultDisplay.classList.add('hidden');
+            }
+        }
+
+        function stepForward() {
+            if (found || currentIndex >= nums.length) return;
+            
+            const currentNum = nums[currentIndex];
+            const needed = target - currentNum;
+            
+            if (needed in seen) {
+                found = true;
+                renderArray();
+                renderResult();
+                document.getElementById('stepBtn').disabled = true;
+                return;
+            }
+            
+            seen[currentNum] = currentIndex;
+            currentIndex++;
+            
+            renderArray();
+            renderHashMap();
+        }
+
+        function resetVisualizer() {
+            target = parseInt(document.getElementById('targetInput').value) || 9;
+            nums = [...defaultNums];
+            currentIndex = 0;
+            seen = {};
+            found = false;
+            document.getElementById('stepBtn').disabled = false;
+            
+            renderArray();
+            renderHashMap();
+            renderResult();
+        }
+
+        // Initialize
+        renderArray();
+        renderHashMap();
+    </script>
+</body>
+</html>

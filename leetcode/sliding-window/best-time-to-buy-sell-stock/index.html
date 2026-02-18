@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Time to Buy/Sell Stock - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Sliding Window</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-green-400">Best Time to Buy/Sell Stock</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-green-600 text-white px-3 py-1 rounded text-lg font-bold">Easy</span>
+            <h1 class="text-4xl font-bold text-white">Best Time to Buy/Sell Stock</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                Buy low, sell high! One buy, one sell. [7,1,5,3,6,4] → buy at 1, sell at 6 = profit 5!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            
+            <div class="text-center mb-4">
+                <p class="text-gray-300">prices = [7, 1, 5, 3, 6, 4]</p>
+                <div id="pricesDisplay" class="flex justify-center gap-2 mt-2"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Track Min ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+
+            <div id="resultDisplay" class="mt-4 p-3 bg-gray-900 rounded-lg text-center text-xl font-bold text-lime-400"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Track minimum price so far!</strong> At each day, profit = current price - min price so far.
+                Keep the max profit. This is like a sliding window of time!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def max_profit(prices):
+    min_price = float('inf')
+    max_profit = 0
+    
+    for price in prices:
+        # Update minimum price
+        if price < min_price:
+            min_price = price
+        # Calculate profit if sold today
+        else:
+            profit = price - min_price
+            max_profit = max(max_profit, profit)
+    
+    return max_profit
+
+# [7,1,5,3,6,4] → 5 (buy at 1, sell at 6)</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n)</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(1)</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const prices = [7, 1, 5, 3, 6, 4];
+        let minPrice = Infinity, maxProfit = 0, idx = 0;
+
+        function render() {
+            document.getElementById('pricesDisplay').innerHTML = prices.map((p, i) => {
+                let bg = i < idx ? (p === minPrice ? 'bg-lime-600' : 'bg-gray-600') : 'bg-gray-700';
+                return `<div class="${bg} px-3 py-2 rounded text-white">$${p}</div>`;
+            }).join('');
+            document.getElementById('resultDisplay').innerText = `Min: $${minPrice}, Max Profit: $${maxProfit}`;
+        }
+
+        function stepForward() {
+            if (idx >= prices.length) return;
+            const p = prices[idx];
+            if (p < minPrice) minPrice = p;
+            else maxProfit = Math.max(maxProfit, p - minPrice);
+            idx++;
+            if (idx >= prices.length) {
+                document.getElementById('stepBtn').disabled = true;
+                document.getElementById('resultDisplay').innerText = `🎉 Max Profit: $${maxProfit}`;
+            } else {
+                render();
+            }
+        }
+
+        function resetVisualizer() {
+            minPrice = Infinity; maxProfit = 0; idx = 0;
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+        render();
+    </script>
+</body>
+</html>
