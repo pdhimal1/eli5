@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number of Islands - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Trees & Graphs</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-yellow-400">Number of Islands</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-lg font-bold">Medium</span>
+            <h1 class="text-4xl font-bold text-white">Number of Islands</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                You have a map of the ocean (0s) and land (1s). Count how many islands (connected land pieces)!
+                Connected means touching up, down, left, or right - no diagonals!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            
+            <div class="mb-4 flex justify-center">
+                <div id="gridDisplay" class="grid grid-cols-5 gap-1"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Find Next Island ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+
+            <div id="resultDisplay" class="mt-4 text-center text-xl font-bold text-lime-400"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>DFS flood fill!</strong> When you find land, "sink" it (turn to water) and 
+                recursively sink all connected land. Each time you start a new DFS = new island!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def num_islands(grid):
+    if not grid: return 0
+    
+    def dfs(r, c):
+        # Out of bounds or water = stop
+        if (r < 0 or c < 0 or 
+            r >= len(grid) or c >= len(grid[0]) or
+            grid[r][c] == '0'):
+            return
+        
+        # "Sink" this land
+        grid[r][c] = '0'
+        
+        # Visit all 4 directions
+        dfs(r+1, c)
+        dfs(r-1, c)
+        dfs(r, c+1)
+        dfs(r, c-1)
+    
+    count = 0
+    for r in range(len(grid)):
+        for c in range(len(grid[0])):
+            if grid[r][c] == '1':
+                count += 1
+                dfs(r, c)  # Sink the whole island
+    
+    return count
+
+# 1 1 1 0 0
+# 1 1 0 0 1
+# 0 0 0 1 1
+# 0 0 0 0 0
+# Answer: 3 islands</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(m × n)</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(m × n) worst case</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const grid = [
+            ['1','1','1','0','0'],
+            ['1','1','0','0','1'],
+            ['0','0','0','1','1'],
+            ['0','0','0','0','0']
+        ];
+        let gridCopy = JSON.parse(JSON.stringify(grid));
+        let islands = 0;
+        let step = 0;
+        let currentIsland = [];
+
+        function render() {
+            const container = document.getElementById('gridDisplay');
+            container.innerHTML = gridCopy.map((row, r) => 
+                row.map((cell, c) => {
+                    const isIsland = currentIsland.some(([rr, cc]) => rr === r && cc === c);
+                    let bg = cell === '1' ? (isIsland ? 'bg-cyan-400' : 'bg-lime-600') : 'bg-blue-800';
+                    return `<div class="${bg} w-10 h-10 flex items-center justify-center text-white font-bold rounded">${cell}</div>`;
+                }).join('')
+            ).join('');
+            
+            document.getElementById('resultDisplay').innerText = `Islands found: ${islands}`;
+        }
+
+        function findIsland() {
+            for (let r = 0; r < gridCopy.length; r++) {
+                for (let c = 0; c < gridCopy[0].length; c++) {
+                    if (gridCopy[r][c] === '1') {
+                        return [r, c];
+                    }
+                }
+            }
+            return null;
+        }
+
+        function sink(r, c) {
+            if (r < 0 || c < 0 || r >= gridCopy.length || c >= gridCopy[0].length || gridCopy[r][c] === '0') return;
+            gridCopy[r][c] = '0';
+            currentIsland.push([r, c]);
+            sink(r+1, c);
+            sink(r-1, c);
+            sink(r, c+1);
+            sink(r, c-1);
+        }
+
+        function stepForward() {
+            const start = findIsland();
+            if (!start) {
+                document.getElementById('stepBtn').disabled = true;
+                return;
+            }
+            islands++;
+            currentIsland = [];
+            sink(start[0], start[1]);
+            render();
+            
+            if (!findIsland()) document.getElementById('stepBtn').disabled = true;
+        }
+
+        function resetVisualizer() {
+            gridCopy = JSON.parse(JSON.stringify(grid));
+            islands = 0;
+            currentIsland = [];
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>

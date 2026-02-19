@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrays & Hashing - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+        .glow-lime { box-shadow: 0 0 20px #84cc16; }
+        .glow-pink { box-shadow: 0 0 20px #ec4899; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-gray-300">LeetCode</span>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-lime-400">Arrays & Hashing</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-white mb-4">🗄️ Arrays & Hashing</h1>
+            <p class="text-xl text-gray-400">The "Organizing a Closet" Chapter</p>
+            <p class="mt-4 text-gray-300">
+                Imagine you have a messy closet full of clothes. 
+                Arrays are like laying everything out in order, and Hashing is like putting labels on boxes 
+                so you can find anything instantly!
+            </p>
+        </div>
+
+        <div class="grid gap-4">
+            <a href="two-sum/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-cyan-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-green-600 text-white px-2 py-1 rounded text-sm font-bold">Easy</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Two Sum</h2>
+                        <p class="text-gray-400 mt-1">Find two numbers that add up to a target</p>
+                    </div>
+                    <span class="text-cyan-400 text-2xl">→</span>
+                </div>
+            </a>
+
+            <a href="contains-duplicate/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-cyan-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-green-600 text-white px-2 py-1 rounded text-sm font-bold">Easy</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Contains Duplicate</h2>
+                        <p class="text-gray-400 mt-1">Check if any number appears twice</p>
+                    </div>
+                    <span class="text-cyan-400 text-2xl">→</span>
+                </div>
+            </a>
+
+            <a href="valid-anagram/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-cyan-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-green-600 text-white px-2 py-1 rounded text-sm font-bold">Easy</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Valid Anagram</h2>
+                        <p class="text-gray-400 mt-1">Check if two words use the same letters</p>
+                    </div>
+                    <span class="text-cyan-400 text-2xl">→</span>
+                </div>
+            </a>
+
+            <a href="group-anagrams/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-yellow-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-yellow-600 text-white px-2 py-1 rounded text-sm font-bold">Medium</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Group Anagrams</h2>
+                        <p class="text-gray-400 mt-1">Group words that use the same letters together</p>
+                    </div>
+                    <span class="text-yellow-400 text-2xl">→</span>
+                </div>
+            </a>
+
+            <a href="longest-consecutive-sequence/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-yellow-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-yellow-600 text-white px-2 py-1 rounded text-sm font-bold">Medium</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Longest Consecutive Sequence</h2>
+                        <p class="text-gray-400 mt-1">Find the longest chain of consecutive numbers</p>
+                    </div>
+                    <span class="text-yellow-400 text-2xl">→</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-12 p-6 bg-gray-800 rounded-lg border border-lime-400">
+            <h3 class="text-xl font-bold text-lime-400 mb-2">🎯 Brain Hack</h3>
+            <p class="text-gray-300">
+                When you see "find pairs," "check for duplicates," or "group by something" in an interview, 
+                think <strong>Hash Map</strong>! It's the superpower for O(1) lookups.
+            </p>
+        </div>
+    </main>
+</body>
+</html>

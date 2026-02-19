@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permutations - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Backtracking</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-yellow-400">Permutations</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-lg font-bold">Medium</span>
+            <h1 class="text-4xl font-bold text-white">Permutations</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                How many ways can you arrange [1, 2, 3]? List them all! It's like rearranging 
+                the order of kids in a line - all possible orderings!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            
+            <div class="mb-4 text-center">
+                <p class="text-gray-300 mb-2">Input: [1, 2, 3]</p>
+                <div id="currentDisplay" class="flex justify-center gap-2 flex-wrap mb-2"></div>
+                <div id="availableDisplay" class="flex justify-center gap-2 flex-wrap"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Next ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+
+            <div id="resultsDisplay" class="mt-4 p-3 bg-gray-900 rounded-lg">
+                <p class="text-lime-400 text-center">Found:</p>
+                <div id="resultsList" class="flex flex-wrap gap-2 mt-1 justify-center"></div>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Pick one, then recurse!</strong> For each position, try each unused number.
+                Use a "used" array to track what's already in the permutation!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def permute(nums):
+    result = []
+    used = [False] * len(nums)
+    
+    def backtrack(current):
+        # Full permutation found!
+        if len(current) == len(nums):
+            result.append(current[:])
+            return
+        
+        # Try each unused number
+        for i in range(len(nums)):
+            if not used[i]:
+                used[i] = True
+                current.append(nums[i])
+                
+                backtrack(current)
+                
+                # Backtrack!
+                current.pop()
+                used[i] = False
+    
+    backtrack([])
+    return result
+
+# [1, 2, 3] → [[1,2,3], [1,3,2], [2,1,3], ...]</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n! × n)</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(n) recursion + O(n!) output</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const nums = [1, 2, 3];
+        const permutations = [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]];
+        let currentPerm = [];
+        let found = [];
+
+        function render() {
+            document.getElementById('currentDisplay').innerHTML = currentPerm.length > 0
+                ? currentPerm.map(n => `<div class="bg-cyan-600 px-3 py-1 rounded text-white">${n}</div>`).join('')
+                : '<span class="text-gray-500">(building...)</span>';
+            
+            const unused = nums.filter(n => !currentPerm.includes(n));
+            document.getElementById('availableDisplay').innerHTML = unused.length > 0
+                ? ['choices:', ...unused.map(n => `<div class="bg-gray-700 px-3 py-1 rounded text-gray-300">${n}</div>`)].join('')
+                : '';
+            
+            document.getElementById('resultsList').innerHTML = found.map(p => 
+                `<div class="bg-lime-600 px-2 py-1 rounded text-white text-sm">[${p.join(',')}]</div>`
+            ).join('');
+        }
+
+        function stepForward() {
+            if (found.length >= 6) return;
+            
+            currentPerm = [...permutations[found.length]];
+            found.push(currentPerm);
+            
+            if (found.length >= 6) document.getElementById('stepBtn').disabled = true;
+            render();
+        }
+
+        function resetVisualizer() {
+            currentPerm = [];
+            found = [];
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>

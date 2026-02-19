@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longest Consecutive Sequence - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+        .glow-lime { box-shadow: 0 0 20px #84cc16; }
+        .glow-pink { box-shadow: 0 0 20px #ec4899; }
+        .glow-yellow { box-shadow: 0 0 20px #eab308; }
+        .num-cell { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Arrays & Hashing</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-yellow-400">Longest Consecutive Sequence</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-lg font-bold">Medium</span>
+            <h1 class="text-4xl font-bold text-white">Longest Consecutive Sequence</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                You have scattered number cards on the table. Find the longest chain of numbers 
+                that can be connected like 100 → 101 → 102 → 103! How long is your longest chain?
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            <p class="text-gray-400 mb-4">Click "Step" to find the longest consecutive chain!</p>
+            
+            <div class="mb-4">
+                <p class="text-gray-300 mb-2">Input: [100, 4, 200, 1, 3, 2]</p>
+            </div>
+
+            <div id="setDisplay" class="mb-4 p-4 bg-gray-900 rounded-lg min-h-[60px]">
+                <p class="text-gray-500 text-center mb-2">Set (all numbers):</p>
+                <div id="setContent" class="flex gap-2 flex-wrap justify-center"></div>
+            </div>
+
+            <div id="chainDisplay" class="mb-4 p-4 bg-gray-900 rounded-lg min-h-[80px]">
+                <p class="text-gray-500 text-center mb-2">Current chain being built:</p>
+                <div id="chainContent" class="flex gap-2 flex-wrap justify-center"></div>
+            </div>
+
+            <div class="flex justify-center gap-4 mb-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Step ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+
+            <div id="resultDisplay" class="mt-4 text-center text-xl font-bold hidden"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Start with the beginning of each chain!</strong> Only start counting if "num-1" doesn't exist. 
+                This way we don't redo work. It's like starting a new train from the engine, not the middle cars!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def longest_consecutive(nums):
+    # Edge case: empty array
+    if not nums:
+        return 0
+    
+    # Put all numbers in a set for fast lookup
+    num_set = set(nums)
+    
+    longest = 0
+    
+    # Check each number
+    for num in num_set:
+        # Only start counting if this is the START of a chain
+        # (i.e., num-1 doesn't exist in our set)
+        if num - 1 not in num_set:
+            current = num
+            streak = 1
+            
+            # Keep counting up while we find consecutive numbers
+            while current + 1 in num_set:
+                current += 1
+                streak += 1
+            
+            # Update longest if this streak is bigger
+            longest = max(longest, streak)
+    
+    return longest
+
+# Try it!
+nums = [100, 4, 200, 1, 3, 2]
+print(longest_consecutive(nums))  # Output: 4
+# The sequence is [1, 2, 3, 4]</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n) - Each number is visited at most twice!</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(n) - For the set of numbers</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const nums = [100, 4, 200, 1, 3, 2];
+        const numSet = new Set(nums);
+        let sortedNums = [...nums].sort((a, b) => a - b);
+        let currentIndex = 0;
+        let currentChain = [];
+        let longestChain = [];
+        let maxLength = 0;
+        let stage = 'find_start'; // 'find_start' or 'count'
+        let stepCount = 0;
+
+        function renderSet() {
+            const container = document.getElementById('setContent');
+            container.innerHTML = nums.map(num => {
+                const isInChain = currentChain.includes(num);
+                const isLongest = longestChain.includes(num);
+                let classes = 'num-cell w-10 h-10 flex items-center justify-center rounded text-lg font-bold ';
+                if (isLongest) classes += 'bg-yellow-400 text-black glow-yellow';
+                else if (isInChain) classes += 'bg-cyan-400 text-black glow-cyan';
+                else classes += 'bg-gray-700 text-gray-300';
+                return `<div class="${classes}">${num}</div>`;
+            }).join('');
+        }
+
+        function renderChain() {
+            const container = document.getElementById('chainContent');
+            if (currentChain.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">(waiting for chain start)</p>';
+                return;
+            }
+            
+            container.innerHTML = currentChain.map((num, idx) => {
+                let classes = 'num-cell w-10 h-10 flex items-center justify-center rounded text-lg font-bold ';
+                if (idx === currentChain.length - 1 && stage === 'count') {
+                    classes += 'bg-lime-500 text-black glow-lime animate-pulse';
+                } else {
+                    classes += 'bg-cyan-400 text-black';
+                }
+                return `<div class="${classes}">${num}</div>`;
+            }).join('') + 
+                (stage === 'count' ? '<span class="text-gray-400 text-2xl">→ ?</span>' : '');
+        }
+
+        function renderResult() {
+            const resultDisplay = document.getElementById('resultDisplay');
+            if (stepCount >= sortedNums.length) {
+                resultDisplay.innerHTML = `🎉 Longest consecutive sequence has length ${maxLength}: [${longestChain.join(' → ')}]`;
+                resultDisplay.className = 'mt-4 text-center text-xl font-bold text-lime-400';
+            } else {
+                resultDisplay.className = 'mt-4 text-center text-xl font-bold hidden';
+            }
+        }
+
+        function stepForward() {
+            if (stepCount >= sortedNums.length) return;
+            
+            const num = sortedNums[stepCount];
+            
+            // Check if num-1 exists (not the start of a chain)
+            if (numSet.has(num - 1)) {
+                // Skip this number - it's not a chain start
+                stepCount++;
+                if (stepCount >= sortedNums.length) {
+                    document.getElementById('stepBtn').disabled = true;
+                }
+                renderSet();
+                renderChain();
+                renderResult();
+                return;
+            }
+            
+            // This IS the start of a chain! Count it
+            currentChain = [num];
+            let streak = 1;
+            let current = num;
+            
+            while (numSet.has(current + 1)) {
+                current++;
+                currentChain.push(current);
+                streak++;
+            }
+            
+            if (streak > maxLength) {
+                maxLength = streak;
+                longestChain = [...currentChain];
+            }
+            
+            stepCount++;
+            
+            if (stepCount >= sortedNums.length) {
+                document.getElementById('stepBtn').disabled = true;
+            }
+            
+            renderSet();
+            renderChain();
+            renderResult();
+        }
+
+        function resetVisualizer() {
+            sortedNums = [...nums].sort((a, b) => a - b);
+            currentIndex = 0;
+            currentChain = [];
+            longestChain = [];
+            maxLength = 0;
+            stage = 'find_start';
+            stepCount = 0;
+            document.getElementById('stepBtn').disabled = false;
+            
+            renderSet();
+            renderChain();
+            renderResult();
+        }
+
+        // Initialize
+        renderSet();
+        renderChain();
+    </script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Peak Element - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Binary Search</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-yellow-400">Find Peak Element</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-lg font-bold">Medium</span>
+            <h1 class="text-4xl font-bold text-white">Find Peak Element</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                Find a mountain peak in an array! A peak is bigger than its neighbors.
+                You can see the whole array - find any peak quickly!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            
+            <div class="mb-4 text-center">
+                <p class="text-gray-300 mb-2">Array: [1, 2, 3, 1]</p>
+                <div id="arrayDisplay" class="flex justify-center gap-1 flex-wrap"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Find Peak ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+
+            <div id="resultDisplay" class="mt-4 text-center text-xl font-bold hidden"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                If <strong>nums[mid] < nums[mid+1]</strong>, there's a peak on the RIGHT side!
+                Go there! Otherwise, the peak is on the LEFT (or at mid)!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def find_peak(nums):
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        mid = (left + right) // 2
+        
+        # If going up, peak is to the right
+        if nums[mid] < nums[mid + 1]:
+            left = mid + 1
+        # Otherwise, peak is here or to left
+        else:
+            right = mid
+    
+    return left  # Or right, they're the same!
+
+# [1, 2, 3, 1] → peak at index 2 (value 3)</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(log n)</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(1)</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const nums = [1, 2, 3, 1];
+        let left = 0, right = nums.length - 1;
+        let mid = Math.floor((left + right) / 2);
+        let completed = false;
+
+        function render() {
+            const container = document.getElementById('arrayDisplay');
+            container.innerHTML = nums.map((val, idx) => {
+                let classes = 'w-10 h-10 flex items-center justify-center rounded text-sm font-bold ';
+                if (idx === mid) classes += 'bg-cyan-400 text-black glow-cyan';
+                else if (idx >= left && idx <= right) classes += 'bg-gray-700 text-white';
+                else classes += 'bg-gray-800 text-gray-600';
+                return `<div class="${classes}">${val}</div>`;
+            }).join('');
+
+            if (completed) {
+                const result = document.getElementById('resultDisplay');
+                result.innerHTML = `🏔️ Peak found at index ${left} (value ${nums[left]})!`;
+                result.className = 'mt-4 text-center text-xl font-bold text-lime-400';
+            }
+        }
+
+        function stepForward() {
+            if (completed) return;
+            
+            mid = Math.floor((left + right) / 2);
+            
+            if (nums[mid] < nums[mid + 1]) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+            
+            if (left >= right) {
+                completed = true;
+                document.getElementById('stepBtn').disabled = true;
+            }
+            
+            render();
+        }
+
+        function resetVisualizer() {
+            left = 0; right = nums.length - 1;
+            completed = false;
+            document.getElementById('stepBtn').disabled = false;
+            document.getElementById('resultDisplay').className = 'mt-4 text-center text-xl font-bold hidden';
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>

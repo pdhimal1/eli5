@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Anagrams - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+        .glow-lime { box-shadow: 0 0 20px #84cc16; }
+        .glow-pink { box-shadow: 0 0 20px #ec4899; }
+        .glow-yellow { box-shadow: 0 0 20px #eab308; }
+        .word-card { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Arrays & Hashing</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-yellow-400">Group Anagrams</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-lg font-bold">Medium</span>
+            <h1 class="text-4xl font-bold text-white">Group Anagrams</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                You have a bunch of word magnets mixed up on the floor. Group together the ones 
+                that use the same letters! "eat", "tea", and "ate" all go in the same group!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            <p class="text-gray-400 mb-4">Click "Step" to see words get grouped!</p>
+            
+            <div class="mb-4">
+                <p class="text-gray-300 mb-2">Input: ["eat", "tea", "tan", "ate", "nat", "bat"]</p>
+            </div>
+
+            <div id="unprocessedDisplay" class="mb-4 p-4 bg-gray-900 rounded-lg min-h-[60px]">
+                <p class="text-gray-500 text-center mb-2">Unprocessed words:</p>
+                <div id="unprocessedWords" class="flex gap-2 flex-wrap justify-center"></div>
+            </div>
+
+            <div id="groupsDisplay" class="mb-4 p-4 bg-gray-900 rounded-lg min-h-[100px]">
+                <p class="text-gray-500 text-center mb-2">Groups (Hash Map):</p>
+                <div id="groupsContent" class="flex flex-col gap-2 items-center"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Step ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+
+            <div id="resultDisplay" class="mt-4 text-center text-xl font-bold hidden"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                The trick: <strong>sort each word!</strong> "eat" → "aet", "tea" → "aet", "tan" → "ant". 
+                All words with the same sorted version are anagrams! Use sorted word as the hash key.
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def group_anagrams(strs):
+    # A box with labeled compartments
+    groups = {}
+    
+    # Process each word
+    for word in strs:
+        # Sort letters to create a "key"
+        # "eat" -> "aet", "tea" -> "aet"
+        key = ''.join(sorted(word))
+        
+        # Put word in the right compartment
+        if key not in groups:
+            groups[key] = []
+        groups[key].append(word)
+    
+    # Return all the groups
+    return list(groups.values())
+
+# Try it!
+words = ["eat", "tea", "tan", "ate", "nat", "bat"]
+print(group_anagrams(words))
+# Output: [["eat","tea","ate"], ["tan","nat"], ["bat"]]</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n × k log k) - n words, sorting each takes k log k</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(n × k) - storing all words</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const words = ["eat", "tea", "tan", "ate", "nat", "bat"];
+        let currentIndex = 0;
+        let groups = {};
+        let completed = false;
+
+        function getKey(word) {
+            return word.split('').sort().join('');
+        }
+
+        function renderUnprocessed() {
+            const container = document.getElementById('unprocessedWords');
+            
+            const processed = words.slice(0, currentIndex);
+            const remaining = words.slice(currentIndex);
+            
+            if (remaining.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">(all processed)</p>';
+                return;
+            }
+            
+            container.innerHTML = remaining.map((word, idx) => {
+                let classes = 'word-card px-3 py-2 rounded text-lg font-bold ';
+                if (idx === 0) classes += 'bg-cyan-400 text-black glow-cyan';
+                else classes += 'bg-gray-700 text-gray-300';
+                return `<div class="${classes}">${word}</div>`;
+            }).join('');
+        }
+
+        function renderGroups() {
+            const container = document.getElementById('groupsContent');
+            const groupKeys = Object.keys(groups);
+            
+            if (groupKeys.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">(empty)</p>';
+                return;
+            }
+            
+            container.innerHTML = groupKeys.map(key => `
+                <div class="bg-gray-800 p-2 rounded border border-lime-400">
+                    <span class="text-lime-400 text-sm">"${key}"</span>: 
+                    <span class="text-white">${groups[key].join(', ')}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderResult() {
+            const resultDisplay = document.getElementById('resultDisplay');
+            if (completed) {
+                resultDisplay.innerHTML = `🎉 Done! Found ${Object.keys(groups).length} groups!`;
+                resultDisplay.className = 'mt-4 text-center text-xl font-bold text-lime-400';
+            } else {
+                resultDisplay.className = 'mt-4 text-center text-xl font-bold hidden';
+            }
+        }
+
+        function stepForward() {
+            if (completed || currentIndex >= words.length) return;
+            
+            const word = words[currentIndex];
+            const key = getKey(word);
+            
+            if (!groups[key]) {
+                groups[key] = [];
+            }
+            groups[key].push(word);
+            
+            currentIndex++;
+            
+            if (currentIndex >= words.length) {
+                completed = true;
+                document.getElementById('stepBtn').disabled = true;
+            }
+            
+            renderUnprocessed();
+            renderGroups();
+            renderResult();
+        }
+
+        function resetVisualizer() {
+            currentIndex = 0;
+            groups = {};
+            completed = false;
+            document.getElementById('stepBtn').disabled = false;
+            
+            renderUnprocessed();
+            renderGroups();
+            renderResult();
+        }
+
+        // Initialize
+        renderUnprocessed();
+        renderGroups();
+    </script>
+</body>
+</html>

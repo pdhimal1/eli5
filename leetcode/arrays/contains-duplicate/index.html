@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contains Duplicate - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+        .glow-lime { box-shadow: 0 0 20px #84cc16; }
+        .glow-pink { box-shadow: 0 0 20px #ec4899; }
+        .glow-red { box-shadow: 0 0 20px #ef4444; }
+        .array-cell { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Arrays & Hashing</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-green-400">Contains Duplicate</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-green-600 text-white px-3 py-1 rounded text-lg font-bold">Easy</span>
+            <h1 class="text-4xl font-bold text-white">Contains Duplicate</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                You're playing with your toys and someone asks "Do you have two of the same toy?" 
+                You quickly glance through your toys to see if any of them appear twice!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            <p class="text-gray-400 mb-4">Click "Step" to see if we find any duplicates!</p>
+            
+            <div id="arrayDisplay" class="flex gap-2 mb-4 flex-wrap justify-center">
+            </div>
+
+            <div id="setDisplay" class="mb-4 p-4 bg-gray-900 rounded-lg min-h-[80px]">
+                <p class="text-gray-500 text-center">Set (unique toys we've seen):</p>
+                <div id="setContent" class="flex gap-2 flex-wrap justify-center mt-2"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Step ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+
+            <div id="resultDisplay" class="mt-4 text-center text-xl font-bold hidden"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                When asked "does this contain duplicates?", always think <strong>Set</strong> or <strong>Hash Map</strong>! 
+                If adding to a set fails (already exists), you found a duplicate!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def contains_duplicate(nums):
+    # A box to hold unique toys we've seen
+    seen = set()
+    
+    # Check each toy one by one
+    for num in nums:
+        # Have we seen this toy before?
+        if num in seen:
+            # Found a duplicate!
+            return True
+        
+        # Put this toy in our box
+        seen.add(num)
+    
+    # No duplicates found
+    return False
+
+# Try it!
+nums = [1, 2, 3, 1]
+print(contains_duplicate(nums))  # Output: True
+
+nums2 = [1, 2, 3, 4]
+print(contains_duplicate(nums2))  # Output: False</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n) - We check each number once!</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(n) - Worst case, we store all unique numbers.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const defaultNums = [1, 2, 3, 1];
+        let nums = [...defaultNums];
+        let currentIndex = 0;
+        let seen = new Set();
+        let found = false;
+
+        function renderArray() {
+            const container = document.getElementById('arrayDisplay');
+            container.innerHTML = nums.map((num, idx) => {
+                let classes = 'array-cell w-16 h-16 flex items-center justify-center text-xl font-bold rounded-lg ';
+                
+                if (found && idx === seenArray[0]) {
+                    classes += 'bg-red-500 text-white glow-red';
+                } else if (idx === currentIndex && !found) {
+                    classes += 'bg-cyan-400 text-black glow-cyan';
+                } else if (idx < currentIndex) {
+                    classes += 'bg-lime-600 text-white';
+                } else {
+                    classes += 'bg-gray-700 text-gray-300';
+                }
+                
+                return `<div class="${classes}">${num}</div>`;
+            }).join('');
+        }
+
+        let seenArray = [];
+        function renderSet() {
+            const container = document.getElementById('setContent');
+            
+            if (seen.size === 0) {
+                container.innerHTML = '<p class="text-gray-500">(empty)</p>';
+                return;
+            }
+            
+            container.innerHTML = Array.from(seen).map(num => 
+                `<div class="bg-lime-600 px-3 py-1 rounded text-white">${num}</div>`
+            ).join('');
+        }
+
+        function renderResult() {
+            const resultDisplay = document.getElementById('resultDisplay');
+            if (found) {
+                resultDisplay.innerHTML = `⚠️ Duplicate found! ${nums[seenArray[0]]} appears at indices ${seenArray[0]} and ${currentIndex}`;
+                resultDisplay.className = 'mt-4 text-center text-xl font-bold text-red-400';
+            } else if (currentIndex >= nums.length) {
+                resultDisplay.innerHTML = `✅ No duplicates found!`;
+                resultDisplay.className = 'mt-4 text-center text-xl font-bold text-lime-400';
+            } else {
+                resultDisplay.className = 'mt-4 text-center text-xl font-bold hidden';
+            }
+        }
+
+        function stepForward() {
+            if (found || currentIndex >= nums.length) return;
+            
+            const currentNum = nums[currentIndex];
+            
+            if (seen.has(currentNum)) {
+                found = true;
+                seenArray = [Array.from(seen).indexOf(currentNum), currentIndex];
+                renderArray();
+                renderResult();
+                document.getElementById('stepBtn').disabled = true;
+                return;
+            }
+            
+            seen.add(currentNum);
+            currentIndex++;
+            
+            renderArray();
+            renderSet();
+            renderResult();
+        }
+
+        function resetVisualizer() {
+            nums = [...defaultNums];
+            currentIndex = 0;
+            seen = new Set();
+            found = false;
+            seenArray = [];
+            document.getElementById('stepBtn').disabled = false;
+            
+            renderArray();
+            renderSet();
+            renderResult();
+        }
+
+        // Initialize
+        renderArray();
+        renderSet();
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longest Substring Without Repeating - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Sliding Window</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-yellow-400">Longest Substring Without Repeating</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-lg font-bold">Medium</span>
+            <h1 class="text-4xl font-bold text-white">Longest Substring Without Repeating</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                Find the longest unique character substring! "abcabcbb" → "abc" = 3!
+                "bbbbb" → "b" = 1!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            
+            <div class="text-center mb-4">
+                <p class="text-gray-300">s = "abcabcbb"</p>
+                <div id="strDisplay" class="flex justify-center gap-1 mt-2"></div>
+                <div id="windowDisplay" class="flex justify-center gap-1 mt-2"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Slide ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Hash set + sliding window!</strong> Add char, if duplicate found, 
+                shrink from left until no duplicate. Track max length!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def length_of_longest_substring(s):
+    char_set = set()
+    left = 0
+    max_length = 0
+    
+    for right in range(len(s)):
+        # Shrink window while duplicate
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        
+        # Add current char
+        char_set.add(s[right])
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+
+# "abcabcbb" → 3 ("abc")
+# "bbbbb" → 1 ("b")</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n)</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(min(n, alphabet))</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const s = "abcabcbb";
+        const maxLen = 3;
+        let step = 0;
+
+        function render() {
+            const windows = ["a", "ab", "abc", "bca", "cab", "abc", "bc", "cbb"];
+            const current = step < windows.length ? windows[step] : windows[windows.length-1];
+            
+            document.getElementById('strDisplay').innerHTML = s.split('').map((c, i) => 
+                `<div class="bg-gray-700 px-2 py-1 rounded text-white">${c}</div>`
+            ).join('');
+            
+            document.getElementById('windowDisplay').innerHTML = current.split('').map(c => 
+                `<div class="bg-cyan-600 px-2 py-1 rounded text-white">${c}</div>`
+            ).join('');
+        }
+
+        function stepForward() {
+            if (step >= 7) return;
+            step++;
+            if (step >= 7) document.getElementById('stepBtn').disabled = true;
+            render();
+        }
+
+        function resetVisualizer() {
+            step = 0;
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+        render();
+    </script>
+</body>
+</html>

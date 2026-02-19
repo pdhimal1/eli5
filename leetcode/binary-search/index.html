@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Search - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">LeetCode</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-red-400">Binary Search</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-white mb-4">🔍 Binary Search</h1>
+            <p class="text-xl text-gray-400">The "Dictionary" Chapter</p>
+            <p class="mt-4 text-gray-300">
+                Looking for a word in a dictionary? Don't read page by page! Open to the middle, 
+                then decide if you need to look left or right. Cut the problem in half each time!
+            </p>
+        </div>
+
+        <div class="grid gap-4">
+            <a href="search-rotated-array/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-red-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-yellow-600 text-white px-2 py-1 rounded text-sm font-bold">Medium</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Search in Rotated Array</h2>
+                        <p class="text-gray-400 mt-1">Find a number in a rotated sorted array!</p>
+                    </div>
+                    <span class="text-red-400 text-2xl">→</span>
+                </div>
+            </a>
+
+            <a href="binary-search/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-red-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-green-600 text-white px-2 py-1 rounded text-sm font-bold">Easy</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Binary Search</h2>
+                        <p class="text-gray-400 mt-1">The classic binary search!</p>
+                    </div>
+                    <span class="text-red-400 text-2xl">→</span>
+                </div>
+            </a>
+
+            <a href="find-peak-element/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-red-400 transition-all">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="bg-yellow-600 text-white px-2 py-1 rounded text-sm font-bold">Medium</span>
+                        <h2 class="text-2xl font-bold text-white mt-2">Find Peak Element</h2>
+                        <p class="text-gray-400 mt-1">Find a peak in a mountain array!</p>
+                    </div>
+                    <span class="text-red-400 text-2xl">→</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-12 p-6 bg-gray-800 rounded-lg border border-lime-400">
+            <h3 class="text-xl font-bold text-lime-400 mb-2">🎯 Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Split in half!</strong> Binary search only works on SORTED arrays. 
+                Each step eliminates half the search space. O(log n) = super fast!
+            </p>
+        </div>
+    </main>
+</body>
+</html>

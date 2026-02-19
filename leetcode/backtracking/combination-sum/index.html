@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combination Sum - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Backtracking</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-yellow-400">Combination Sum</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-lg font-bold">Medium</span>
+            <h1 class="text-4xl font-bold text-white">Combination Sum</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                Find numbers that add up to a target! With [2,3,6,7] and target 7, 
+                you can use 7 (single) or 2+2+3! Each number can be used unlimited times!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            
+            <div class="text-center mb-4">
+                <p class="text-gray-300">Candidates: [2, 3, 6, 7], Target: 7</p>
+                <div id="searchDisplay" class="mt-2 flex justify-center gap-2 flex-wrap"></div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Explore ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+
+            <div id="resultsDisplay" class="mt-4 p-3 bg-gray-900 rounded-lg text-center">
+                <p class="text-lime-400">Valid combinations:</p>
+                <div id="resultsList" class="flex flex-wrap gap-2 mt-1 justify-center"></div>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Sort, then DFS!</strong> Sort candidates to prune branches. 
+                If current sum > target, stop! Can reuse same number (don't increment index)!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def combination_sum(candidates, target):
+    result = []
+    candidates.sort()  # Sort for pruning!
+    
+    def backtrack(start, current, total):
+        # Found valid combination!
+        if total == target:
+            result.append(current[:])
+            return
+        
+        # Too big, stop!
+        if total > target:
+            return
+        
+        # Try each candidate
+        for i in range(start, len(candidates)):
+            current.append(candidates[i])
+            backtrack(i, current, total + candidates[i])
+            current.pop()  # Backtrack!
+    
+    backtrack(0, [], 0)
+    return result
+
+# [2,3,6,7], target=7 → [[7], [2,2,3]]</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O branches^depth</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(depth)</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const combos = [
+            {path: [2,2,3], status: 'valid'},
+            {path: [7], status: 'valid'}
+        ];
+        let step = 0;
+        let current = [];
+
+        function render() {
+            const display = document.getElementById('searchDisplay');
+            if (step === 0) {
+                display.innerHTML = '<span class="text-gray-500">Starting search...</span>';
+            } else if (step === 1) {
+                display.innerHTML = '<div class="bg-yellow-600 px-3 py-1 rounded text-white">2 + 2 + 3 = 7 ✓</div>';
+            } else {
+                display.innerHTML = '<div class="bg-lime-600 px-3 py-1 rounded text-white">7 = 7 ✓</div>';
+            }
+
+            document.getElementById('resultsList').innerHTML = step >= 1 
+                ? '<div class="bg-lime-600 px-2 py-1 rounded text-white">[2,2,3]</div>' : '';
+            if (step >= 2) {
+                document.getElementById('resultsList').innerHTML += '<div class="bg-lime-600 px-2 py-1 rounded text-white">[7]</div>';
+            }
+        }
+
+        function stepForward() {
+            if (step >= 2) return;
+            step++;
+            if (step >= 2) document.getElementById('stepBtn').disabled = true;
+            render();
+        }
+
+        function resetVisualizer() {
+            step = 0;
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>

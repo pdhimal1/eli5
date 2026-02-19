@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implement Queue using Stacks - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+        .glow-lime { box-shadow: 0 0 20px #84cc16; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Stacks & Queues</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-green-400">Implement Queue using Stacks</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-green-600 text-white px-3 py-1 rounded text-lg font-bold">Easy</span>
+            <h1 class="text-4xl font-bold text-white">Implement Queue using Stacks</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                You only have stacks (like a stack of plates - only top one accessible), but you need to build 
+                a queue (like a line - first in, first out). How would you do it?
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            <p class="text-gray-400 mb-4">Watch how we simulate a queue using two stacks!</p>
+            
+            <div class="flex gap-2 mb-4 justify-center">
+                <input type="number" id="enqueueValue" value="1" class="bg-gray-700 text-white px-3 py-2 rounded border border-gray-600 w-24">
+                <button onclick="enqueue()" class="bg-cyan-600 hover:bg-cyan-500 px-4 py-2 rounded font-bold text-white">Enqueue</button>
+                <button onclick="dequeue()" class="bg-pink-600 hover:bg-pink-500 px-4 py-2 rounded font-bold text-white">Dequeue</button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="p-4 bg-gray-900 rounded-lg">
+                    <p class="text-gray-500 text-center">Input Stack (new items)</p>
+                    <div id="inputStack" class="flex flex-col-reverse gap-1 mt-2 items-center"></div>
+                </div>
+                <div class="p-4 bg-gray-900 rounded-lg">
+                    <p class="text-gray-500 text-center">Output Stack (ready to dequeue)</p>
+                    <div id="outputStack" class="flex flex-col-reverse gap-1 mt-2 items-center"></div>
+                </div>
+            </div>
+
+            <div id="resultDisplay" class="mt-4 p-3 bg-gray-700 rounded-lg text-center text-lg font-bold text-lime-400"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Use two stacks!</strong> When enqueueing, push to input stack. When dequeueing, 
+                if output stack is empty, transfer all from input (reversing order!). The bottom of input 
+                becomes the front of queue!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">class MyQueue:
+    def __init__(self):
+        self.input = []
+        self.output = []
+    
+    def push(self, x):
+        # Push to input stack
+        self.input.append(x)
+    
+    def pop(self):
+        # If output empty, transfer from input
+        self._transfer()
+        return self.output.pop()
+    
+    def peek(self):
+        self._transfer()
+        return self.output[-1]
+    
+    def empty(self):
+        return not self.input and not self.output
+    
+    def _transfer(self):
+        # Move all from input to output (reverses order!)
+        if not self.output:
+            while self.input:
+                self.output.append(self.input.pop())
+
+# Try it!
+q = MyQueue()
+q.push(1)
+q.push(2)
+print(q.peek())    # 1
+print(q.pop())     # 1
+print(q.pop())     # 2</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Amortized Time:</strong> O(1) for all operations!</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(n) - two stacks</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let inputStack = [];
+        let outputStack = [];
+
+        function render() {
+            const inputEl = document.getElementById('inputStack');
+            const outputEl = document.getElementById('outputStack');
+            
+            inputEl.innerHTML = inputStack.length === 0 
+                ? '<p class="text-gray-500">(empty)</p>'
+                : inputStack.map(val => `<div class="bg-cyan-600 px-4 py-2 rounded text-white font-bold">${val}</div>`).join('');
+            
+            outputEl.innerHTML = outputStack.length === 0 
+                ? '<p class="text-gray-500">(empty)</p>'
+                : outputStack.map(val => `<div class="bg-lime-600 px-4 py-2 rounded text-white font-bold">${val}</div>`).join('');
+        }
+
+        function transfer() {
+            while (inputStack.length > 0) {
+                outputStack.push(inputStack.pop());
+            }
+        }
+
+        function enqueue() {
+            const val = parseInt(document.getElementById('enqueueValue').value);
+            inputStack.push(val);
+            render();
+            document.getElementById('resultDisplay').innerText = `Enqueued ${val}`;
+        }
+
+        function dequeue() {
+            if (outputStack.length === 0) transfer();
+            if (outputStack.length === 0) {
+                document.getElementById('resultDisplay').innerText = 'Queue is empty!';
+                return;
+            }
+            const val = outputStack.pop();
+            render();
+            document.getElementById('resultDisplay').innerText = `Dequeued ${val}`;
+        }
+
+        render();
+    </script>
+</body>
+</html>

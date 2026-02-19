@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge Two Sorted Lists - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Linked Lists</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-green-400">Merge Two Sorted Lists</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-green-600 text-white px-3 py-1 rounded text-lg font-bold">Easy</span>
+            <h1 class="text-4xl font-bold text-white">Merge Two Sorted Lists</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                You have two lines of kids sorted by height. Merge them into one line that's still sorted!
+                Compare the first kid from each line, put the shorter one first, repeat.
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            
+            <div class="grid grid-cols-3 gap-4 mb-4 text-center">
+                <div>
+                    <p class="text-gray-400 mb-2">List 1: 1 → 2 → 4</p>
+                    <div id="list1Display" class="flex justify-center gap-1"></div>
+                </div>
+                <div>
+                    <p class="text-gray-400 mb-2">List 2: 1 → 3 → 4</p>
+                    <div id="list2Display" class="flex justify-center gap-1"></div>
+                </div>
+                <div>
+                    <p class="text-lime-400 mb-2">Result:</p>
+                    <div id="resultDisplay2" class="flex justify-center gap-1"></div>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Step ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                Use a <strong>dummy node</strong>! It simplifies the code by handling the head without special cases.
+                Compare l1 vs l2, pick smaller, attach to dummy's tail!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def merge_two_lists(l1, l2):
+    # Dummy node - acts as placeholder for result head
+    dummy = ListNode(0)
+    tail = dummy
+    
+    # Compare and pick the smaller node
+    while l1 and l2:
+        if l1.val <= l2.val:
+            tail.next = l1
+            l1 = l1.next
+        else:
+            tail.next = l2
+            l2 = l2.next
+        tail = tail.next
+    
+    # Attach remaining nodes
+    tail.next = l1 or l2
+    
+    return dummy.next</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n + m)</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(1)</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const list1 = [1, 2, 4];
+        const list2 = [1, 3, 4];
+        let idx1 = 0, idx2 = 0;
+        let result = [];
+        let completed = false;
+
+        function render() {
+            const l1El = document.getElementById('list1Display');
+            const l2El = document.getElementById('list2Display');
+            const resEl = document.getElementById('resultDisplay2');
+            
+            l1El.innerHTML = list1.map((val, idx) => 
+                `<div class="${idx < idx1 ? 'bg-gray-600 text-gray-400' : idx === idx1 ? 'bg-cyan-400 text-black' : 'bg-gray-700 text-gray-300'} px-3 py-1 rounded text-sm font-bold">${val}</div>`
+            ).join(' → ');
+            
+            l2El.innerHTML = list2.map((val, idx) => 
+                `<div class="${idx < idx2 ? 'bg-gray-600 text-gray-400' : idx === idx2 ? 'bg-pink-400 text-black' : 'bg-gray-700 text-gray-300'} px-3 py-1 rounded text-sm font-bold">${val}</div>`
+            ).join(' → ');
+            
+            resEl.innerHTML = result.length === 0 ? '<span class="text-gray-500">(waiting)</span>' : 
+                result.map((val, idx) => 
+                    `<div class="bg-lime-600 px-3 py-1 rounded text-sm font-bold">${val}</div>`
+                ).join(' → ');
+        }
+
+        function stepForward() {
+            if (completed) return;
+            
+            if (idx1 < list1.length && (idx2 >= list2.length || list1[idx1] <= list2[idx2])) {
+                result.push(list1[idx1]);
+                idx1++;
+            } else if (idx2 < list2.length) {
+                result.push(list2[idx2]);
+                idx2++;
+            }
+            
+            if (idx1 >= list1.length && idx2 >= list2.length) {
+                completed = true;
+                document.getElementById('stepBtn').disabled = true;
+            }
+            render();
+        }
+
+        function resetVisualizer() {
+            idx1 = 0; idx2 = 0;
+            result = [];
+            completed = false;
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>

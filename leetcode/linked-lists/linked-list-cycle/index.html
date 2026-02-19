@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linked List Cycle - ELI5 Park</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a1a1a; }
+        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
+        .glow-lime { box-shadow: 0 0 20px #84cc16; }
+        .glow-red { box-shadow: 0 0 20px #ef4444; }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+    <header class="p-6 border-b border-gray-700">
+        <a href="/eli5" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <a href="../index.html" class="text-xl text-gray-300 hover:text-cyan-400">Linked Lists</a>
+        <span class="mx-2 text-gray-500">/</span>
+        <span class="text-xl text-green-400">Linked List Cycle</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6">
+        <div class="flex items-center gap-4 mb-6">
+            <span class="bg-green-600 text-white px-3 py-1 rounded text-lg font-bold">Easy</span>
+            <h1 class="text-4xl font-bold text-white">Linked List Cycle</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold text-lime-400 mb-4">👶 The 5-Year-Old Summary</h2>
+            <p class="text-xl text-gray-200">
+                You're in a treasure hunt room. Some treasure hunts end at "null" (no more clues), 
+                but some loops back to a previous room! Detect if you're stuck in a loop!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-cyan-400">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">🎮 Interactive Visualizer</h2>
+            <p class="text-gray-400 mb-4">Floyd's Tortoise & Hare Algorithm!</p>
+            
+            <div class="mb-4 text-center">
+                <p class="text-gray-300 mb-2">List: 3 → 2 → 0 → -4 → (back to 2)</p>
+                <div id="listDisplay" class="flex items-center justify-center gap-2 flex-wrap"></div>
+            </div>
+            
+            <div class="flex gap-4 justify-center mb-4">
+                <div class="text-center">
+                    <p class="text-cyan-400 mb-1">🐢 Slow (1 step)</p>
+                    <div id="slowDisplay" class="text-lg font-bold text-cyan-400">-</div>
+                </div>
+                <div class="text-center">
+                    <p class="text-pink-400 mb-1">🐇 Fast (2 steps)</p>
+                    <div id="fastDisplay" class="text-lg font-bold text-pink-400">-</div>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button onclick="stepForward()" id="stepBtn" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-lg font-bold text-white">Step ▶</button>
+                <button onclick="resetVisualizer()" class="bg-gray-600 hover:bg-gray-500 px-4 py-3 rounded-lg font-bold text-white">Reset</button>
+            </div>
+
+            <div id="resultDisplay" class="mt-4 text-center text-xl font-bold hidden"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-pink-400">
+            <h3 class="text-xl font-bold text-pink-400 mb-2">🧠 The Brain Hack</h3>
+            <p class="text-gray-300">
+                <strong>Floyd's Cycle Detection!</strong> Use two pointers - slow moves 1 step, fast moves 2 steps.
+                If there's a cycle, they MUST meet! It's like two runners on a circular track!
+            </p>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">💻 The Clean Solution</h2>
+            <pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="language-python text-green-400">def has_cycle(head):
+    if not head or not head.next:
+        return False
+    
+    # Start at head
+    slow = head
+    fast = head
+    
+    # Move slow by 1, fast by 2
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        
+        # They met = cycle exists!
+        if slow == fast:
+            return True
+    
+    # Fast reached end = no cycle
+    return False</code></pre>
+            <div class="mt-4 p-4 bg-gray-700 rounded-lg">
+                <p class="text-gray-300"><strong class="text-cyan-400">Time:</strong> O(n)</p>
+                <p class="text-gray-300"><strong class="text-cyan-400">Space:</strong> O(1)</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const nodes = [
+            {val: 3, next: 1},
+            {val: 2, next: 2},
+            {val: 0, next: 3},
+            {val: -4, next: 1}  // points back to node 2 (0-indexed)
+        ];
+        
+        let slowIdx = 0;
+        let fastIdx = 0;
+        let step = 0;
+        let completed = false;
+        let met = false;
+
+        function render() {
+            const container = document.getElementById('listDisplay');
+            const slowEl = document.getElementById('slowDisplay');
+            const fastEl = document.getElementById('fastDisplay');
+            
+            container.innerHTML = nodes.map((node, idx) => {
+                let classes = 'w-12 h-12 flex items-center justify-center rounded-full text-sm font-bold ';
+                if (idx === slowIdx) classes += 'border-4 border-cyan-400 glow-cyan';
+                else if (idx === fastIdx) classes += 'border-4 border-pink-400 glow-red';
+                else classes += 'bg-gray-700 text-gray-300';
+                
+                const arrow = idx < nodes.length - 1 ? `→ (${nodes[idx].next})` : '→ null';
+                return `<div class="flex items-center gap-1"><div class="${classes}">${node.val}</div><span class="text-gray-500 text-xs">${arrow}</span></div>`;
+            }).join('');
+            
+            slowEl.innerText = nodes[slowIdx]?.val ?? '-';
+            fastEl.innerText = nodes[fastIdx]?.val ?? '-';
+            
+            if (completed) {
+                const result = document.getElementById('resultDisplay');
+                if (met) {
+                    result.innerHTML = '🔄 Cycle detected! 🐢 and 🐇 met!';
+                    result.className = 'mt-4 text-center text-xl font-bold text-lime-400';
+                } else {
+                    result.innerHTML = '✅ No cycle - fast reached null!';
+                    result.className = 'mt-4 text-center text-xl font-bold text-lime-400';
+                }
+            }
+        }
+
+        function stepForward() {
+            if (completed) return;
+            
+            // Move slow by 1
+            slowIdx = nodes[slowIdx].next;
+            // Move fast by 2
+            fastIdx = nodes[nodes[fastIdx].next].next;
+            step++;
+            
+            // Check if they met
+            if (slowIdx === fastIdx) {
+                met = true;
+                completed = true;
+                document.getElementById('stepBtn').disabled = true;
+            } else if (fastIdx >= nodes.length || nodes[fastIdx] === undefined) {
+                completed = true;
+                document.getElementById('stepBtn').disabled = true;
+            }
+            
+            render();
+        }
+
+        function resetVisualizer() {
+            slowIdx = 0;
+            fastIdx = 0;
+            step = 0;
+            completed = false;
+            met = false;
+            document.getElementById('stepBtn').disabled = false;
+            render();
+        }
+
+        render();
+    </script>
+</body>
+</html>
