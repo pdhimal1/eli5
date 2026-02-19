@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRI - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a237e, #283593); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #1a237e; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0a15; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #7986cb; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #7986cb; border-radius: 10px; background: #0d0d20; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-scan { background: linear-gradient(135deg, #7986cb, #5c6bc0); color: white; }
+        .fact-box { background: #e8eaf6; border-left: 5px solid #283593; padding: 15px; margin: 15px 0; color: #1a237e; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧲 MRI: Magnets That See Inside! 🧲</h1>
+        <p class="subtitle">Using super-powerful magnets to create 3D pictures of your body!</p>
+        
+        <div class="story-box">
+            <h2>🧲 Giant Magnets!</h2>
+            <p>Your body is made of tiny particles called atoms. Inside each atom are even tinier particles called protons!</p>
+            <p><strong>MRI uses super-powerful magnets to make these protons spin and line up!</strong></p>
+            <p>When the magnet turns off, protons relax and send signals. The machine listens to these signals and builds a picture!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Proton Dance!</h2>
+            <canvas id="mriCanvas" width="700" height="400"></canvas>
+            <div class="controls">
+                <button class="btn-scan" onclick="toggleMagnet()">Toggle Magnet! 🧲</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔬 How MRI Works</h2>
+            <p><strong>1. Super Magnet:</strong> Creates a strong magnetic field (30,000x stronger than Earth's!)</p>
+            <p><strong>2. Radio Waves:</strong> Poke the protons to make them wiggle!</p>
+            <p><strong>3. Proton Relaxation:</strong> Protons send signals when they relax</p>
+            <p><strong>4. Computer:</strong> Turns signals into detailed 3D pictures!</p>
+            <div class="fact-box">
+                🔥 MRI doesn't use radiation like X-rays - it's just magnets and radio waves!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🏥 What Can MRI See?</h2>
+            <p>🧠 <strong>Brain:</strong> Tumors, strokes, injuries</p>
+            <p>🦴 <strong>Joints:</strong> Knees, shoulders, wrists</p>
+            <p>🫀 <strong>Organs:</strong> Heart, liver, kidneys</p>
+            <p>🩹 <strong>Soft Tissue:</strong> Muscles, tendons, ligaments</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Medical Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('mriCanvas');
+        const ctx = canvas.getContext('2d');
+        let magnetOn = false;
+        let protons = [];
+        let time = 0;
+        
+        function initProtons() {
+            protons = [];
+            for (let i = 0; i < 30; i++) {
+                protons.push({
+                    x: 100 + Math.random() * 500,
+                    y: 100 + Math.random() * 200,
+                    angle: Math.random() * Math.PI * 2,
+                    speed: 0,
+                    wiggle: Math.random() * Math.PI * 2
+                });
+            }
+        }
+        
+        function toggleMagnet() {
+            magnetOn = !magnetOn;
+        }
+        
+        function drawProton(p) {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            
+            // Proton spin
+            if (magnetOn) {
+                p.angle += 0.05;
+                p.speed = 0.5;
+                p.wiggle += 0.1;
+            } else {
+                p.speed *= 0.95;
+            }
+            
+            ctx.rotate(p.angle);
+            
+            // Draw spinning proton
+            ctx.fillStyle = '#ff4081';
+            ctx.beginPath();
+            ctx.arc(0, 0, 8, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Spin arrow
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, -6);
+            ctx.lineTo(0, 6);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(-3, -2);
+            ctx.lineTo(0, -6);
+            ctx.lineTo(3, -2);
+            ctx.stroke();
+            
+            ctx.restore();
+            
+            // Wiggle effect
+            if (magnetOn) {
+                ctx.strokeStyle = 'rgba(121, 134, 203, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                const wiggleX = Math.sin(p.wiggle) * 20;
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p.x + wiggleX, p.y - 30);
+                ctx.stroke();
+            }
+        }
+        
+        function drawMagnet() {
+            // Draw MRI machine (giant magnet tube)
+            ctx.fillStyle = '#37474f';
+            ctx.fillRect(50, 80, 600, 240);
+            
+            // Inner tube
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(70, 100, 560, 200);
+            
+            // Patient table
+            ctx.fillStyle = '#795548';
+            ctx.fillRect(50, 180, 600, 40);
+            
+            // Magnet coils
+            ctx.fillStyle = '#607d8b';
+            for (let i = 0; i < 6; i++) {
+                ctx.fillRect(100 + i * 100, 90, 20, 220);
+            }
+            
+            // Magnetic field lines
+            if (magnetOn) {
+                ctx.strokeStyle = '#64b5f6';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([10, 5]);
+                
+                for (let y = 50; y < 350; y += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(50, y);
+                    ctx.lineTo(650, y);
+                    ctx.stroke();
+                }
+                ctx.setLineDash([]);
+                
+                // Labels
+                ctx.fillStyle = '#64b5f6';
+                ctx.font = '14px Arial';
+                ctx.fillText('Magnetic Field', 300, 50);
+            }
+            
+            // Labels
+            ctx.fillStyle = '#aaa';
+            ctx.font = '14px Arial';
+            ctx.fillText('MRI Machine', 320, 340);
+            ctx.fillText('Patient Table', 320, 235);
+        }
+        
+        function draw() {
+            time += 0.02;
+            
+            // Clear canvas
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, 700, 400);
+            
+            // Draw magnet
+            drawMagnet();
+            
+            // Draw protons
+            protons.forEach(p => drawProton(p));
+            
+            // Status
+            ctx.fillStyle = magnetOn ? '#4caf50' : '#f44336';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText(magnetOn ? 'Magnet: ON 🧲' : 'Magnet: OFF', 20, 30);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        initProtons();
+        draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaccines - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #2e7d32, #388e3c); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #2e7d32; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0a15; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #81c784; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #81c784; border-radius: 10px; background: #0d0d20; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-vaccine { background: linear-gradient(135deg, #81c784, #66bb6a); color: white; }
+        .btn-attack { background: linear-gradient(135deg, #ef5350, #e53935); color: white; }
+        .fact-box { background: #e8f5e9; border-left: 5px solid #388e3c; padding: 15px; margin: 15px 0; color: #2e7d32; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💉 Vaccines: Body Training! 💉</h1>
+        <p class="subtitle">Teaching your body to fight germs before they attack!</p>
+        
+        <div class="story-box">
+            <h2>🛡️ Your Body's Security System!</h2>
+            <p>Your body has an amazing defense team called the immune system! It's like having an army of soldiers ready to fight germs!</p>
+            <p><strong>Vaccines are like practice drills for your immune system!</strong></p>
+            <p>They show your body what a germ looks like (without making you sick), so your army knows how to fight it if the real germ ever comes!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Your Immune Army!</h2>
+            <canvas id="vaccineCanvas" width="700" height="400"></canvas>
+            <div class="controls">
+                <button class="btn-vaccine" onclick="administerVaccine()">Give Vaccine! 💉</button>
+                <button class="btn-attack" onclick="startInfection()">Release Germs! 🦠</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎓 How Vaccines Train Your Body</h2>
+            <p><strong>1. The Vaccine:</strong> Contains a weakened or dead germ (or just a piece of it)</p>
+            <p><strong>2. Practice:</strong> Your immune system learns what the germ looks like</p>
+            <p><strong>3. Memory:</strong> Creates "memory cells" that remember the germ forever</p>
+            <p><strong>4. Real Attack:</strong> If the real germ comes, your body destroys it quickly!</p>
+            <div class="fact-box">
+                🔥 Vaccines have saved millions of lives! Smallpox was completely eliminated by vaccines!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>💪 Types of Vaccines</h2>
+            <p>🧬 <strong>mRNA Vaccines:</strong> Give instructions to make germ pieces (like COVID vaccines)</p>
+            <p>🧪 <strong>Protein Subunit:</strong> Just use pieces of the germ</p>
+            <p>🦠 <strong>Live Attenuated:</strong> Weakened germs that can't make you sick</p>
+            <p>💀 <strong>Inactivated:</strong> Dead germs that can't hurt you</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Medical Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('vaccineCanvas');
+        const ctx = canvas.getContext('2d');
+        let vaccinated = false;
+        let infectionStarted = false;
+        let antibodies = [];
+        let germs = [];
+        let immuneCells = [];
+        let memoryCells = [];
+        let time = 0;
+        
+        function initImmuneCells() {
+            immuneCells = [];
+            for (let i = 0; i < 15; i++) {
+                immuneCells.push({
+                    x: 50 + Math.random() * 600,
+                    y: 50 + Math.random() * 300,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: (Math.random() - 0.5) * 2,
+                    size: 15,
+                    active: true
+                });
+            }
+        }
+        
+        function administerVaccine() {
+            vaccinated = true;
+            
+            // Create practice germs (harmless)
+            for (let i = 0; i < 5; i++) {
+                germs.push({
+                    x: 600,
+                    y: 100 + i * 50,
+                    vx: -1,
+                    vy: (Math.random() - 0.5),
+                    type: 'practice',
+                    practice: true
+                });
+            }
+            
+            // Create memory cells
+            setTimeout(() => {
+                for (let i = 0; i < 8; i++) {
+                    memoryCells.push({
+                        x: 100 + Math.random() * 500,
+                        y: 350,
+                        angle: Math.random() * Math.PI * 2,
+                        pulse: Math.random() * Math.PI
+                    });
+                }
+            }, 2000);
+        }
+        
+        function startInfection() {
+            infectionStarted = true;
+            
+            // Create real germs
+            for (let i = 0; i < 10; i++) {
+                germs.push({
+                    x: 650 + Math.random() * 50,
+                    y: 50 + Math.random() * 300,
+                    vx: -2 - Math.random() * 2,
+                    vy: (Math.random() - 0.5) * 2,
+                    type: 'real',
+                    practice: false
+                });
+            }
+        }
+        
+        function drawImmuneCell(cell) {
+            if (!cell.active) return;
+            
+            ctx.save();
+            ctx.translate(cell.x, cell.y);
+            
+            // Cell body
+            ctx.fillStyle = '#81c784';
+            ctx.beginPath();
+            ctx.arc(0, 0, cell.size, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Nucleus
+            ctx.fillStyle = '#4caf50';
+            ctx.beginPath();
+            ctx.arc(0, 0, cell.size * 0.4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Receptors (little bumps)
+            for (let i = 0; i < 8; i++) {
+                const angle = (i / 8) * Math.PI * 2 + time;
+                const rx = Math.cos(angle) * (cell.size + 3);
+                const ry = Math.sin(angle) * (cell.size + 3);
+                ctx.fillStyle = '#66bb6a';
+                ctx.beginPath();
+                ctx.arc(rx, ry, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            ctx.restore();
+            
+            // Move cell
+            cell.x += cell.vx;
+            cell.y += cell.vy;
+            
+            // Bounce off walls
+            if (cell.x < 20 || cell.x > 680) cell.vx *= -1;
+            if (cell.y < 20 || cell.y > 380) cell.vy *= -1;
+        }
+        
+        function drawGerm(germ) {
+            ctx.save();
+            ctx.translate(germ.x, germ.y);
+            
+            // Germ body
+            ctx.fillStyle = germ.practice ? '#ffb74d' : '#ef5350';
+            ctx.beginPath();
+            ctx.arc(0, 0, 12, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Spikes (like virus spikes)
+            for (let i = 0; i < 6; i++) {
+                const angle = (i / 6) * Math.PI * 2 + time * 2;
+                const sx = Math.cos(angle) * 15;
+                const sy = Math.sin(angle) * 15;
+                ctx.strokeStyle = germ.practice ? '#ff9800' : '#d32f2f';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(sx, sy);
+                ctx.stroke();
+            }
+            
+            ctx.restore();
+            
+            // Move germ
+            germ.x += germ.vx;
+            germ.y += germ.vy;
+            
+            // Check collision with immune cells
+            immuneCells.forEach(cell => {
+                if (!cell.active) return;
+                const dx = germ.x - cell.x;
+                const dy = germ.y - cell.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < cell.size + 15) {
+                    // If vaccinated and real germ, destroy quickly
+                    if (vaccinated && !germ.practice) {
+                        germ.x = -100; // Remove germ
+                        // Create antibody burst
+                        for (let i = 0; i < 5; i++) {
+                            antibodies.push({
+                                x: cell.x,
+                                y: cell.y,
+                                vx: (Math.random() - 0.5) * 5,
+                                vy: (Math.random() - 0.5) * 5,
+                                life: 30
+                            });
+                        }
+                    }
+                }
+            });
+        }
+        
+        function drawMemoryCell(cell) {
+            ctx.save();
+            ctx.translate(cell.x, cell.y);
+            
+            // Pulse effect
+            const pulse = 1 + Math.sin(time * 3 + cell.pulse) * 0.2;
+            
+            // Cell body
+            ctx.fillStyle = 'rgba(156, 39, 176, 0.8)';
+            ctx.beginPath();
+            ctx.arc(0, 0, 12 * pulse, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Star shape
+            ctx.strokeStyle = '#ba68c8';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < 5; i++) {
+                const angle = (i / 5) * Math.PI * 2 + cell.angle;
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(Math.cos(angle) * 15, Math.sin(angle) * 15);
+                ctx.stroke();
+            }
+            
+            ctx.restore();
+        }
+        
+        function drawAntibody(ab) {
+            ctx.strokeStyle = '#4fc3f7';
+            ctx.lineWidth = 2;
+            
+            // Y shape
+            ctx.beginPath();
+            ctx.moveTo(ab.x, ab.y);
+            ctx.lineTo(ab.x - 5, ab.y - 8);
+            ctx.moveTo(ab.x, ab.y);
+            ctx.lineTo(ab.x + 5, ab.y - 8);
+            ctx.moveTo(ab.x, ab.y);
+            ctx.lineTo(ab.x, ab.y + 8);
+            ctx.stroke();
+            
+            // Move
+            ab.x += ab.vx;
+            ab.y += ab.vy;
+            ab.life--;
+        }
+        
+        function draw() {
+            time += 0.05;
+            
+            // Clear canvas
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, 700, 400);
+            
+            // Draw body background
+            ctx.fillStyle = '#263238';
+            ctx.fillRect(10, 10, 680, 380);
+            
+            // Draw immune cells
+            immuneCells.forEach(cell => drawImmuneCell(cell));
+            
+            // Draw germs
+            germs.forEach(germ => drawGerm(germ));
+            
+            // Draw memory cells
+            memoryCells.forEach(cell => drawMemoryCell(cell));
+            
+            // Draw antibodies
+            antibodies.forEach((ab, index) => {
+                drawAntibody(ab);
+                if (ab.life <= 0) antibodies.splice(index, 1);
+            });
+            
+            // Status
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText(vaccinated ? '💉 Vaccinated!' : '⚠️ Not Vaccinated', 20, 30);
+            ctx.fillText(memoryCells.length > 0 ? `🧠 Memory Cells: ${memoryCells.length}` : '', 20, 55);
+            ctx.fillText(infectionStarted ? (vaccinated ? '✅ Protected!' : '❌ Under Attack!') : '', 20, 80);
+            
+            // Remove off-screen germs
+            germs = germs.filter(g => g.x > -50 && g.x < 750);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        initImmuneCells();
+        draw();
+    </script>
+</body>
+</html>
