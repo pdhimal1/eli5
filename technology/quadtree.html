@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quad Trees - ELI5 Technology</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1b5e20, #2e7d32); min-height: 100vh; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 42px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.9); font-size: 20px; margin-bottom: 30px; }
+        .analogy-box { background: #fff; border-radius: 20px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .analogy-box h2 { color: #2e7d32; font-size: 24px; margin-bottom: 15px; }
+        .analogy-box p { color: #555; font-size: 18px; line-height: 1.8; }
+        .tech-box { background: #e8f5e9; border-radius: 20px; padding: 30px; margin-bottom: 20px; border-left: 5px solid #4caf50; }
+        .tech-box h2 { color: #1b5e20; font-size: 24px; margin-bottom: 15px; }
+        .tech-box p { color: #333; font-size: 16px; line-height: 1.8; }
+        .visual-demo { background: #fff; border-radius: 20px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }
+        .visual-demo h2 { color: #2e7d32; font-size: 24px; margin-bottom: 20px; }
+        .quad-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; max-width: 400px; margin: 0 auto; }
+        .quad-cell { aspect-ratio: 1; background: #c8e6c9; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #2e7d32; }
+        .quad-cell.split { background: #a5d6a7; }
+        .quad-cell.q1 { background: #81c784; }
+        .quad-cell.q2 { background: #66bb6a; }
+        .quad-cell.q3 { background: #4caf50; }
+        .quad-cell.q4 { background: #43a047; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        .back-link a:hover { color: #fff; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌳 Quad Trees 🌳</h1>
+        <p class="subtitle">How computers find things super fast!</p>
+        
+        <div class="analogy-box">
+            <h2>👶 The 5-Year-Old Explanation</h2>
+            <p>Imagine you have a HUGE pizza and you need to find where the pepperoni pieces are! Instead of looking at every single spot on the pizza, you could fold it in half, then half again. Now you only have 4 small squares to check! That's basically what a Quad Tree does - it keeps splitting areas into 4 smaller pieces until it finds exactly what you're looking for! 🕵️</p>
+        </div>
+        
+        <div class="visual-demo">
+            <h2>🎮 See It In Action!</h2>
+            <p class="subtitle" style="color: #666; font-size: 16px;">Click "Split" to see how a Quad Tree divides space!</p>
+            <div id="demoArea" style="margin: 20px 0;"></div>
+            <button onclick="splitDemo()" style="background: #4caf50; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; cursor: pointer;">Split ✂️</button>
+            <button onclick="resetDemo()" style="background: #666; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; cursor: pointer; margin-left: 10px;">Reset 🔄</button>
+        </div>
+        
+        <div class="tech-box">
+            <h2>🖥️ How It Actually Works</h2>
+            <p>A Quad Tree is a tree data structure where each node has exactly 4 children. It's used to partition a two-dimensional space by recursively subdividing it into four quadrants.</p>
+            <br>
+            <p><strong>Why is it useful?</strong> Finding something in a regular list can be slow (you might have to check EVERY item). With a Quad Tree, you can quickly eliminate HUGE areas that don't contain what you're looking for!</p>
+            <br>
+            <p><strong>Real examples:</strong></p>
+            <p>📍 <strong>Maps</strong> - Finding nearby restaurants or gas stations</p>
+            <p>🎮 <strong>Collision detection</strong> - In video games, checking if bullets hit enemies</p>
+            <p>🖼️ <strong>Image processing</strong> - Storing and searching images efficiently</p>
+            <p>🌍 <strong>Geographic systems</strong> - Storing locations of buildings, roads, landmarks</p>
+        </div>
+        
+        <div class="analogy-box">
+            <h2>🎯 The Brain Hack</h2>
+            <p>When you need to find points in a 2D area QUICKLY, think "Quad Tree"! It's like having a smart folder system - instead of searching through every single file, you look in the right section, then the right subsection, and so on. This makes searching potentially MILLIONS of times faster! ⚡</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Technology Topics</a>
+        </div>
+    </div>
+
+    <script>
+        let splitLevel = 0;
+        
+        function renderDemo() {
+            const container = document.getElementById('demoArea');
+            const size = 400 / Math.pow(2, splitLevel);
+            
+            let html = '<div style="display: grid; grid-template-columns: repeat(' + Math.pow(2, splitLevel) + ', 1fr); gap: 2px; width: ' + (size * Math.pow(2, splitLevel)) + 'px; margin: 0 auto; background: #2e7d32; padding: 2px;">';
+            
+            const totalCells = Math.pow(4, splitLevel);
+            for (let i = 0; i < totalCells; i++) {
+                const colors = ['#c8e6c9', '#a5d6a7', '#81c784', '#66bb6a'];
+                const color = colors[i % 4];
+                html += '<div style="background: ' + color + '; aspect-ratio: 1; border-radius: 3px;"></div>';
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        function splitDemo() {
+            if (splitLevel < 3) {
+                splitLevel++;
+                renderDemo();
+            }
+        }
+        
+        function resetDemo() {
+            splitLevel = 0;
+            renderDemo();
+        }
+        
+        renderDemo();
+    </script>
+</body>
+</html>
