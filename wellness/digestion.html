@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digestion - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #f57c00, #ff9800); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #f57c00; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #1a1005; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ffcc80; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ffb74d; border-radius: 10px; background: #1a1005; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-feed { background: linear-gradient(135deg, #ff9800, #ffb74d); color: white; }
+        .fact-box { background: #fff3e0; border-left: 5px solid #f57c00; padding: 15px; margin: 15px 0; color: #e65100; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍕 How Digestion Works! 🍕</h1>
+        <p class="subtitle">Turning food into fuel!</p>
+        
+        <div class="story-box">
+            <h2>🏭 The Food Factory!</h2>
+            <p>Your body is like a factory that turns food into energy!</p>
+            <p>Digestion starts in your <strong>mouth</strong> - you chew food into small pieces and mix it with spit!</p>
+            <p>Then the food goes on a <strong>adventure</strong> through your body, getting broken down into tiny pieces your cells can use!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Food Journey Simulator!</h2>
+            <canvas id="digestCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-feed" onclick="feedMe()">Eat Pizza! 🍕</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🚂 The Digestive Train!</h2>
+            <p><strong>🚪 Mouth:</strong> Chews and mixes with saliva!</p>
+            <p><strong>📦 Esophagus:</strong> A tube that squeezes food down to your stomach!</p>
+            <p><strong>🥣 Stomach:</strong> Mixes food with acid - like a washing machine!</p>
+            <p><strong>🌀 Small Intestine:</strong> Absorbs all the good nutrients!</p>
+            <p><strong>📍 Large Intestine:</strong> Absorbs water and makes waste!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>💪 Why We Need Food!</h2>
+            <p>🍎 <strong>Vitamins & Minerals:</strong> Help your body work properly!</p>
+            <p>⚡ <strong>Energy:</strong> Gives you power to run and play!</p>
+            <p>🧱 <strong>Building Blocks:</strong> Helps you grow!</p>
+            <div class="fact-box">
+                ⏰ It takes about 24-72 hours for food to complete its journey through your body!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('digestCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let foodX = 350;
+        let foodY = 20;
+        let foodPhase = 'mouth';
+        let foodEaten = false;
+        
+        function feedMe() {
+            foodX = 350;
+            foodY = 20;
+            foodPhase = 'mouth';
+            foodEaten = true;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#1a1005';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Draw organs
+            // Esophagus
+            ctx.fillStyle = '#ef9a9a';
+            ctx.fillRect(335, 30, 30, 80);
+            
+            // Stomach
+            ctx.fillStyle = '#f48fb1';
+            ctx.beginPath();
+            ctx.ellipse(350, 140, 50, 60, 0.3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Small intestine
+            ctx.strokeStyle = '#ce93d8';
+            ctx.lineWidth = 25;
+            ctx.beginPath();
+            ctx.moveTo(350, 190);
+            for (let i = 0; i < 8; i++) {
+                const y = 200 + i * 15;
+                const x = i % 2 === 0 ? 280 : 420;
+                ctx.quadraticCurveTo(350, y - 5, x, y);
+            }
+            ctx.stroke();
+            
+            // Large intestine
+            ctx.strokeStyle = '#81d4fa';
+            ctx.lineWidth = 30;
+            ctx.beginPath();
+            ctx.moveTo(420, 210);
+            ctx.lineTo(420, 300);
+            ctx.lineTo(350, 320);
+            ctx.lineTo(280, 300);
+            ctx.lineTo(280, 220);
+            ctx.stroke();
+            
+            // Anus (exit)
+            ctx.fillStyle = '#81d4fa';
+            ctx.beginPath();
+            ctx.ellipse(350, 330, 15, 8, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Labels
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Mouth', 350, 20);
+            ctx.fillText('Esophagus', 350, 80);
+            ctx.fillText('Stomach', 320, 150);
+            ctx.fillText('Small Intestine', 300, 250);
+            ctx.fillText('Large Intestine', 480, 250);
+            
+            // Food
+            if (foodEaten) {
+                ctx.fillStyle = '#ff9800';
+                ctx.beginPath();
+                ctx.arc(foodX, foodY, 15, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#f44336';
+                ctx.beginPath();
+                ctx.arc(foodX - 5, foodY - 3, 4, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Animate food through system
+                if (foodY < 120) {
+                    foodY += 2;
+                } else if (foodPhase === 'mouth') {
+                    foodPhase = 'stomach';
+                    foodX = 350;
+                    foodY = 140;
+                } else if (foodY < 200) {
+                    foodY += 1.5;
+                    foodX += Math.sin(foodY) * 0.5;
+                } else if (foodPhase === 'stomach') {
+                    foodPhase = 'small';
+                    foodX = 300;
+                    foodY = 220;
+                } else if (foodX > 280) {
+                    foodX -= 1;
+                } else if (foodY < 300) {
+                    foodY += 1;
+                } else if (foodX < 350) {
+                    foodX += 1;
+                } else if (foodY < 330) {
+                    foodY += 1;
+                    foodX = 350;
+                } else {
+                    foodEaten = false;
+                }
+            }
+            
+            // Instructions
+            ctx.fillStyle = '#ffcc80';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(foodEaten ? '🫕 Digesting...' : '🍕 Click "Eat Pizza" to start!', 350, 380);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

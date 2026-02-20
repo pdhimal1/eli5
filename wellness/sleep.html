@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why We Sleep - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a237e, #283593); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #1a237e; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #050a20; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #9fa8da; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #5c6bc0; border-radius: 10px; background: #050a20; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-sleep { background: linear-gradient(135deg, #3f51b5, #5c6bc0); color: white; }
+        .btn-wake { background: linear-gradient(135deg, #ff9800, #ffb74d); color: white; }
+        .fact-box { background: #e8eaf6; border-left: 5px solid #1a237e; padding: 15px; margin: 15px 0; color: #1a237e; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>😴 Why We Sleep! 😴</h1>
+        <p class="subtitle">Recharge your battery!</p>
+        
+        <div class="story-box">
+            <h2>🔋 Charging Time!</h2>
+            <p>Think of sleep like charging your phone battery!</p>
+            <p>During the day, your brain works super hard - learning, playing, thinking!</p>
+            <p>At night, your brain <strong>cleans up, organizes, and recharges</strong> so you're ready for another day!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Sleep Cycle Simulator!</h2>
+            <canvas id="sleepCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-sleep" onclick="goToSleep()">😴 Go to Sleep!</button>
+                <button class="btn-wake" onclick="wakeUp()">☀️ Wake Up!</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🌊 Types of Sleep!</h2>
+            <p><strong>Light Sleep (Stage 1-2):</strong> Easy to wake up, your body starts relaxing!</p>
+            <p><strong>Deep Sleep (Stage 3):</strong> Hard to wake up, your body fixes itself!</p>
+            <p><strong>REM Sleep:</strong> Your brain is active - this is when you dream!</p>
+            <p>You cycle through these stages about 4-5 times per night!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>✨ Why Sleep Matters!</h2>
+            <p>🧠 <strong>Brain:</strong> Helps you remember what you learned!</p>
+            <p>💪 <strong>Body:</strong> Repairs muscles and grows!</p>
+            <p>😊 <strong>Mood:</strong> Less grumpy when you sleep enough!</p>
+            <div class="fact-box">
+                🌙 Kids need 9-11 hours of sleep! Your brain does most of its cleaning between 10 PM and 2 AM!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('sleepCanvas');
+        const ctx = canvas.getContext('2d');
+        let sleeping = false;
+        let sleepStage = 0;
+        let timeAsleep = 0;
+        let stars = [];
+        
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < 50; i++) {
+                stars.push({
+                    x: Math.random() * 700,
+                    y: Math.random() * 200,
+                    size: Math.random() * 2 + 1,
+                    twinkle: Math.random() * Math.PI * 2
+                });
+            }
+        }
+        
+        function goToSleep() {
+            sleeping = true;
+            sleepStage = 0;
+            timeAsleep = 0;
+        }
+        
+        function wakeUp() {
+            sleeping = false;
+        }
+        
+        function draw() {
+            ctx.fillStyle = sleeping ? '#050a20' : '#1a237e';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Moon
+            ctx.fillStyle = '#fffde7';
+            ctx.beginPath();
+            ctx.arc(600, 60, 40, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Stars (only when sleeping)
+            if (sleeping) {
+                stars.forEach(star => {
+                    star.twinkle += 0.05;
+                    const brightness = (Math.sin(star.twinkle) + 1) / 2;
+                    ctx.fillStyle = `rgba(255, 255, 200, ${brightness})`;
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+            
+            // Bed/Person
+            ctx.fillStyle = '#7986cb';
+            ctx.fillRect(200, 250, 300, 20);
+            
+            // Pillow
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(230, 230, 60, 30);
+            
+            // Person
+            if (sleeping) {
+                // Sleeping person (Z's)
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.ellipse(350, 250, 40, 25, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Z's
+                ctx.strokeStyle = '#90caf9';
+                ctx.lineWidth = 3;
+                ctx.font = 'bold 24px Arial';
+                
+                const zOffset = (Date.now() / 500) % 30;
+                ctx.fillText('Z', 420 + zOffset, 240 - zOffset/2);
+                ctx.fillText('Z', 440 + zOffset, 225 - zOffset/2);
+                ctx.fillText('Z', 460 + zOffset, 210 - zOffset/2);
+            } else {
+                // Awake person
+                ctx.fillStyle = '#ffcc80';
+                ctx.beginPath();
+                ctx.ellipse(350, 250, 40, 25, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Eyes open
+                ctx.fillStyle = '#333';
+                ctx.beginPath();
+                ctx.arc(340, 245, 4, 0, Math.PI * 2);
+                ctx.arc(360, 245, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Sleep stages visualization
+            if (sleeping) {
+                timeAsleep += 0.5;
+                sleepStage = Math.floor(timeAsleep / 30) % 4;
+                
+                const stages = ['Light Sleep', 'Light Sleep', 'Deep Sleep', 'REM'];
+                
+                // Progress bar
+                ctx.fillStyle = '#3949ab';
+                ctx.fillRect(150, 310, 400, 20);
+                ctx.fillStyle = '#7c4dff';
+                ctx.fillRect(150, 310, (timeAsleep % 120) / 120 * 400, 20);
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = '14px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(`Stage: ${stages[sleepStage]}`, 350, 290);
+            }
+            
+            // Labels
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(sleeping ? '😴 Sweet Dreams!' : '☀️ Good Morning! Click to sleep!', 350, 180);
+            
+            ctx.font = '14px Arial';
+            ctx.fillText('Night Time', 600, 120);
+            
+            initStars();
+            requestAnimationFrame(draw);
+        }
+        
+        initStars();
+        draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Exercise Helps - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #e65100, #ff9800); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #e65100; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #150a00; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ffcc80; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ffb74d; border-radius: 10px; background: #150a00; }
+        .controls { display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 12px 20px; font-size: 16px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-run { background: linear-gradient(135deg, #ff9800, #ffb74d); color: white; }
+        .btn-jump { background: linear-gradient(135deg, #4caf50, #81c784); color: white; }
+        .btn-stretch { background: linear-gradient(135deg, #9c27b0, #ba68c8); color: white; }
+        .fact-box { background: #fff3e0; border-left: 5px solid #e65100; padding: 15px; margin: 15px 0; color: #bf360c; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 10px 16px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏃 Why Exercise Helps! 🏃</h1>
+        <p class="subtitle">Move your body, feel great!</p>
+        
+        <div class="story-box">
+            <h2>🎮 Fun is Medicine!</h2>
+            <p>Exercise isn't just about sports - it's about feeling good!</p>
+            <p>When you run, jump, dance, or play, your body releases <strong>happy chemicals</strong> called endorphins!</p>
+            <p>That's why you feel awesome after playing outside!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Activity Playground!</h2>
+            <canvas id="exerciseCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-run" onclick="setActivity('run')">🏃 Run!</button>
+                <button class="btn-jump" onclick="setActivity('jump')">⬆️ Jump!</button>
+                <button class="btn-stretch" onclick="setActivity('stretch')">🧘 Stretch!</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>💪 What Exercise Does!</h2>
+            <p>❤️ <strong>Heart:</strong> Makes your heart stronger, like a muscle!</p>
+            <p>🦴 <strong>Bones:</strong> Builds strong bones for life!</p>
+            <p>🧠 <strong>Brain:</strong> Helps you focus and remember!</p>
+            <p>😊 <strong>Mood:</strong> Reduces stress and makes you happy!</p>
+            <p>😴 <strong>Sleep:</strong> Helps you sleep better at night!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 How Much Do You Need?</h2>
+            <p>Kids should move and play for at least <strong>60 minutes</strong> every day!</p>
+            <p>It doesn't have to be all at once - it can be throughout the day!</p>
+            <p>Play outside, ride your bike, swim, dance, or play tag!</p>
+            <div class="fact-box">
+                🌟 The best exercise is something you enjoy! If you love it, you'll keep doing it!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('exerciseCanvas');
+        const ctx = canvas.getContext('2d');
+        let activity = 'idle';
+        let personX = 350;
+        let personY = 200;
+        let energy = 50;
+        
+        function setActivity(act) {
+            activity = act;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#150a00';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Ground
+            ctx.fillStyle = '#4caf50';
+            ctx.fillRect(0, 280, 700, 70);
+            
+            // Sky
+            ctx.fillStyle = '#87ceeb';
+            ctx.fillRect(0, 0, 700, 280);
+            
+            // Sun
+            ctx.fillStyle = '#ffd54f';
+            ctx.beginPath();
+            ctx.arc(600, 60, 40, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Animate based on activity
+            const time = Date.now() / 200;
+            
+            if (activity === 'run') {
+                personX = 100 + (time * 5) % 600;
+                personY = 220 + Math.sin(time * 10) * 10;
+                energy = Math.min(100, energy + 0.5);
+            } else if (activity === 'jump') {
+                personY = 220 - Math.abs(Math.sin(time * 3)) * 80;
+                personX = 350;
+                energy = Math.min(100, energy + 0.3);
+            } else if (activity === 'stretch') {
+                personY = 220 + Math.sin(time) * 5;
+                personX = 350;
+                energy = Math.min(100, energy + 0.2);
+            } else {
+                energy = Math.max(20, energy - 0.1);
+            }
+            
+            // Draw person
+            ctx.fillStyle = '#ffcc80';
+            // Head
+            ctx.beginPath();
+            ctx.arc(personX, personY - 40, 20, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Body
+            ctx.fillStyle = '#42a5f5';
+            ctx.fillRect(personX - 15, personY - 20, 30, 40);
+            
+            // Arms
+            ctx.strokeStyle = '#ffcc80';
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            if (activity === 'stretch') {
+                ctx.moveTo(personX - 15, personY - 10);
+                ctx.lineTo(personX - 40, personY - 30);
+                ctx.moveTo(personX + 15, personY - 10);
+                ctx.lineTo(personX + 40, personY - 30);
+            } else if (activity === 'jump') {
+                ctx.moveTo(personX - 15, personY - 10);
+                ctx.lineTo(personX - 35, personY - 40);
+                ctx.moveTo(personX + 15, personY - 10);
+                ctx.lineTo(personX + 35, personY - 40);
+            } else if (activity === 'run') {
+                ctx.moveTo(personX - 15, personY - 10);
+                ctx.lineTo(personX - 25 + Math.sin(time * 10) * 10, personY + 10);
+                ctx.moveTo(personX + 15, personY - 10);
+                ctx.lineTo(personX + 25 + Math.sin(time * 10) * 10, personY + 10);
+            }
+            ctx.stroke();
+            
+            // Legs
+            ctx.beginPath();
+            if (activity === 'run') {
+                ctx.moveTo(personX - 10, personY + 20);
+                ctx.lineTo(personX - 15 + Math.sin(time * 10) * 15, personY + 60);
+                ctx.moveTo(personX + 10, personY + 20);
+                ctx.lineTo(personX + 15 - Math.sin(time * 10) * 15, personY + 60);
+            } else {
+                ctx.moveTo(personX - 10, personY + 20);
+                ctx.lineTo(personX - 10, personY + 60);
+                ctx.moveTo(personX + 10, personY + 20);
+                ctx.lineTo(personX + 10, personY + 60);
+            }
+            ctx.stroke();
+            
+            // Energy bar
+            ctx.fillStyle = '#333';
+            ctx.fillRect(50, 30, 150, 20);
+            ctx.fillStyle = energy > 60 ? '#4caf50' : energy > 30 ? '#ff9800' : '#f44336';
+            ctx.fillRect(50, 30, energy * 1.5, 20);
+            ctx.strokeStyle = '#fff';
+            ctx.strokeRect(50, 30, 150, 20);
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('⚡ Energy', 60, 45);
+            
+            // Activity indicator
+            ctx.textAlign = 'center';
+            ctx.font = 'bold 20px Arial';
+            const activityText = activity === 'run' ? '🏃 Running!' :
+                                activity === 'jump' ? '⬆️ Jumping!' :
+                                activity === 'stretch' ? '🧘 Stretching!' :
+                                '🚶 Resting...';
+            ctx.fillText(activityText, 350, 330);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

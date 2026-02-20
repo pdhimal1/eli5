@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Emotions - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #fbc02d, #fdd835); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #f57f17; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #1a1005; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #fff59d; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ffee58; border-radius: 10px; background: #1a1005; }
+        .controls { display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 12px 20px; font-size: 16px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-happy { background: #4caf50; color: white; }
+        .btn-sad { background: #2196f3; color: white; }
+        .btn-angry { background: #f44336; color: white; }
+        .btn-scared { background: #9c27b0; color: white; }
+        .btn-surprised { background: #ff9800; color: white; }
+        .fact-box { background: #fffde7; border-left: 5px solid #fbc02d; padding: 15px; margin: 15px 0; color: #f57f17; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 10px 16px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>😊 Understanding Emotions! 😊</h1>
+        <p class="subtitle">All feelings are valid!</p>
+        
+        <div class="story-box">
+            <h2>🌈 Feelings Are Like Weather!</h2>
+            <p>Emotions are like weather in your heart - sometimes sunny, sometimes rainy!</p>
+            <p><strong>All emotions are okay to feel!</strong> There's no "bad" emotion - they all tell us something important!</p>
+            <p>Happy tells us we enjoy something. Sad tells us we miss something. Angry tells us something isn't fair!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Emotion Explorer!</h2>
+            <canvas id="emotionCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-happy" onclick="setEmotion('happy')">😊 Happy</button>
+                <button class="btn-sad" onclick="setEmotion('sad')">😢 Sad</button>
+                <button class="btn-angry" onclick="setEmotion('angry')">😠 Angry</button>
+                <button class="btn-scared" onclick="setEmotion('scared')">😨 Scared</button>
+                <button class="btn-surprised" onclick="setEmotion('surprised')">😲 Surprised</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎭 Basic Emotions!</h2>
+            <p>😊 <strong>Happy:</strong> You feel good and content!</p>
+            <p>😢 <strong>Sad:</strong> You feel down or miss someone/something!</p>
+            <p>😠 <strong>Angry:</strong> Something feels unfair or frustrating!</p>
+            <p>😨 <strong>Scared:</strong> You feel danger or unsafe!</p>
+            <p>😲 <strong>Surprised:</strong> Something unexpected happened!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>💡 Why We Have Emotions!</h2>
+            <p>Emotions are like superpowers that help us:</p>
+            <p>🛡️ <strong>Protect ourselves:</strong> Fear keeps us safe!</p>
+            <p>🤝 <strong>Connect with others:</strong> Sharing feelings builds friendships!</p>
+            <p>🎯 <strong>Make decisions:</strong> Our gut feeling helps us choose!</p>
+            <div class="fact-box">
+                💜 It's okay to feel all your emotions! Talking about feelings helps them feel smaller.
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('emotionCanvas');
+        const ctx = canvas.getContext('2d');
+        let currentEmotion = 'happy';
+        let particles = [];
+        
+        function setEmotion(emotion) {
+            currentEmotion = emotion;
+            particles = [];
+        }
+        
+        function drawFace(emotion, x, y, scale) {
+            // Face
+            ctx.fillStyle = '#ffcc80';
+            ctx.beginPath();
+            ctx.arc(x, y, 80 * scale, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#333';
+            
+            if (emotion === 'happy') {
+                // Happy eyes
+                ctx.beginPath();
+                ctx.arc(x - 25, y - 15, 8, 0, Math.PI * 2);
+                ctx.arc(x + 25, y - 15, 8, 0, Math.PI * 2);
+                ctx.fill();
+                // Smile
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.arc(x, y + 10, 35, 0.2, Math.PI - 0.2);
+                ctx.stroke();
+            } else if (emotion === 'sad') {
+                // Sad eyes
+                ctx.beginPath();
+                ctx.arc(x - 25, y - 10, 8, 0, Math.PI * 2);
+                ctx.arc(x + 25, y - 10, 8, 0, Math.PI * 2);
+                ctx.fill();
+                // Frown
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.arc(x, y + 50, 30, Math.PI + 0.2, Math.PI * 2 - 0.2);
+                ctx.stroke();
+            } else if (emotion === 'angry') {
+                // Angry eyes
+                ctx.fillRect(x - 35, y - 25, 20, 8);
+                ctx.fillRect(x + 15, y - 25, 20, 8);
+                // Angry mouth
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(x - 25, y + 30);
+                ctx.lineTo(x + 25, y + 20);
+                ctx.stroke();
+            } else if (emotion === 'scared') {
+                // Wide eyes
+                ctx.beginPath();
+                ctx.arc(x - 25, y - 15, 15, 0, Math.PI * 2);
+                ctx.arc(x + 25, y - 15, 15, 0, Math.PI * 2);
+                ctx.fill();
+                // O mouth
+                ctx.beginPath();
+                ctx.arc(x, y + 25, 15, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (emotion === 'surprised') {
+                // Wide eyes
+                ctx.beginPath();
+                ctx.arc(x - 25, y - 15, 12, 0, Math.PI * 2);
+                ctx.arc(x + 25, y - 15, 12, 0, Math.PI * 2);
+                ctx.fill();
+                // O mouth
+                ctx.beginPath();
+                ctx.arc(x, y + 25, 18, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#1a1005';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Background based on emotion
+            const bgColors = {
+                happy: '#1a2e05',
+                sad: '#0a1525',
+                angry: '#2e0a0a',
+                scared: '#150a20',
+                surprised: '#20100a'
+            };
+            ctx.fillStyle = bgColors[currentEmotion];
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Particles
+            if (Math.random() < 0.1) {
+                particles.push({
+                    x: Math.random() * 700,
+                    y: 350,
+                    vy: -2 - Math.random() * 3,
+                    color: currentEmotion === 'happy' ? '#4caf50' :
+                           currentEmotion === 'sad' ? '#2196f3' :
+                           currentEmotion === 'angry' ? '#f44336' :
+                           currentEmotion === 'scared' ? '#9c27b0' : '#ff9800'
+                });
+            }
+            
+            particles = particles.filter(p => p.y > 0);
+            particles.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                ctx.fill();
+                p.y += p.vy;
+            });
+            
+            // Draw face
+            drawFace(currentEmotion, 350, 180, 1.5);
+            
+            // Labels
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            
+            const labels = {
+                happy: '😊 Feeling Happy!',
+                sad: '😢 Feeling Sad',
+                angry: '😠 Feeling Angry',
+                scared: '😨 Feeling Scared',
+                surprised: '😲 Feeling Surprised!'
+            };
+            
+            ctx.fillText(labels[currentEmotion], 350, 320);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

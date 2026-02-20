@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Stress - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #455a64, #607d8b); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #455a64; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0d1112; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #b0bec5; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #90a4ae; border-radius: 10px; background: #0d1112; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-stress { background: linear-gradient(135deg, #78909c, #90a4ae); color: white; }
+        .btn-calm { background: linear-gradient(135deg, #66bb6a, #81c784); color: white; }
+        .fact-box { background: #eceff1; border-left: 5px solid #455a64; padding: 15px; margin: 15px 0; color: #37474f; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>😰 Understanding Stress! 😰</h1>
+        <p class="subtitle">Why we feel overwhelmed!</p>
+        
+        <div class="story-box">
+            <h2>🚨 The Alarm System!</h2>
+            <p>Long ago, when humans lived in the wild, stress was super helpful!</p>
+            <p>When you saw a bear, your body would go <strong>WOWZA!</strong> and get ready to run or fight!</p>
+            <p>This is called the "Fight or Flight" response - your body's alarm system!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Stress vs Calm Simulator!</h2>
+            <canvas id="stressCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-stress" onclick="addStress()">😰 Add Stress!</button>
+                <button class="btn-calm" onclick="calmDown()">😌 Breathe Calm!</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>⚠️ Modern Day Stress!</h2>
+            <p>Today, we don't have bears chasing us, but our alarm still goes off!</p>
+            <p><strong>School tests, homework, drama with friends</strong> - all can trigger stress!</p>
+            <p>Your body doesn't know the difference between a bear and a math test!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🧘 Coping Strategies!</h2>
+            <p>🌬️ <strong>Deep Breathing:</strong> Slow breaths tell your brain "it's okay!"</p>
+            <p>🏃 <strong>Exercise:</strong> Uses up the stress chemicals!</p>
+            <p>💤 <strong>Sleep:</strong> Gives your brain time to reset!</p>
+            <p>👂 <strong>Talk About It:</strong> Sharing helps you feel better!</p>
+            <div class="fact-box">
+                😊 It's normal to feel stressed! The key is learning how to calm yourself down.
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('stressCanvas');
+        const ctx = canvas.getContext('2d');
+        let stressLevel = 0;
+        let heartRate = 60;
+        let particles = [];
+        
+        function addStress() {
+            stressLevel = Math.min(100, stressLevel + 30);
+        }
+        
+        function calmDown() {
+            stressLevel = Math.max(0, stressLevel - 25);
+        }
+        
+        function draw() {
+            // Update heart rate based on stress
+            if (stressLevel > 30) {
+                heartRate = 60 + stressLevel * 0.8;
+            } else {
+                heartRate = Math.max(60, heartRate - 2);
+            }
+            
+            ctx.fillStyle = '#0d1112';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Background stress level visualization
+            const stressColor = `rgba(244, 67, 54, ${stressLevel / 150})`;
+            ctx.fillStyle = stressColor;
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Draw heart
+            const beat = Math.sin(Date.now() / (60000 / heartRate / 60));
+            const heartScale = 1 + beat * 0.15;
+            
+            ctx.fillStyle = '#f44336';
+            ctx.beginPath();
+            ctx.moveTo(350, 150);
+            ctx.bezierCurveTo(350 + 50 * heartScale, 150 - 50, 350 + 80 * heartScale, 150, 350, 200);
+            ctx.bezierCurveTo(350 - 80 * heartScale, 150, 350 - 50 * heartScale, 150 - 50, 350, 150);
+            ctx.fill();
+            
+            // Draw brain with stress
+            ctx.fillStyle = '#7b1fa2';
+            ctx.beginPath();
+            ctx.ellipse(350, 80, 60, 40, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Stress thoughts
+            if (stressLevel > 20) {
+                ctx.fillStyle = '#ff9800';
+                ctx.font = 'bold 14px Arial';
+                const thoughts = ['!', '??', '!!!', 'test', 'worried'];
+                for (let i = 0; i < Math.min(5, stressLevel / 20); i++) {
+                    ctx.fillText(thoughts[i], 300 + i * 25, 60);
+                }
+            }
+            
+            // Draw stress particles
+            if (stressLevel > 0) {
+                if (Math.random() < stressLevel / 100) {
+                    particles.push({
+                        x: Math.random() * 700,
+                        y: 0,
+                        speed: 2 + stressLevel / 20,
+                        size: 3 + Math.random() * 5
+                    });
+                }
+                
+                particles = particles.filter(p => p.y < 350);
+                particles.forEach(p => {
+                    ctx.fillStyle = '#ff5722';
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    p.y += p.speed;
+                });
+            }
+            
+            // Status
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            
+            let status = '';
+            if (stressLevel < 20) status = '😌 Very Calm';
+            else if (stressLevel < 50) status = '😐 A Little Stressed';
+            else if (stressLevel < 80) status = '😰 Pretty Stressed';
+            else status = '😱 Very Stressed!';
+            
+            ctx.fillText(status, 350, 320);
+            
+            // Heart rate
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText(`❤️ ${Math.round(heartRate)} BPM`, 350, 280);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

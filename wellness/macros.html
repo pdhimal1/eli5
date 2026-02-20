@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macronutrients - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #558b2f, #7cb342); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #558b2f; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a1405; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #c5e1a5; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #aed581; border-radius: 10px; background: #0a1405; }
+        .controls { display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 12px 20px; font-size: 16px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-protein { background: linear-gradient(135deg, #e53935, #ef5350); color: white; }
+        .btn-carbs { background: linear-gradient(135deg, #ff9800, #ffb74d); color: white; }
+        .btn-fats { background: linear-gradient(135deg, #fbc02d, #fff176); color: white; }
+        .fact-box { background: #f1f8e9; border-left: 5px solid #558b2f; padding: 15px; margin: 15px 0; color: #33691e; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 10px 16px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🥗 Macronutrients Explained! 🥗</h1>
+        <p class="subtitle">The building blocks of food!</p>
+        
+        <div class="story-box">
+            <h2>🍱 The Three Magic Groups!</h2>
+            <p>All food is made of 3 main groups called <strong>macronutrients</strong> (say: mak-roh-NOO-trihunts)!</p>
+            <p>Think of them like three best friends who each have a special job!</p>
+            <p>You need all three to be healthy and strong!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Food Builder!</h2>
+            <canvas id="macroCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-protein" onclick="addFood('protein')">🍗 Protein</button>
+                <button class="btn-carbs" onclick="addFood('carbs')">🍞 Carbs</button>
+                <button class="btn-fats" onclick="addFood('fats')">🥑 Fats</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🥩 Protein - The Builder!</h2>
+            <p><strong>Found in:</strong> Meat, eggs, beans, nuts!</p>
+            <p><strong>Job:</strong> Builds and repairs muscles, like bricks for a house!</p>
+            <p>It's like the building blocks that make you grow big and strong!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🍞 Carbohydrates - The Energy!</h2>
+            <p><strong>Found in:</strong> Bread, rice, fruits, vegetables!</p>
+            <p><strong>Job:</strong> Gives you quick energy to run and play!</p>
+            <p>It's like gas in a car - fuel for your body!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🥑 Fats - The Protector!</h2>
+            <p><strong>Found in:</strong> Avocado, nuts, olive oil, butter!</p>
+            <p><strong>Job:</strong> Stores energy, protects organs, helps brain work!</p>
+            <p>Your brain is mostly fat! Good fats help you think!</p>
+            <div class="fact-box">
+                ⚖️ A balanced meal has some of each: protein + carbs + veggies = yum and healthy!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('macroCanvas');
+        const ctx = canvas.getContext('2d');
+        let plate = [];
+        
+        function addFood(type) {
+            plate.push({
+                type: type,
+                x: 200 + Math.random() * 300,
+                y: 100 + Math.random() * 150,
+                size: 30 + Math.random() * 20,
+                rotation: Math.random() * Math.PI * 2
+            });
+            if (plate.length > 10) plate.shift();
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a1405';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Plate
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.ellipse(350, 175, 200, 120, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#f5f5f5';
+            ctx.beginPath();
+            ctx.ellipse(350, 175, 180, 105, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Food items
+            plate.forEach(food => {
+                ctx.save();
+                ctx.translate(food.x, food.y);
+                ctx.rotate(food.rotation);
+                
+                if (food.type === 'protein') {
+                    ctx.fillStyle = '#ef5350';
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, food.size * 0.8, food.size, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#c62828';
+                    ctx.fillRect(-5, -food.size, 10, food.size * 0.5);
+                } else if (food.type === 'carbs') {
+                    ctx.fillStyle = '#ffcc80';
+                    ctx.beginPath();
+                    ctx.arc(0, 0, food.size * 0.7, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#ff9800';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                } else if (food.type === 'fats') {
+                    ctx.fillStyle = '#aed581';
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, food.size, food.size * 0.6, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#7cb342';
+                    ctx.beginPath();
+                    ctx.ellipse(5, -5, 5, 8, 0.3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                ctx.restore();
+            });
+            
+            // Stats
+            const proteinCount = plate.filter(f => f.type === 'protein').length;
+            const carbsCount = plate.filter(f => f.type === 'carbs').length;
+            const fatsCount = plate.filter(f => f.type === 'fats').length;
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'center';
+            
+            if (plate.length > 0) {
+                ctx.fillText(`🍗 ${proteinCount}  |  🍞 ${carbsCount}  |  🥑 ${fatsCount}`, 350, 330);
+            } else {
+                ctx.fillText('👆 Click buttons to add food!', 350, 330);
+            }
+            
+            // Labels
+            ctx.font = '14px Arial';
+            ctx.fillStyle = '#ef5350';
+            ctx.fillText('Protein: Muscles!', 100, 50);
+            ctx.fillStyle = '#ffcc80';
+            ctx.fillText('Carbs: Energy!', 600, 50);
+            ctx.fillStyle = '#aed581';
+            ctx.fillText('Fats: Brain power!', 350, 30);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>
