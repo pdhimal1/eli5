@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Independent Play - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #00796b, #009688); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #00796b; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .story-box ul { font-size: 18px; line-height: 1.8; color: #333; margin-left: 20px; margin-bottom: 10px; }
+        .story-box li { margin-bottom: 8px; }
+        .demo-area { background: #b2dfdb; border-radius: 20px; padding: 25px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #004d40; font-size: 28px; margin-bottom: 20px; }
+        .play-visual { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin: 20px 0; }
+        .play-stage { text-align: center; padding: 15px; background: white; border-radius: 15px; min-width: 130px; }
+        .play-stage.active { border: 3px solid #00796b; background: #e0f2f1; }
+        .play-icon { font-size: 40px; }
+        .play-stage h4 { margin: 10px 0 5px; color: #00796b; font-size: 14px; }
+        .play-stage p { font-size: 11px; color: #666; }
+        .controls { text-align: center; margin-top: 15px; }
+        .controls button { padding: 12px 25px; margin: 5px; font-size: 16px; border: none; border-radius: 25px; cursor: pointer; }
+        .btn-next { background: #00796b; color: white; }
+        .fact-box { background: #e0f2f1; border-left: 5px solid #00796b; padding: 15px; margin: 15px 0; color: #004d40; }
+        .quote-box { background: #f5f5f5; border-radius: 15px; padding: 20px; margin: 15px 0; font-style: italic; border-left: 5px solid #4db6ac; }
+        .quote-box cite { display: block; margin-top: 10px; font-style: normal; color: #666; }
+        .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .tip-box { background: #e0f2f1; padding: 15px; border-radius: 15px; }
+        .tip-box h4 { color: #00796b; margin-bottom: 8px; }
+        .tip-box p { font-size: 14px; color: #333; }
+        .time-guide { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 20px 0; }
+        .time-box { text-align: center; padding: 15px; background: white; border-radius: 15px; min-width: 100px; }
+        .time-box h4 { color: #00796b; margin-bottom: 5px; }
+        .time-box p { font-size: 12px; color: #666; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        .disclaimer { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px; margin-top: 20px; }
+        .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p, .story-box ul { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧩 Independent Play! 🧩</h1>
+        <p class="subtitle">Helping kids play on their own (yes, it's possible!)</p>
+        
+        <div class="story-box">
+            <h2>🎯 What is Independent Play?</h2>
+            <p>Independent play is when your child plays by themselves - without you needing to entertain them every second!</p>
+            <p>It's not about ignoring your child. It's about giving them space to explore, create, and problem-solve on their own.</p>
+            <div class="fact-box">
+                💡 Independent play is a SKILL that develops over time. It's not something kids just "do" - we have to nurture it!
+            </div>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">📈 How Play Develops</h2>
+            <div class="play-visual">
+                <div class="play-stage" id="stage1">
+                    <div class="play-icon">👶</div>
+                    <h4>Solitary Play</h4>
+                    <p>0-2 years<br>Plays alone, parallel to others</p>
+                </div>
+                <div class="play-stage" id="stage2">
+                    <div class="play-icon">🧒</div>
+                    <h4>Parallel Play</h4>
+                    <p>2-3 years<br>Plays near others, not with them</p>
+                </div>
+                <div class="play-stage" id="stage3">
+                    <div class="play-icon">👧</div>
+                    <h4>Associative Play</h4>
+                    <p>3-4 years<br>Interacts during play</p>
+                </div>
+                <div class="play-stage" id="stage4">
+                    <div class="play-icon">👦</div>
+                    <h4>Cooperative Play</h4>
+                    <p>4+ years<br>Plays WITH others</p>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn-next" onclick="nextStage()">➡️ See Progression</button>
+            </div>
+            <p id="play-message" style="text-align: center; margin-top: 15px; font-size: 14px; color: #004d40;"></p>
+        </div>
+        
+        <div class="story-box">
+            <h2>⏱️ How Long Can Kids Play Independently?</h2>
+            <p>Age-based rough guidelines (every child is different!):</p>
+            <div class="time-guide">
+                <div class="time-box">
+                    <h4>👶 1 year</h4>
+                    <p>5-15 minutes</p>
+                </div>
+                <div class="time-box">
+                    <h4>🧒 2 years</h4>
+                    <p>15-30 minutes</p>
+                </div>
+                <div class="time-box">
+                    <h4>👧 3 years</h4>
+                    <p>30-60 minutes</p>
+                </div>
+                <div class="time-box">
+                    <h4>👦 4+ years</h4>
+                    <p>45-90+ minutes</p>
+                </div>
+            </div>
+            <p><em>Start small! Even 5 minutes is a win. Build up gradually.</em></p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🛠️ How to Encourage Independent Play</h2>
+            <div class="tips-grid">
+                <div class="tip-box">
+                    <h4>📦 Rotate Toys</h4>
+                    <p>Too many toys = overwhelm. Keep some packed away, rotate every few weeks. "New" toys spark interest!</p>
+                </div>
+                <div class="tip-box">
+                    <h4>🏠 Create a Yes Space</h4>
+                    <p>A safe area where they can explore without you saying "no" constantly. Baby-proofed, open-ended toys.</p>
+                </div>
+                <div class="tip-box">
+                    <h4>🪑 Start Close, Then Back Away</h4>
+                    <p>Sit nearby at first. Gradually increase distance. "I'm right here reading while you play."</p>
+                </div>
+                <div class="tip-box">
+                    <h4>🚫 Less is More</h4>
+                    <p>Simple toys (blocks, scarves, boxes) encourage creativity. Battery toys do all the work FOR them.</p>
+                </div>
+                <div class="tip-box">
+                    <h4>⏰ Make It Routine</h4>
+                    <p>"After snack is quiet play time." Consistency helps them know what to expect.</p>
+                </div>
+                <div class="tip-box">
+                    <h4>👀 Don't Interrupt!</h4>
+                    <p>If they're focused, don't comment or praise. Let the flow continue. Watch quietly.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🤫 The Janet Lansbury Approach (RIE)</h2>
+            <p>Janet Lansbury's RIE philosophy emphasizes <strong>respectful observation</strong>:</p>
+            <ul>
+                <li><strong>Watch, don't direct:</strong> Let them figure out how to use toys</li>
+                <li><strong>Trust their play:</strong> Their play doesn't need to be "educational" or "right"</li>
+                <li><strong>Sportscasting:</strong> Narrate what you see without judgment ("You put the block on top. It fell down.")</li>
+                <li><strong>Accept boredom:</strong> Boredom leads to creativity. Don't rescue them from it!</li>
+            </ul>
+            <div class="quote-box">
+                "The greatest gift we can give children is our confidence in their ability to figure things out."
+                <cite>— Janet Lansbury</cite>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>❓ But My Child Won't Play Alone!</h2>
+            <p>This is super common. Here's what might be happening:</p>
+            <ul>
+                <li><strong>They're used to being entertained:</strong> Takes time to unlearn! Start with just 2-3 minutes.</li>
+                <li><strong>Too many options:</strong> Simplify the environment. Fewer toys = deeper play.</li>
+                <li><strong>Connection tank is empty:</strong> Fill their "cup" with 10-15 minutes of your full attention FIRST, then try independent play.</li>
+                <li><strong>They're not developmentally ready:</strong> Some kids need more co-regulation before they can self-entertain. That's okay!</li>
+            </ul>
+            <div class="fact-box">
+                💡 "Connection before independence" - kids can't be independent until they feel securely connected!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎉 Benefits of Independent Play</h2>
+            <ul>
+                <li>🧠 Develops problem-solving skills</li>
+                <li>🎨 Boosts creativity and imagination</li>
+                <li>💪 Builds confidence ("I did it myself!")</li>
+                <li>⏰ Gives YOU a break (this is valid!)</li>
+                <li>🧘 Teams them to be comfortable alone</li>
+                <li>📚 Improves focus and attention span</li>
+            </ul>
+        </div>
+        
+        <div class="disclaimer">
+            <p>🧸 <strong>ELI5 Disclaimer:</strong> Every child develops at their own pace. Some kids naturally love independent play; others need more connection. Both are normal! Don't compare to other kids or Instagram parents.</p>
+            <p style="margin-top: 10px;">📚 <strong>Learn more from:</strong> Janet Lansbury (RIE approach), Dr. Aliza Pressman, and Simplicity Parenting by Kim John Payne.</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Parenting Topics</a>
+        </div>
+    </div>
+
+    <script>
+        let currentStage = 0;
+        const stages = ['stage1', 'stage2', 'stage3', 'stage4'];
+        const messages = [
+            "Babies and young toddlers naturally play alone. This is the perfect time to start building the skill!",
+            "Around age 2, kids play NEAR each other but not WITH each other. They're learning social awareness!",
+            "Age 3-4: Starting to interact more during play. Still needs practice with independent play!",
+            "Age 4+: Cooperative play emerges. But they can still enjoy and benefit from independent play time!"
+        ];
+        
+        function nextStage() {
+            document.querySelectorAll('.play-stage').forEach(s => s.classList.remove('active'));
+            currentStage = (currentStage + 1) % 4;
+            document.getElementById(stages[currentStage]).classList.add('active');
+            document.getElementById('play-message').textContent = messages[currentStage];
+        }
+        
+        document.getElementById(stages[0]).classList.add('active');
+        document.getElementById('play-message').textContent = messages[0];
+    </script>
+</body>
+</html>

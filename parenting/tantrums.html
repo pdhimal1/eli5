@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tantrums & Big Feelings - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #d84315, #f4511e); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #d84315; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .story-box ul { font-size: 18px; line-height: 1.8; color: #333; margin-left: 20px; margin-bottom: 10px; }
+        .story-box li { margin-bottom: 8px; }
+        .demo-area { background: #ffccbc; border-radius: 20px; padding: 25px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #bf360c; font-size: 28px; margin-bottom: 20px; }
+        .brain-visual { display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap; margin: 20px 0; }
+        .brain-part { text-align: center; padding: 20px; background: white; border-radius: 15px; min-width: 150px; }
+        .brain-part.offline { opacity: 0.4; border: 3px dashed #999; }
+        .brain-part.online { border: 3px solid #4caf50; }
+        .brain-icon { font-size: 50px; }
+        .brain-part h4 { margin: 10px 0 5px; color: #333; }
+        .brain-part p { font-size: 12px; color: #666; }
+        .controls { text-align: center; margin-top: 15px; }
+        .controls button { padding: 12px 25px; margin: 5px; font-size: 16px; border: none; border-radius: 25px; cursor: pointer; }
+        .btn-tantrum { background: #f4511e; color: white; }
+        .btn-calm { background: #4caf50; color: white; }
+        .fact-box { background: #fbe9e7; border-left: 5px solid #d84315; padding: 15px; margin: 15px 0; color: #bf360c; }
+        .warning-box { background: #fff8e1; border-left: 5px solid #ffc107; padding: 15px; margin: 15px 0; color: #f57f17; }
+        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .step-box { background: #ffe0b2; padding: 15px; border-radius: 15px; text-align: center; }
+        .step-box h4 { color: #e65100; margin-bottom: 8px; }
+        .step-box p { font-size: 14px; color: #333; }
+        .dos-donts { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .dos, .donts { padding: 15px; border-radius: 15px; }
+        .dos { background: #e8f5e9; }
+        .donts { background: #ffebee; }
+        .dos h4 { color: #2e7d32; margin-bottom: 10px; }
+        .donts h4 { color: #c62828; margin-bottom: 10px; }
+        .dos li, .donts li { font-size: 14px; margin: 8px 0; color: #333; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        .disclaimer { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px; margin-top: 20px; }
+        .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; }
+            .dos-donts { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>😤 Tantrums & Big Feelings! 😤</h1>
+        <p class="subtitle">When emotions are TOO big for little bodies!</p>
+        
+        <div class="story-box">
+            <h2>🌋 What is a Tantrum?</h2>
+            <p>A tantrum is when a child's emotions get SO big their body can't handle it. They might scream, cry, kick, or go limp.</p>
+            <p>It looks like bad behavior. But here's the truth: <strong>It's not manipulation. It's overwhelm.</strong></p>
+            <div class="fact-box">
+                🧠 A child in full tantrum mode has their "thinking brain" OFFLINE. They literally CANNOT process logic or language in that moment!
+            </div>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🧠 The Brain During a Tantrum</h2>
+            <div class="brain-visual">
+                <div class="brain-part" id="downstairs">
+                    <div class="brain-icon">🦎</div>
+                    <h4>"Downstairs Brain"</h4>
+                    <p>Survival mode<br>Fight/Flight/Freeze</p>
+                </div>
+                <div style="font-size: 30px;">⚡</div>
+                <div class="brain-part online" id="upstairs">
+                    <div class="brain-icon">🧠</div>
+                    <h4>"Upstairs Brain"</h4>
+                    <p>Logic, language<br>Problem-solving</p>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn-tantrum" onclick="triggerTantrum()">💥 Trigger Tantrum</button>
+                <button class="btn-calm" onclick="calmDown()">🧘 Co-Regulate</button>
+            </div>
+            <p id="brain-message" style="text-align: center; margin-top: 15px; font-size: 16px; color: #bf360c;"></p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🤔 Why Tantrums Happen</h2>
+            <p>Tantrums often happen when:</p>
+            <ul>
+                <li>🍌 <strong>Basic needs unmet:</strong> Hungry, tired, overstimulated</li>
+                <li>🙅 <strong>Frustrated:</strong> Can't do something they want to do</li>
+                <li>🔀 <strong>Transitions:</strong> Stopping something fun, going somewhere new</li>
+                <li>🗣️ <strong>Can't communicate:</strong> Know what they want but can't say it</li>
+                <li>😔 <strong>Big feelings:</strong> Disappointment, fear, sadness</li>
+            </ul>
+            <p>Sometimes there's no obvious reason - and that's okay too!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🛠️ What To Do During a Tantrum</h2>
+            <div class="steps-grid">
+                <div class="step-box">
+                    <h4>1️⃣ Stay Calm</h4>
+                    <p>Your nervous system regulates theirs. Take deep breaths.</p>
+                </div>
+                <div class="step-box">
+                    <h4>2️⃣ Ensure Safety</h4>
+                    <p>Move dangerous objects. Keep them safe without restraining.</p>
+                </div>
+                <div class="step-box">
+                    <h4>3️⃣ Stay Close</h4>
+                    <p>Be nearby. Some kids want hugs, some need space. Follow their lead.</p>
+                </div>
+                <div class="step-box">
+                    <h4>4️⃣ Wait It Out</h4>
+                    <p>Don't try to teach, reason, or fix. Just let the storm pass.</p>
+                </div>
+            </div>
+            <div class="warning-box">
+                ⏱️ Tantrums usually peak around 3-5 minutes but can feel like forever. Stay calm. It WILL end!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>✅ Do's and ❌ Don'ts</h2>
+            <div class="dos-donts">
+                <div class="dos">
+                    <h4>✅ DO</h4>
+                    <ul>
+                        <li>Stay present and calm</li>
+                        <li>Name the feeling: "You're so mad!"</li>
+                        <li>Validate: "It's hard when we can't have the toy"</li>
+                        <li>Wait until calm to problem-solve</li>
+                        <li>Reconnect after: hugs, check-in</li>
+                    </ul>
+                </div>
+                <div class="donts">
+                    <h4>❌ DON'T</h4>
+                    <ul>
+                        <li>Try to reason or lecture</li>
+                        <li>Say "calm down" (it doesn't work!)</li>
+                        <li>Punish or shame</li>
+                        <li>Give in just to stop it (sometimes!)</li>
+                        <li>Take it personally</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔄 Prevention (When Possible)</h2>
+            <p>You can't prevent all tantrums, but you can reduce them:</p>
+            <ul>
+                <li>⏰ <strong>Routines:</strong> Predictable schedules help kids feel safe</li>
+                <li>📢 <strong>Warnings:</strong> "In 5 minutes we're leaving the park"</li>
+                <li>🍽️ <strong>Basic needs:</strong> Fed, rested, not overstimulated</li>
+                <li>🤲 <strong>Choices:</strong> "Red cup or blue cup?" gives control</li>
+                <li>💬 <strong>Connect before correct:</strong> Fill their "attention cup" proactively</li>
+            </ul>
+        </div>
+        
+        <div class="story-box">
+            <h2>💬 What to Say (Scripts!)</h2>
+            <ul>
+                <li><strong>"You're having such big feelings right now. I'm here."</strong></li>
+                <li><strong>"You really wanted that cookie. It's so hard to wait."</strong></li>
+                <li><strong>"I won't let you hit me. I'm going to move away to keep us both safe."</strong></li>
+                <li><strong>"You're safe. I'm here. Let it out."</strong></li>
+            </ul>
+            <p>After the tantrum:</p>
+            <ul>
+                <li><strong>"That was a really big feeling. Are you feeling better now?"</strong></li>
+                <li><strong>"I love you even when you have big feelings."</strong></li>
+            </ul>
+        </div>
+        
+        <div class="disclaimer">
+            <p>🧸 <strong>ELI5 Disclaimer:</strong> Tantrums are normal! But if tantrums are extremely frequent, very long, or involve self-harm, talk to your pediatrician. Sometimes there are underlying needs.</p>
+            <p style="margin-top: 10px;">📚 <strong>Learn more from:</strong> Janet Lansbury (RIE approach), Dr. Becky Kennedy, Dr. Dan Siegel ("The Whole-Brain Child"), and Dr. Aliza Pressman.</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Parenting Topics</a>
+        </div>
+    </div>
+
+    <script>
+        let isTantrum = false;
+        
+        function triggerTantrum() {
+            isTantrum = true;
+            document.getElementById('upstairs').classList.remove('online');
+            document.getElementById('upstairs').classList.add('offline');
+            document.getElementById('downstairs').classList.add('online');
+            document.getElementById('brain-message').innerHTML = '💥 <strong>Thinking brain OFFLINE!</strong> Logic, reasoning, and language won\'t work right now. They\'re in survival mode!';
+        }
+        
+        function calmDown() {
+            isTantrum = false;
+            document.getElementById('upstairs').classList.remove('offline');
+            document.getElementById('upstairs').classList.add('online');
+            document.getElementById('downstairs').classList.remove('online');
+            document.getElementById('brain-message').innerHTML = '🧘 <strong>Brain back online!</strong> Now you can talk, problem-solve, and reconnect. Wait... calm yourself FIRST!';
+        }
+    </script>
+</body>
+</html>
