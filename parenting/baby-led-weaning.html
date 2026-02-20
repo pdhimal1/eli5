@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Led Weaning - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #ad1457, #c2185b); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #ad1457; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .story-box ul { font-size: 18px; line-height: 1.8; color: #333; margin-left: 20px; margin-bottom: 10px; }
+        .story-box li { margin-bottom: 8px; }
+        .demo-area { background: #fce4ec; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #880e4f; font-size: 28px; margin-bottom: 15px; }
+        .food-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 15px; max-width: 500px; margin: 0 auto; }
+        .food-item { text-align: center; padding: 15px; background: white; border-radius: 15px; cursor: pointer; transition: all 0.3s; }
+        .food-item:hover { transform: scale(1.1); }
+        .food-item.safe { border: 3px solid #4caf50; }
+        .food-item.unsafe { border: 3px solid #f44336; }
+        .food-emoji { font-size: 40px; }
+        .food-label { font-size: 12px; color: #333; margin-top: 5px; }
+        .result-box { text-align: center; padding: 15px; margin-top: 15px; border-radius: 10px; font-size: 18px; font-weight: bold; }
+        .result-safe { background: #c8e6c9; color: #2e7d32; }
+        .result-unsafe { background: #ffcdd2; color: #c62828; }
+        .fact-box { background: #fce4ec; border-left: 5px solid #ad1457; padding: 15px; margin: 15px 0; color: #880e4f; }
+        .warning-box { background: #fff3e0; border-left: 5px solid #ff9800; padding: 15px; margin: 15px 0; color: #e65100; }
+        .age-guide { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+        .age-box { background: #f8bbd0; padding: 15px; border-radius: 15px; text-align: center; min-width: 120px; }
+        .age-box h3 { color: #880e4f; font-size: 18px; margin-bottom: 10px; }
+        .age-box p { font-size: 14px; color: #333; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        .disclaimer { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px; margin-top: 20px; }
+        .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p, .story-box ul { font-size: 16px; }
+            .food-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🥕 Baby Led Weaning! 🥕</h1>
+        <p class="subtitle">Let your baby explore food like a tiny food critic!</p>
+        
+        <div class="story-box">
+            <h2>🍽️ What is Baby Led Weaning?</h2>
+            <p>Imagine instead of spoon-feeding your baby mushy food from a jar, you let them grab REAL food and feed themselves!</p>
+            <p>That's <strong>Baby Led Weaning (BLW)</strong> - babies hold food, explore it, and learn to eat at their own pace!</p>
+            <div class="fact-box">
+                🍼 "Weaning" here means starting solids, not stopping milk! Babies still drink breastmilk or formula as their main food until age 1!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 The Big Idea!</h2>
+            <p><strong>Traditional way:</strong> Adult spoons pureed food INTO baby's mouth</p>
+            <p><strong>BLW way:</strong> Baby picks up food and feeds THEMSELVES</p>
+            <p>Babies learn to:</p>
+            <ul>
+                <li>🤲 Pick up food with their hands</li>
+                <li>👄 Bring it to their mouth</li>
+                <li>👅 Explore textures and tastes</li>
+                <li>😋 Decide how much to eat</li>
+            </ul>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Safe or Not Safe? Tap to Find Out!</h2>
+            <div class="food-grid">
+                <div class="food-item" onclick="checkFood(this, true)">
+                    <div class="food-emoji">🥕</div>
+                    <div class="food-label">Steamed Carrot Stick</div>
+                </div>
+                <div class="food-item" onclick="checkFood(this, false)">
+                    <div class="food-emoji">🍇</div>
+                    <div class="food-label">Whole Grape</div>
+                </div>
+                <div class="food-item" onclick="checkFood(this, true)">
+                    <div class="food-emoji">🍌</div>
+                    <div class="food-label">Banana Piece</div>
+                </div>
+                <div class="food-item" onclick="checkFood(this, false)">
+                    <div class="food-emoji">🥜</div>
+                    <div class="food-label">Whole Nut</div>
+                </div>
+                <div class="food-item" onclick="checkFood(this, true)">
+                    <div class="food-emoji">🥦</div>
+                    <div class="food-label">Broccoli Tree</div>
+                </div>
+                <div class="food-item" onclick="checkFood(this, true)">
+                    <div class="food-emoji">🍳</div>
+                    <div class="food-label">Omelette Strip</div>
+                </div>
+            </div>
+            <div id="result" class="result-box" style="display:none;"></div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📏 Shape Matters! (Finger Foods)</h2>
+            <p>Babies need food they can GRAB! Make it:</p>
+            <ul>
+                <li><strong>Long enough</strong> - like your index finger (baby's fist + sticking out)</li>
+                <li><strong>Soft enough</strong> - squish between your fingers like a ripe avocado</li>
+                <li><strong>Thick enough</strong> - so baby can hold it without it disappearing!</li>
+            </ul>
+            <div class="fact-box">
+                ✋ If YOU can squish it between your thumb and finger, baby's gums can mash it! (Babies don't need teeth to eat soft foods!)
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📅 When Can Babies Start?</h2>
+            <div class="age-guide">
+                <div class="age-box">
+                    <h3>👶 0-6 months</h3>
+                    <p>Only milk!<br>No solid food yet</p>
+                </div>
+                <div class="age-box">
+                    <h3>🧒 6+ months</h3>
+                    <p>Ready to start!<br>Can sit with support</p>
+                </div>
+            </div>
+            <p><strong>Signs baby is ready (ALL of these):</strong></p>
+            <ul>
+                <li>✅ Can sit up with little or no support</li>
+                <li>✅ Holds head steady</li>
+                <li>✅ Hand-eye coordination (can grab things and bring to mouth)</li>
+                <li>✅ Lost the tongue-thrust reflex (doesn't push food out automatically)</li>
+            </ul>
+        </div>
+        
+        <div class="story-box">
+            <h2>😰 Gagging vs Choking</h2>
+            <p><strong>Gagging is NORMAL and SAFE!</strong></p>
+            <ul>
+                <li>🟢 Baby makes noise (coughing, gagging sounds)</li>
+                <li>🟢 Baby is moving air</li>
+                <li>🟢 Baby's face might turn red</li>
+                <li>🟢 It's their body learning where food goes!</li>
+            </ul>
+            <p><strong>Choking is DANGEROUS - call for help!</strong></p>
+            <ul>
+                <li>🔴 Baby is SILENT (no air moving)</li>
+                <li>🔴 Baby can't cry or cough</li>
+                <li>🔴 Face turns blue</li>
+            </ul>
+            <div class="warning-box">
+                ⚠️ Always watch baby while eating! Take a baby CPR class to be prepared!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>✨ Why Some Parents Love BLW</h2>
+            <ul>
+                <li>🍽️ Baby eats what the family eats (less special cooking!)</li>
+                <li>🤲 Develops fine motor skills and hand-eye coordination</li>
+                <li>👅 Explores different textures early</li>
+                <li>😄 Learns to self-regulate (stops when full)</li>
+                <li>👨‍👩‍👧 Family meals together from the start!</li>
+            </ul>
+            <p><strong>Remember:</strong> Every family is different! Some do BLW, some do purees, some do both. The "right" way is what works for YOUR family!</p>
+        </div>
+        
+        <div class="disclaimer">
+            <p>🧸 <strong>ELI5 Important Disclaimer:</strong> This is for learning, not medical advice! Every baby develops differently. Always talk to your pediatrician before starting solids. Some babies have allergies, some need special approaches. You know your baby best!</p>
+            <p style="margin-top: 10px;">🚨 <strong>Safety First:</strong> Avoid choking hazards (whole grapes, whole nuts, popcorn, hot dogs, raw hard veggies). Always supervise meals. Learn infant CPR!</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Parenting Topics</a>
+        </div>
+    </div>
+
+    <script>
+        function checkFood(element, isSafe) {
+            const resultBox = document.getElementById('result');
+            const foodLabel = element.querySelector('.food-label').textContent;
+            
+            element.classList.remove('safe', 'unsafe');
+            
+            if (isSafe) {
+                element.classList.add('safe');
+                resultBox.className = 'result-box result-safe';
+                resultBox.innerHTML = '✅ ' + foodLabel + ' is SAFE when prepared correctly!';
+            } else {
+                element.classList.add('unsafe');
+                resultBox.className = 'result-box result-unsafe';
+                if (foodLabel.includes('Grape')) {
+                    resultBox.innerHTML = '❌ Whole grapes are a CHOKING HAZARD! Cut into quarters lengthwise!';
+                } else if (foodLabel.includes('Nut')) {
+                    resultBox.innerHTML = '❌ Whole nuts are a CHOKING HAZARD! Use smooth nut butters instead!';
+                }
+            }
+            resultBox.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
