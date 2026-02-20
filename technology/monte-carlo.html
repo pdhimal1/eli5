@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monte Carlo Methods - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #6a1b9a, #7b1fa2); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #6a1b9a; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .story-box ul { font-size: 18px; line-height: 1.8; color: #333; margin-left: 20px; margin-bottom: 10px; }
+        .story-box li { margin-bottom: 8px; }
+        .demo-area { background: #e1bee7; border-radius: 20px; padding: 25px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #4a148c; font-size: 28px; margin-bottom: 15px; }
+        canvas { display: block; margin: 0 auto; background: white; border-radius: 10px; }
+        .controls { text-align: center; margin-top: 15px; }
+        button { padding: 12px 25px; font-size: 16px; border: none; border-radius: 25px; cursor: pointer; background: #7b1fa2; color: white; }
+        button:hover { transform: scale(1.05); }
+        .stats { text-align: center; margin-top: 15px; font-size: 18px; color: #4a148c; }
+        .fact-box { background: #f3e5f5; border-left: 5px solid #6a1b9a; padding: 15px; margin: 15px 0; color: #4a148c; }
+        .example-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .example-box { background: white; padding: 15px; border-radius: 15px; text-align: center; }
+        .example-box h4 { color: #6a1b9a; margin-bottom: 8px; }
+        .example-box p { font-size: 14px; color: #333; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .story-box { padding: 18px; }
+            canvas { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Monte Carlo Methods! 🎲</h1>
+        <p class="subtitle">When you roll the dice to solve impossible problems!</p>
+        
+        <div class="story-box">
+            <h2>🎯 What is Monte Carlo?</h2>
+            <p>Imagine you want to know the area of a weird blob shape. You could do complex math... OR you could throw thousands of darts at it blindly and count how many hit!</p>
+            <p><strong>Monte Carlo methods</strong> are exactly that: using randomness (rolling dice, random numbers) to solve problems that seem too hard to calculate directly.</p>
+            <div class="fact-box">
+                🏰 The name comes from the famous casino in Monaco! Mathematicians working on nuclear bombs named it after the casino because it involves so much randomness.
+            </div>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎯 Estimate Pi with Darts!</h2>
+            <p style="text-align: center; color: #4a148c;">Click to throw 100 darts. The ratio of darts in the circle ≈ π/4!</p>
+            <canvas id="mcCanvas" width="400" height="400"></canvas>
+            <div class="controls">
+                <button onclick="throwDarts()">🎯 Throw 100 Darts!</button>
+                <button onclick="resetMC()">🔄 Reset</button>
+            </div>
+            <div class="stats" id="mcStats">Darts in circle: 0 | Total: 0 | Estimated π: 0</div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🤔 Why Does This Work?</h2>
+            <p><strong>The magic ratio:</strong></p>
+            <ul>
+                <li>Circle area = π × r²</li>
+                <li>Square area = (2r)² = 4r²</li>
+                <li>Circle/Square = π/4</li>
+                <li>So π ≈ 4 × (darts in circle / total darts)</li>
+            </ul>
+            <p>More darts = better estimate! With millions of darts, computers can estimate π to many decimal places!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🌍 Real World Uses</h2>
+            <div class="example-grid">
+                <div class="example-box">
+                    <h4>🎰 Casino Games</h4>
+                    <p>Simulating card games, slot machines to predict payouts</p>
+                </div>
+                <div class="example-box">
+                    <h4>🎬 Movie CGI</h4>
+                    <p>Ray tracing - simulating light rays bouncing around</p>
+                </div>
+                <div class="example-box">
+                    <h4>🧬 Drug Discovery</h4>
+                    <p>Simulating how molecules interact and fold</p>
+                </div>
+                <div class="example-box">
+                    <h4>📈 Stock Markets</h4>
+                    <p>Predicting price movements and risk assessment</p>
+                </div>
+                <div class="example-box">
+                    <h4>🎮 Video Games</h4>
+                    <p>AI decision making, physics simulations</p>
+                </div>
+                <div class="example-box">
+                    <h4>☢️ Nuclear Physics</h4>
+                    <p>Simulating particle interactions (where it was invented!)</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔧 How It Works (Simple Version)</h2>
+            <p><strong>Step 1: Define your problem</strong></p>
+            <p>What do you want to know? The answer to a question, area of a shape, probability of something...</p>
+            
+            <p><strong>Step 2: Create random samples</strong></p>
+            <p>Generate lots of random inputs - numbers, positions, scenarios...</p>
+            
+            <p><strong>Step 3: Simulate each one</strong></p>
+            <p>Run the simulation for each random input</p>
+            
+            <p><strong>Step 4: Aggregate results</strong></p>
+            <p>Average all the results - the law of large numbers makes it accurate!</p>
+            
+            <div class="fact-box">
+                📊 The Law of Large Numbers: The more times you try something random, the closer your average gets to the true answer!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎮 Monte Carlo in AI</h2>
+            <p>One famous use is in game-playing AI:</p>
+            <ul>
+                <li><strong>Monte Carlo Tree Search (MCTS)</strong> - used by AlphaGo to beat world champions</li>
+                <li>Instead of checking every possible move, the AI plays thousands of random games</li>
+                <li>Then picks the move that wins most often!</li>
+            </ul>
+            <p>It's like having a computer play a chess game a million times in its head and remembering which opening moves lead to the most wins!</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Technology Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('mcCanvas');
+        const ctx = canvas.getContext('2d');
+        let totalDarts = 0;
+        let circleDarts = 0;
+        
+        function drawBoard() {
+            ctx.fillStyle = '#f5f5f5';
+            ctx.fillRect(0, 0, 400, 400);
+            
+            ctx.fillStyle = '#e1bee7';
+            ctx.beginPath();
+            ctx.arc(200, 200, 150, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.strokeStyle = '#7b1fa2';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(50, 50, 300, 300);
+        }
+        
+        function throwDarts() {
+            for (let i = 0; i < 100; i++) {
+                const x = Math.random() * 400;
+                const y = Math.random() * 400;
+                
+                const dist = Math.sqrt(Math.pow(x - 200, 2) + Math.pow(y - 200, 2));
+                const inCircle = dist <= 150;
+                
+                ctx.fillStyle = inCircle ? '#7b1fa2' : '#bdbdbd';
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                totalDarts++;
+                if (inCircle) circleDarts++;
+            }
+            
+            const piEstimate = totalDarts > 0 ? 4 * (circleDarts / totalDarts) : 0;
+            document.getElementById('mcStats').textContent = 
+                `Darts in circle: ${circleDarts} | Total: ${totalDarts} | Estimated π: ${piEstimate.toFixed(5)} (Real: 3.14159...)`;
+        }
+        
+        function resetMC() {
+            totalDarts = 0;
+            circleDarts = 0;
+            drawBoard();
+            document.getElementById('mcStats').textContent = 'Darts in circle: 0 | Total: 0 | Estimated π: 0';
+        }
+        
+        drawBoard();
+    </script>
+</body>
+</html>
