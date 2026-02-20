@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Brain - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #6a1b9a, #8e24aa); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #6a1b9a; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0510; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ce93d8; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ab47bc; border-radius: 10px; background: #0a0510; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-think { background: linear-gradient(135deg, #ab47bc, #ba68c8); color: white; }
+        .fact-box { background: #f3e5f5; border-left: 5px solid #6a1b9a; padding: 15px; margin: 15px 0; color: #4a148c; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Your Amazing Brain! 🧠</h1>
+        <p class="subtitle">The boss of your body!</p>
+        
+        <div class="story-box">
+            <h2>💻 The Computer in Your Head!</h2>
+            <p>Your brain is like a super powerful computer that never turns off!</p>
+            <p>It controls <strong>everything</strong>: thinking, feeling, moving, breathing, and even dreaming!</p>
+            <p>Your brain has about <strong>86 billion</strong> tiny cells called neurons that talk to each other using electricity!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Brain Activity Simulator!</h2>
+            <canvas id="brainCanvas" width="700" height="400"></canvas>
+            <div class="controls">
+                <button class="btn-think" onclick="activateBrain()">Think About Pizza! 🍕</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🧩 Brain Regions!</h2>
+            <p>🧠 <strong>Cerebrum:</strong> The big top part - for thinking, learning, and remembering!</p>
+            <p>🎯 <strong>Cerebellum:</strong> At the back - helps you balance and move smoothly!</p>
+            <p>❤️ <strong>Brain Stem:</strong> Bottom part - controls breathing and heartbeat!</p>
+            <p>🐣 <strong>Hypothalamus:</strong> Controls hunger, thirst, and temperature!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>⚡ How Neurons Work!</h2>
+            <p>Neurons are like telephone wires that pass messages around your brain!</p>
+            <p><strong>Synapse:</strong> The tiny gap between neurons where messages jump!</p>
+            <div class="fact-box">
+                🧠 Your brain uses about 20% of all the energy in your body, even though it weighs only about 3 pounds!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('brainCanvas');
+        const ctx = canvas.getContext('2d');
+        let brainActive = false;
+        let neurons = [];
+        
+        function initNeurons() {
+            neurons = [];
+            for (let i = 0; i < 30; i++) {
+                neurons.push({
+                    x: 100 + Math.random() * 500,
+                    y: 80 + Math.random() * 250,
+                    pulse: Math.random() * Math.PI * 2,
+                    connections: []
+                });
+            }
+            // Create connections
+            neurons.forEach((n, i) => {
+                for (let j = 0; j < 3; j++) {
+                    const target = Math.floor(Math.random() * neurons.length);
+                    if (target !== i) {
+                        n.connections.push(target);
+                    }
+                }
+            });
+        }
+        
+        function activateBrain() {
+            brainActive = true;
+            initNeurons();
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a0510';
+            ctx.fillRect(0, 0, 700, 400);
+            
+            // Draw brain outline
+            ctx.fillStyle = '#ce93d8';
+            ctx.beginPath();
+            ctx.ellipse(350, 200, 180, 130, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw brain folds
+            ctx.strokeStyle = '#ab47bc';
+            ctx.lineWidth = 3;
+            for (let i = 0; i < 8; i++) {
+                const y = 120 + i * 25;
+                ctx.beginPath();
+                ctx.moveTo(200, y);
+                ctx.bezierCurveTo(300, y - 15, 400, y + 15, 500, y);
+                ctx.stroke();
+            }
+            
+            // Draw neurons
+            if (brainActive) {
+                neurons.forEach((n, i) => {
+                    n.pulse += 0.1;
+                    const brightness = (Math.sin(n.pulse) + 1) / 2;
+                    
+                    // Draw connections
+                    n.connections.forEach(targetIdx => {
+                        const target = neurons[targetIdx];
+                        ctx.strokeStyle = `rgba(186, 104, 200, ${brightness * 0.5})`;
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(n.x, n.y);
+                        ctx.lineTo(target.x, target.y);
+                        ctx.stroke();
+                    });
+                    
+                    // Draw neuron
+                    ctx.fillStyle = `rgba(233, 30, 99, ${brightness})`;
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, 8 + brightness * 5, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Electric signal
+                    if (brightness > 0.8) {
+                        ctx.fillStyle = '#ffeb3b';
+                        ctx.beginPath();
+                        ctx.arc(n.x + Math.random() * 10 - 5, n.y + Math.random() * 10 - 5, 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                });
+            } else {
+                // Draw some inactive neurons
+                for (let i = 0; i < 20; i++) {
+                    ctx.fillStyle = '#7b1fa2';
+                    ctx.beginPath();
+                    ctx.arc(250 + Math.random() * 200, 130 + Math.random() * 150, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            
+            // Labels
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(brainActive ? '⚡ Thinking! ⚡' : '🧠 Click "Think About Pizza"!', 350, 370);
+            
+            ctx.fillStyle = '#ce93d8';
+            ctx.font = '12px Arial';
+            ctx.fillText('Cerebrum (Thinking)', 350, 90);
+            
+            ctx.fillStyle = '#fff';
+            ctx.fillText('Cerebellum', 450, 280);
+            ctx.fillText('Brain Stem', 250, 280);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        initNeurons();
+        draw();
+    </script>
+</body>
+</html>

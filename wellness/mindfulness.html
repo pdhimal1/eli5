@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindfulness - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #00897b, #26a69a); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #00695c; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a1512; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #80cbc4; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #4db6ac; border-radius: 10px; background: #0a1512; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-meditate { background: linear-gradient(135deg, #26a69a, #4db6ac); color: white; }
+        .fact-box { background: #e0f2f1; border-left: 5px solid #00897b; padding: 15px; margin: 15px 0; color: #004d40; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧘 What is Mindfulness? 🧘</h1>
+        <p class="subtitle">Stay present and calm!</p>
+        
+        <div class="story-box">
+            <h2>🎯 Being Here Now!</h2>
+            <p>Mindfulness means paying attention to what's happening <strong>right now</strong>!</p>
+            <p>It's like being a detective for your own thoughts and feelings!</p>
+            <p>Instead of worrying about yesterday or tomorrow, you focus on this very moment!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Breathing Exercise!</h2>
+            <canvas id="mindCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-meditate" onclick="toggleMeditation()">🧘 Start Breathing!</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🌬️ Simple Breathing Technique!</h2>
+            <p><strong>1. Breathe In:</strong> Count to 4 slowly (smell the flowers!)</p>
+            <p><strong>2. Hold:</strong> Count to 4 (pretend you're holding a candle!)</p>
+            <p><strong>3. Breathe Out:</strong> Count to 6 (blow out candles!)</p>
+            <p><strong>4. Repeat:</strong> Do this 3-5 times!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>✨ Benefits of Mindfulness!</h2>
+            <p>😌 <strong>Calmer Mind:</strong> Less worrying and stress!</p>
+            <p>🎯 <strong>Focus:</strong> Better at paying attention!</p>
+            <p>😊 <strong>Feel Better:</strong> More happy and less anxious!</p>
+            <p>😴 <strong>Sleep Better:</strong> Relax before bed!</p>
+            <div class="fact-box">
+                🌱 Just 2-5 minutes of mindfulness each day can make a big difference!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('mindCanvas');
+        const ctx = canvas.getContext('2d');
+        let meditating = false;
+        let breathPhase = 0;
+        
+        function toggleMeditation() {
+            meditating = !meditating;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a1512';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            if (meditating) {
+                breathPhase += 0.02;
+            }
+            
+            // Breathing circle
+            const breathScale = Math.sin(breathPhase);
+            const circleSize = 80 + breathScale * 40;
+            
+            // Outer glow
+            const gradient = ctx.createRadialGradient(350, 175, 0, 350, 175, circleSize + 50);
+            gradient.addColorStop(0, 'rgba(77, 182, 172, 0.3)');
+            gradient.addColorStop(1, 'rgba(77, 182, 172, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Main circle
+            ctx.fillStyle = '#4db6ac';
+            ctx.beginPath();
+            ctx.arc(350, 175, circleSize, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Inner circle
+            ctx.fillStyle = '#80cbc4';
+            ctx.beginPath();
+            ctx.arc(350, 175, circleSize * 0.6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Person meditating
+            ctx.fillStyle = '#e0f2f1';
+            ctx.beginPath();
+            ctx.ellipse(350, 175, 25, 35, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Instruction text
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            
+            let instruction = '🧘 Click to Start!';
+            if (meditating) {
+                const phase = (breathPhase % (Math.PI * 2));
+                if (phase < Math.PI / 2) {
+                    instruction = '🌬️ Breathe In...';
+                } else if (phase < Math.PI) {
+                    instruction = '✋ Hold...';
+                } else if (phase < Math.PI * 1.5) {
+                    instruction = '💨 Breathe Out...';
+                } else {
+                    instruction = '✋ Hold...';
+                }
+            }
+            
+            ctx.fillText(instruction, 350, 320);
+            
+            // Breathing guide
+            ctx.font = '18px Arial';
+            ctx.fillStyle = '#80cbc4';
+            if (meditating) {
+                const count = Math.floor((breathPhase % (Math.PI * 2)) / (Math.PI / 2)) + 1;
+                ctx.fillText(`Cycle ${count}`, 350, 50);
+            }
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

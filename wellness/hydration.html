@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Water Matters - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #0288d1, #03a9f4); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #0277bd; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #051520; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #81d4fa; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #4fc3f7; border-radius: 10px; background: #051520; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-drink { background: linear-gradient(135deg, #03a9f4, #4fc3f7); color: white; }
+        .fact-box { background: #e1f5fe; border-left: 5px solid #0288d1; padding: 15px; margin: 15px 0; color: #01579b; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💧 Why Water Matters! 💧</h1>
+        <p class="subtitle">The superpower liquid!</p>
+        
+        <div class="story-box">
+            <h2>🌊 You're Mostly Water!</h2>
+            <p>Did you know your body is about <strong>60% water</strong>?</p>
+            <p>Your brain is 75% water! Your muscles are 79% water!</p>
+            <p>Water is like the fuel and coolant for your body's engine!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Hydration Tracker!</h2>
+            <canvas id="waterCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button class="btn-drink" onclick="drinkWater()">🥤 Drink Water!</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>💦 What Water Does!</h2>
+            <p>🧠 <strong>Brain:</strong> Helps you think clearly and remember things!</p>
+            <p>🌡️ <strong>Temperature:</strong> Keeps you from overheating!</p>
+            <p>🧹 <strong>Cleaning:</strong> Carries away waste and toxins!</p>
+            <p>💪 <strong>Digestion:</strong> Helps break down food!</p>
+            <p>🛴 <strong>Movement:</strong> Keeps joints slippery so you can move!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🚰 How Much Do You Need?</h2>
+            <p>Kids should drink about <strong>6-8 glasses</strong> of water per day!</p>
+            <p>You need MORE water when:</p>
+            <p>☀️ It's hot outside</p>
+            <p>🏃 You're exercising</p>
+            <p>🤒 You're sick</p>
+            <div class="fact-box">
+                💧 Drink water throughout the day, don't wait until you're thirsty - that's your body saying "I'm already a little dry!"
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('waterCanvas');
+        const ctx = canvas.getContext('2d');
+        let waterLevel = 30;
+        let bubbles = [];
+        
+        function drinkWater() {
+            waterLevel = Math.min(100, waterLevel + 15);
+            // Add bubbles
+            for (let i = 0; i < 10; i++) {
+                bubbles.push({
+                    x: 200 + Math.random() * 300,
+                    y: 350,
+                    size: 3 + Math.random() * 8,
+                    speed: 2 + Math.random() * 3
+                });
+            }
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#051520';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Glass
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fillRect(250, 50, 200, 280);
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(250, 50, 200, 280);
+            
+            // Water
+            const waterHeight = (waterLevel / 100) * 260;
+            const gradient = ctx.createLinearGradient(0, 330 - waterHeight, 0, 330);
+            gradient.addColorStop(0, '#29b6f6');
+            gradient.addColorStop(1, '#0288d1');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(254, 330 - waterHeight, 192, waterHeight);
+            
+            // Wave effect
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.beginPath();
+            for (let x = 254; x < 446; x += 5) {
+                const y = 330 - waterHeight + Math.sin((x + Date.now()/200) / 20) * 5;
+                if (x === 254) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(446, 330);
+            ctx.lineTo(254, 330);
+            ctx.fill();
+            
+            // Bubbles
+            bubbles = bubbles.filter(b => b.y > 330 - waterHeight);
+            bubbles.forEach(b => {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, b.size, 0, Math.PI * 2);
+                ctx.fill();
+                b.y -= b.speed;
+            });
+            
+            // Percentage
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${waterLevel}%`, 350, 200);
+            
+            ctx.font = '18px Arial';
+            ctx.fillText(waterLevel < 30 ? '😰 Very Thirsty!' :
+                        waterLevel < 60 ? '😐 Need More Water' :
+                        waterLevel < 90 ? '😊 Getting Hydrated!' :
+                        '💧 Great Hydration!', 350, 360);
+            
+            // Guidelines
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(250, 80);
+            ctx.lineTo(450, 80);
+            ctx.moveTo(250, 160);
+            ctx.lineTo(450, 160);
+            ctx.moveTo(250, 240);
+            ctx.lineTo(450, 240);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            ctx.font = '12px Arial';
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fillText('100%', 230, 65);
+            ctx.fillText('75%', 230, 145);
+            ctx.fillText('50%', 230, 225);
+            ctx.fillText('25%', 230, 305);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

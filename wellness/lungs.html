@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Lungs Work - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1565c0, #1976d2); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #1565c0; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a1520; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #90caf9; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #42a5f5; border-radius: 10px; background: #0a1520; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-breathe { background: linear-gradient(135deg, #42a5f5, #64b5f6); color: white; }
+        .fact-box { background: #e3f2fd; border-left: 5px solid #1565c0; padding: 15px; margin: 15px 0; color: #1565c0; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🫁 How Your Lungs Work! 🫁</h1>
+        <p class="subtitle">Your breathing machine!</p>
+        
+        <div class="story-box">
+            <h2>🌬️ Air Baggies!</h2>
+            <p>Your lungs are like two big air baggies inside your chest!</p>
+            <p>When you <strong>breathe in</strong>, your lungs fill up with air - like blowing up a balloon!</p>
+            <p>When you <strong>breathe out</strong>, the air goes back out - like letting air out of a balloon!</p>
+            <p>But here's the magic: inside your lungs, there's oxygen that goes INTO your blood!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Breathing Simulator!</h2>
+            <canvas id="lungCanvas" width="700" height="400"></canvas>
+            <div class="controls">
+                <button class="btn-breathe" onclick="toggleBreathing()">Start Breathing! 🌬️</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔄 The Air Exchange</h2>
+            <p><strong>In the Air:</strong> Oxygen (O2) - the good stuff your body needs!</p>
+            <p><strong>Out the Air:</strong> Carbon Dioxide (CO2) - the "used up" air your body doesn't need!</p>
+            <p>Your lungs are like a trading post: they take oxygen FROM the air and give back carbon dioxide TO the air!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🦠 Why Breathing Matters!</h2>
+            <p>🫁 <strong>Oxygen:</strong> Your body needs it to make energy - like gas for a car!</p>
+            <p>💨 <strong>Carbon Dioxide:</strong> Your cells make this as waste - and you breathe it out!</p>
+            <div class="fact-box">
+                🌊 You take about 20,000 breaths per day! That's a lot of air!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('lungCanvas');
+        const ctx = canvas.getContext('2d');
+        let breathingOn = false;
+        let breathPhase = 0;
+        
+        function toggleBreathing() {
+            breathingOn = !breathingOn;
+        }
+        
+        function drawLung(x, y, width, height, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.ellipse(x, y, width, height, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw bronchioles
+            ctx.strokeStyle = '#ffcdd2';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < 5; i++) {
+                ctx.beginPath();
+                const angle = (i - 2) * 0.3;
+                ctx.moveTo(x, y);
+                ctx.quadraticCurveTo(
+                    x + Math.sin(angle) * width * 0.8,
+                    y - height * 0.5,
+                    x + Math.sin(angle) * width * 1.2,
+                    y - height * 0.9
+                );
+                ctx.stroke();
+            }
+            
+            // Draw alveoli
+            ctx.fillStyle = '#ff8a80';
+            for (let i = 0; i < 8; i++) {
+                const angle = (i / 8) * Math.PI * 2;
+                const dist = 30 + Math.sin(i * 1.5) * 15;
+                ctx.beginPath();
+                ctx.arc(
+                    x + Math.cos(angle) * dist,
+                    y + Math.sin(angle) * dist,
+                    8, 0, Math.PI * 2
+                );
+                ctx.fill();
+            }
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a1520';
+            ctx.fillRect(0, 0, 700, 400);
+            
+            if (breathingOn) {
+                breathPhase += 0.04;
+            }
+            
+            const breathScale = Math.sin(breathPhase);
+            const lungExpand = 1 + breathScale * 0.25;
+            
+            // Draw trachea (windpipe)
+            ctx.fillStyle = '#ef9a9a';
+            ctx.fillRect(340, 50, 20, 60);
+            
+            // Draw lungs
+            const leftColor = breathScale > 0 ? '#64b5f6' : '#42a5f5';
+            const rightColor = breathScale > 0 ? '#64b5f6' : '#42a5f5';
+            
+            drawLung(280, 200, 60 * lungExpand, 120 * lungExpand, leftColor);
+            drawLung(420, 200, 60 * lungExpand, 120 * lungExpand, rightColor);
+            
+            // Draw diaphragm
+            ctx.fillStyle = breathScale > 0 ? '#c62828' : '#e53935';
+            ctx.beginPath();
+            ctx.ellipse(350, 340, 150, 30, 0, 0, Math.PI);
+            ctx.fill();
+            
+            // Draw air particles
+            if (breathingOn) {
+                const direction = breathScale > 0 ? 1 : -1;
+                ctx.fillStyle = '#90caf9';
+                for (let i = 0; i < 10; i++) {
+                    const y = 80 + i * 25;
+                    const x = 350 + Math.sin(Date.now()/200 + i) * 10;
+                    ctx.beginPath();
+                    ctx.arc(x, y - direction * 30, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                // Oxygen into blood
+                ctx.fillStyle = '#81c784';
+                for (let i = 0; i < 5; i++) {
+                    const y = 180 + i * 20;
+                    const x = 320 + Math.sin(Date.now()/300 + i) * 5;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                for (let i = 0; i < 5; i++) {
+                    const y = 180 + i * 20;
+                    const x = 380 + Math.sin(Date.now()/300 + i + 2) * 5;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            
+            // Labels
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(breathingOn ? (breathScale > 0 ? '🌬️ INHALE - Oxygen In!' : '💨 EXHALE - CO2 Out!') : '🌬️ Click to Breathe!', 350, 380);
+            
+            ctx.fillStyle = '#90caf9';
+            ctx.font = '14px Arial';
+            ctx.fillText('Trachea', 350, 40);
+            ctx.fillText('Left Lung', 280, 340);
+            ctx.fillText('Right Lung', 420, 340);
+            
+            ctx.fillStyle = '#81c784';
+            ctx.fillText('Oxygen → Blood', 250, 200);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good Posture - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #455a64, #78909c); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #37474f; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0d1112; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #b0bec5; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #90a4ae; border-radius: 10px; background: #0d1112; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-good { background: linear-gradient(135deg, #66bb6a, #81c784); color: white; }
+        .btn-bad { background: linear-gradient(135deg, #f44336, #e57373); color: white; }
+        .fact-box { background: #eceff1; border-left: 5px solid #455a64; padding: 15px; margin: 15px 0; color: #37474f; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧍 Good Posture! 🧍</h1>
+        <p class="subtitle">Stand tall, feel great!</p>
+        
+        <div class="story-box">
+            <h2>📐 The Power of Standing Tall!</h2>
+            <p><strong>Posture</strong> is how you hold your body when you sit, stand, or walk!</p>
+            <p>Good posture is like stacking building blocks - everything lines up nicely!</p>
+            <p>Bad posture is like a wobbly tower - it puts stress on the wrong places!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Posture Checker!</h2>
+            <canvas id="postureCanvas" width="700" height="400"></canvas>
+            <div class="controls">
+                <button class="btn-good" onclick="setPosture('good')">✅ Good Posture</button>
+                <button class="btn-bad" onclick="setPosture('bad')">❌ Bad Posture</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>✨ Good Posture Tips!</h2>
+            <p>🪑 <strong>Sit:</strong> Feet flat on floor, back against chair!</p>
+            <p>📱 <strong>Phone:</strong> Hold it at eye level, not looking down!</p>
+            <p>🎒 <strong>Bag:</strong> Wear straps on both shoulders!</p>
+            <p>😴 <strong>Sleep:</strong> On your back or side, not your tummy!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>💪 Benefits of Good Posture!</h2>
+            <p>🤕 <strong>Less Pain:</strong> No aching back or neck!</p>
+            <p>💨 <strong>More Energy:</strong> Your muscles work easier!</p>
+            <p>🧠 <strong>Better Focus:</strong> Good posture = good blood flow to brain!</p>
+            <p>😎 <strong>Look Confident:</strong> Stand tall, feel proud!</p>
+            <div class="fact-box">
+                🌱 Good posture is a habit! Practice every day and your body will thank you!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('postureCanvas');
+        const ctx = canvas.getContext('2d');
+        let posture = 'good';
+        
+        function setPosture(p) {
+            posture = p;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0d1112';
+            ctx.fillRect(0, 0, 700, 400);
+            
+            // Floor
+            ctx.fillStyle = '#263238';
+            ctx.fillRect(0, 350, 700, 50);
+            
+            const x = 350;
+            const y = 340;
+            
+            if (posture === 'good') {
+                // Good posture - straight line through body
+                // Spine line
+                ctx.strokeStyle = '#66bb6a';
+                ctx.lineWidth = 3;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(x, y - 180);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Head
+                ctx.fillStyle = '#ffcc80';
+                ctx.beginPath();
+                ctx.arc(x, y - 195, 25, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Body (straight)
+                ctx.fillStyle = '#42a5f5';
+                ctx.fillRect(x - 15, y - 170, 30, 70);
+                
+                // Shoulders (back and level)
+                ctx.fillStyle = '#42a5f5';
+                ctx.beginPath();
+                ctx.ellipse(x - 35, y - 155, 20, 10, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.ellipse(x + 35, y - 155, 20, 10, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Legs (straight)
+                ctx.strokeStyle = '#1565c0';
+                ctx.lineWidth = 12;
+                ctx.beginPath();
+                ctx.moveTo(x - 10, y - 100);
+                ctx.lineTo(x - 15, y);
+                ctx.moveTo(x + 10, y - 100);
+                ctx.lineTo(x + 15, y);
+                ctx.stroke();
+                
+                // Arms (down)
+                ctx.strokeStyle = '#ffcc80';
+                ctx.lineWidth = 8;
+                ctx.beginPath();
+                ctx.moveTo(x - 25, y - 155);
+                ctx.lineTo(x - 30, y - 80);
+                ctx.moveTo(x + 25, y - 155);
+                ctx.lineTo(x + 30, y - 80);
+                ctx.stroke();
+                
+            } else {
+                // Bad posture - curved spine, forward head
+                // Curved spine
+                ctx.strokeStyle = '#f44336';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(x + 30, y - 180);
+                ctx.quadraticCurveTo(x, y - 120, x - 10, y);
+                ctx.stroke();
+                
+                // Head (forward)
+                ctx.fillStyle = '#ffcc80';
+                ctx.beginPath();
+                ctx.arc(x + 50, y - 180, 25, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Body (hunched)
+                ctx.fillStyle = '#42a5f5';
+                ctx.save();
+                ctx.translate(x, y - 135);
+                ctx.rotate(0.3);
+                ctx.fillRect(-15, -35, 30, 70);
+                ctx.restore();
+                
+                // Shoulders (hunched forward)
+                ctx.fillStyle = '#42a5f5';
+                ctx.beginPath();
+                ctx.ellipse(x + 20, y - 120, 25, 12, 0.3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Legs 
+                ctx.strokeStyle = '#1565c0';
+                ctx.lineWidth = 12;
+                ctx.beginPath();
+                ctx.moveTo(x - 15, y - 80);
+                ctx.lineTo(x - 25, y);
+                ctx.moveTo(x + 5, y - 80);
+                ctx.lineTo(x + 10, y);
+                ctx.stroke();
+                
+                // Arms 
+                ctx.strokeStyle = '#ffcc80';
+                ctx.lineWidth = 8;
+                ctx.beginPath();
+                ctx.moveTo(x + 30, y - 120);
+                ctx.lineTo(x + 50, y - 60);
+                ctx.moveTo(x + 35, y - 120);
+                ctx.lineTo(x + 55, y - 60);
+                ctx.stroke();
+                
+                // Pain markers
+                ctx.fillStyle = '#f44336';
+                ctx.font = '20px Arial';
+                ctx.fillText('😫', x + 20, y - 90);
+                ctx.fillText('😫', x + 65, y - 160);
+            }
+            
+            // Labels
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            
+            if (posture === 'good') {
+                ctx.fillStyle = '#81c784';
+                ctx.fillText('✅ Great Posture!', 350, 380);
+                
+                ctx.font = '14px Arial';
+                ctx.fillStyle = '#fff';
+                ctx.fillText('Ears over shoulders', x - 80, y - 170);
+                ctx.fillText('Shoulders back', x - 80, y - 140);
+                ctx.fillText('Straight spine', x - 80, y - 80);
+            } else {
+                ctx.fillStyle = '#e57373';
+                ctx.fillText('❌ Slouching!', 350, 380);
+                
+                ctx.font = '14px Arial';
+                ctx.fillStyle = '#fff';
+                ctx.fillText('Head forward', x + 100, y - 160);
+                ctx.fillText('Rounded back', x + 80, y - 100);
+            }
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

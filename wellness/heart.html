@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Your Heart Works - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #c62828, #e53935); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #c62828; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #1a0a0a; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ef9a9a; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ef5350; border-radius: 10px; background: #1a0a0a; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-pulse { background: linear-gradient(135deg, #ef5350, #e57373); color: white; }
+        .fact-box { background: #ffebee; border-left: 5px solid #c62828; padding: 15px; margin: 15px 0; color: #c62828; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; margin-bottom: 15px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p { font-size: 16px; }
+            .demo-area { padding: 15px; }
+            .demo-title { font-size: 22px; }
+            canvas { width: 100% !important; height: auto !important; max-width: 100%; }
+            button { padding: 12px 24px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❤️ How Your Heart Works! ❤️</h1>
+        <p class="subtitle">The amazing pump inside you!</p>
+        
+        <div class="story-box">
+            <h2>💗 Your Heart is a Pump!</h2>
+            <p>Your heart is like a tiny house with 4 rooms! It pumps blood all around your body, non-stop, every single day!</p>
+            <p><strong>The blood carries:</strong> oxygen (like fuel for your body) and nutrients (tiny building blocks that keep you growing!)</p>
+            <p>Your heart beats about 100,000 times per day - that's more than 3 billion times in your whole life!</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Heart Beat Simulator!</h2>
+            <canvas id="heartCanvas" width="700" height="400"></canvas>
+            <div class="controls">
+                <button class="btn-pulse" onclick="toggleHeart()">Start Heart! 💓</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔄 The Two Loops</h2>
+            <p><strong>Loop 1 - To the Lungs:</strong> Blood goes from your heart to your lungs to pick up fresh oxygen (breath in!)</p>
+            <p><strong>Loop 2 - To the Body:</strong> Blood carries that oxygen to every part of your body!</p>
+            <p>Then the blood comes back to get more oxygen... and the cycle continues!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🫀 Fun Heart Facts!</h2>
+            <p>🫀 <strong>Size:</strong> About the size of your fist!</p>
+            <p>💪 <strong>Power:</strong> Can squirt blood up to 30 feet!</p>
+            <p>🔊 <strong>Sound:</strong> "Lub-Dub" is the sound of valves closing!</p>
+            <div class="fact-box">
+                ❤️ Your heart automatically slows down when you sleep and speeds up when you run - it's super smart!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Wellness Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('heartCanvas');
+        const ctx = canvas.getContext('2d');
+        let heartOn = false;
+        let beatPhase = 0;
+        
+        function toggleHeart() {
+            heartOn = !heartOn;
+        }
+        
+        function drawHeart(x, y, size, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x, y - size/4);
+            ctx.bezierCurveTo(x + size/2, y - size, x + size, y, x, y + size);
+            ctx.bezierCurveTo(x - size, y, x - size/2, y - size, x, y - size/4);
+            ctx.fill();
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#1a0a0a';
+            ctx.fillRect(0, 0, 700, 400);
+            
+            if (heartOn) {
+                beatPhase += 0.08;
+            }
+            
+            const scale = 1 + Math.sin(beatPhase) * 0.15;
+            const glowIntensity = (Math.sin(beatPhase) + 1) / 2;
+            
+            // Draw glow
+            const gradient = ctx.createRadialGradient(350, 200, 0, 350, 200, 150 * scale);
+            gradient.addColorStop(0, `rgba(239, 83, 80, ${glowIntensity * 0.5})`);
+            gradient.addColorStop(1, 'rgba(239, 83, 80, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 700, 400);
+            
+            // Draw heart
+            drawHeart(350, 200, 100 * scale, '#e53935');
+            drawHeart(350, 200, 60 * scale, '#ffcdd2');
+            
+            // Draw blood vessels
+            ctx.strokeStyle = '#c62828';
+            ctx.lineWidth = 4;
+            
+            // Arteries (out)
+            ctx.beginPath();
+            ctx.moveTo(350, 100);
+            ctx.lineTo(350, 50);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(290, 180);
+            ctx.quadraticCurveTo(200, 150, 150, 100);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(410, 180);
+            ctx.quadraticCurveTo(500, 150, 550, 100);
+            ctx.stroke();
+            
+            // Veins (back in)
+            ctx.strokeStyle = '#5c6bc0';
+            ctx.lineWidth = 4;
+            
+            ctx.beginPath();
+            ctx.moveTo(350, 300);
+            ctx.lineTo(350, 350);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(300, 220);
+            ctx.quadraticCurveTo(200, 250, 150, 300);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(400, 220);
+            ctx.quadraticCurveTo(500, 250, 550, 300);
+            ctx.stroke();
+            
+            // Labels
+            ctx.fillStyle = '#ef9a9a';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(heartOn ? '❤️ Pumping Blood!' : '❤️ Click Start!', 350, 380);
+            
+            ctx.fillStyle = '#90caf9';
+            ctx.fillText('Oxygen-poor', 180, 320);
+            ctx.fillText('Oxygen-rich', 520, 320);
+            
+            ctx.fillStyle = '#ef5350';
+            ctx.fillText('Oxygen → Body', 550, 80);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>
