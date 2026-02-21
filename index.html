@@ -69,6 +69,18 @@
         .topic-card:nth-child(4) { border-top: 5px solid #9c27b0; }
         .topic-card:nth-child(5) { border-top: 5px solid #7c4dff; }
         
+        .intro-box {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .intro-box h2 { color: #1a237e; font-size: 24px; margin-bottom: 15px; }
+        .intro-box p { color: #333; font-size: 16px; line-height: 1.7; margin-bottom: 12px; }
+        .intro-box .highlight { color: #7c4dff; font-weight: bold; }
+        .intro-box .emoji-row { font-size: 30px; margin-top: 15px; }
+        
         @media (max-width: 768px) {
             h1 { font-size: 32px; }
             .subtitle { font-size: 16px; }
@@ -82,6 +94,14 @@
     <div class="container">
         <h1>🧸 ELI5 Park 🧸</h1>
         <p class="subtitle">Learn anything - super simply!</p>
+        
+        <div class="intro-box">
+            <h2>🤔 What is ELI5?</h2>
+            <p><strong>ELI5</strong> stands for <span class="highlight">"Explain Like I'm 5"</span> - a way of explaining complex ideas in the simplest possible terms!</p>
+            <p>This site was created to make hard topics easy to understand. Whether you're a <span class="highlight">curious kid</span> or just someone who wants things broken down simply, this is for you!</p>
+            <p>We use <span class="highlight">interactive demos, fun visuals, and simple analogies</span> to explain everything from how AI works to how to save money.</p>
+            <p class="emoji-row">🎮 💡 📚 ✨</p>
+        </div>
         
         <!-- Phase 1: Tech & Innovation -->
         <h2 class="phase-title">💻 Tech & Innovation</h2>
