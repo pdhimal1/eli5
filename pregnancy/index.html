@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELI5 Pregnancy & Expecting - From What to Expect to Cribsheet!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 42px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .section-title { text-align: center; color: #fff; font-size: 28px; margin: 40px 0 20px; padding: 15px; background: rgba(255,255,255,0.15); border-radius: 15px; }
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .topic-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
+        .topic-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .topic-icon { font-size: 45px; text-align: center; margin-bottom: 12px; }
+        .topic-card h2 { color: #333; font-size: 18px; margin-bottom: 8px; text-align: center; }
+        .topic-card p { color: #666; font-size: 13px; line-height: 1.4; text-align: center; }
+        .topic-card:nth-child(1) { border-top: 5px solid #e91e63; }
+        .topic-card:nth-child(2) { border-top: 5px solid #2196f3; }
+        .topic-card:nth-child(3) { border-top: 5px solid #ff9800; }
+        .topic-card:nth-child(4) { border-top: 5px solid #9c27b0; }
+        .topic-card:nth-child(5) { border-top: 5px solid #4caf50; }
+        .topic-card:nth-child(6) { border-top: 5px solid #00bcd4; }
+        .topic-card:nth-child(7) { border-top: 5px solid #ff5722; }
+        .topic-card:nth-child(8) { border-top: 5px solid #607d8b; }
+        .back-link { text-align: center; margin-top: 40px; }
+        .back-link a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        .header-nav { text-align: center; margin-bottom: 20px; }
+        .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        .header-nav a:hover { color: #fff; }
+        .book-section { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; margin: 20px 0; }
+        .book-section h3 { color: #fff; margin-bottom: 10px; }
+        .book-section p { color: rgba(255,255,255,0.8); font-size: 14px; }
+        .disclaimer { background: rgba(255,255,255,0.9); border-radius: 15px; padding: 20px; margin-top: 40px; text-align: center; }
+        .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 28px; }
+            .subtitle { font-size: 16px; }
+            .topics-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-nav">
+            <a href="../index.html">🏠 ELI5 Park</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <span style="color: #fff;">Pregnancy & Expecting</span>
+        </div>
+        
+        <h1>🤰 ELI5 Pregnancy & Expecting 🤰</h1>
+        <p class="subtitle">From "What to Expect" to "Cribsheet" - simply explained!</p>
+        
+        <div class="book-section">
+            <h3>📚 Based on Popular Books</h3>
+            <p>Content inspired by What to Expect When You're Expecting, Expecting Better, Cribsheet, and We're Pregnant!</p>
+        </div>
+        
+        <!-- Trimester by Trimester -->
+        <h2 class="section-title">📅 Trimester by Trimester</h2>
+        <div class="topics-grid">
+            <a href="first-trimester.html" class="topic-card">
+                <div class="topic-icon">🌱</div>
+                <h2>First Trimester</h2>
+                <p>What to expect in weeks 1-12 - morning sickness, fatigue, and more!</p>
+            </a>
+            
+            <a href="second-trimester.html" class="topic-card">
+                <div class="topic-icon">🌸</div>
+                <h2>Second Trimester</h2>
+                <p>The "honeymoon phase" - feeling better and feeling baby move!</p>
+            </a>
+            
+            <a href="third-trimester.html" class="topic-card">
+                <div class="topic-icon">👶</div>
+                <h2>Third Trimester</h2>
+                <p>Getting ready for baby - final preparations and countdown!</p>
+            </a>
+        </div>
+        
+        <!-- Key Topics -->
+        <h2 class="section-title">💡 Key Topics</h2>
+        <div class="topics-grid">
+            <a href="nutrition-pregnancy.html" class="topic-card">
+                <div class="topic-icon">🥗</div>
+                <h2>Nutrition in Pregnancy</h2>
+                <p>What to eat, what to avoid, and the real data on coffee and alcohol!</p>
+            </a>
+            
+            <a href="prenatal-testing.html" class="topic-card">
+                <div class="topic-icon">🧬</div>
+                <h2>Prenatal Testing</h2>
+                <p>Understanding genetic tests, screenings, and what the data really means!</p>
+            </a>
+            
+            <a href="labor-delivery.html" class="topic-card">
+                <div class="topic-icon">🏥</div>
+                <h2>Labor & Delivery</h2>
+                <p>What happens, birth plans, and pain management options!</p>
+            </a>
+            
+            <a href="feeding-baby.html" class="topic-card">
+                <div class="topic-icon">🍼</div>
+                <h2>Feeding Your Baby</h2>
+                <p>Breastfeeding vs formula - what the research actually shows!</p>
+            </a>
+            
+            <a href="baby-sleep.html" class="topic-card">
+                <div class="topic-icon">😴</div>
+                <h2>Baby Sleep</h2>
+                <p>Sleep training methods and what the evidence says actually works!</p>
+            </a>
+            
+            <a href="dads-guide.html" class="topic-card">
+                <div class="topic-icon">👨</div>
+                <h2>First Time Dad's Guide</h2>
+                <p>For partners - how to support and be involved during pregnancy!</p>
+            </a>
+        </div>
+        
+        <div class="disclaimer">
+            <p><strong>Disclaimer:</strong> This content is for educational purposes and summarizes information from popular pregnancy books. Always consult your healthcare provider for medical advice.</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="../index.html">← Back to ELI5 Park</a>
+        </div>
+    </div>
+</body>
+</html>
