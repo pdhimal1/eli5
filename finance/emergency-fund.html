@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Fund - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #c62828, #d32f2f); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #c62828; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .story-box ul { font-size: 18px; line-height: 1.8; color: #333; margin-left: 20px; margin-bottom: 10px; }
+        .story-box li { margin-bottom: 8px; }
+        .demo-area { background: #ffebee; border-radius: 20px; padding: 25px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #b71c1c; font-size: 28px; margin-bottom: 15px; }
+        .savings-calc { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin: 20px 0; }
+        .calc-box { background: white; padding: 20px; border-radius: 15px; text-align: center; min-width: 150px; }
+        .calc-box label { display: block; color: #c62828; font-size: 14px; margin-bottom: 8px; }
+        .calc-box input { width: 100%; padding: 10px; font-size: 18px; border: 2px solid #c62828; border-radius: 10px; text-align: center; }
+        .result-display { background: white; padding: 20px; border-radius: 15px; text-align: center; margin-top: 20px; }
+        .result-display .amount { font-size: 36px; font-weight: bold; color: #c62828; }
+        .result-display .time { font-size: 18px; color: #333; }
+        .fact-box { background: #ffebee; border-left: 5px solid #c62828; padding: 15px; margin: 15px 0; color: #b71c1c; }
+        .tip-box { background: #fff3e0; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        .tip-box h4 { color: #e65100; margin-bottom: 8px; }
+        .levels { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .level-box { background: white; padding: 15px; border-radius: 15px; text-align: center; }
+        .level-box h4 { color: #c62828; margin-bottom: 8px; }
+        .level-box .amount { font-size: 24px; font-weight: bold; color: #333; }
+        .level-box p { font-size: 14px; color: #666; }
+        .warning-box { background: #fff8e1; border-left: 5px solid #ffc107; padding: 15px; margin: 15px 0; color: #f57f17; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Emergency Fund! 🛡️</h1>
+        <p class="subtitle">Your financial safety net!</p>
+        
+        <div class="story-box">
+            <h2>🤔 What is an Emergency Fund?</h2>
+            <p>An <strong>emergency fund</strong> is money set aside specifically for unexpected expenses - like car repairs, medical bills, or job loss.</p>
+            <p>It's not for vacation or shopping - it's for <strong>true emergencies!</strong></p>
+            <div class="fact-box">
+                🛡️ Think of it as a financial seatbelt - you hope you never need it, but you're glad it's there if you do!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📊 How Much Do You Need?</h2>
+            <div class="levels">
+                <div class="level-box">
+                    <h4>🟢 Starter</h4>
+                    <div class="amount">$1,000</div>
+                    <p>Covers small emergencies: car repair, medical copay</p>
+                </div>
+                <div class="level-box">
+                    <h4>🟡 Good Goal</h4>
+                    <div class="amount">$5,000</div>
+                    <p>Handles bigger issues: job loss for a month, major repair</p>
+                </div>
+                <div class="level-box">
+                    <h4>🟢 Ultimate</h4>
+                    <div class="amount">3-6 months</div>
+                    <p>Of expenses. For job loss, major life changes</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">⏱️ How Long to Build It?</h2>
+            <p style="text-align: center; margin-bottom: 15px;">Enter how much you can save monthly!</p>
+            
+            <div class="savings-calc">
+                <div class="calc-box">
+                    <label>Monthly Savings</label>
+                    <input type="number" id="monthlySave" value="200">
+                </div>
+                <div class="calc-box">
+                    <label>Goal Amount</label>
+                    <input type="number" id="goalAmount" value="5000">
+                </div>
+            </div>
+            
+            <div class="controls" style="text-align: center;">
+                <button onclick="calcTime()" style="background: #c62828;">🧮 Calculate!</button>
+            </div>
+            
+            <div class="result-display" id="resultDisplay" style="display: none;">
+                <div class="time">At your current savings rate:</div>
+                <div class="amount" id="timeResult"></div>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📅 What's an Emergency? (And What's NOT)</h2>
+            <p><strong>✅ TRUE EMERGENCIES:</strong></p>
+            <ul>
+                <li>🚗 Car breaking down</li>
+                <li>🏥 Medical emergency</li>
+                <li>👷 Job loss</li>
+                <li>🔧 Home repair (not cosmetic)</li>
+                <li>🐕 Emergency vet visit</li>
+            </ul>
+            <p><strong>❌ NOT EMERGENCIES:</strong></p>
+            <ul>
+                <li>✈️ Vacation</li>
+                <li>📱 New phone (old one works)</li>
+                <li>🛒 Black Friday deals</li>
+                <li>🎮 New console</li>
+                <li>💅 Routine car maintenance</li>
+            </ul>
+        </div>
+        
+        <div class="story-box">
+            <h2>💡 Where to Keep It</h2>
+            <ul>
+                <li><strong>High-yield savings account:</strong> Earns some interest, easy to access</li>
+                <li><strong>Money market account:</strong> Similar, may have better rates</li>
+                <li><strong>NOT in stocks:</strong> Too risky! You need it to be there when you need it</li>
+                <li><strong>NOT in checking:</strong> Too easy to spend!</li>
+            </ul>
+            <div class="tip-box">
+                <h4>🏦 Keep It Separate</h4>
+                <p>Have a separate savings account. Out of sight, out of mind!</p>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🛠️ How to Start</h2>
+            <ol>
+                <li><strong>Start small:</strong> $500 is better than $0</li>
+                <li><strong>Automate:</strong> Set up automatic transfer on payday</li>
+                <li><strong>Windfalls:</strong> Tax refunds, bonuses go here first</li>
+                <li><strong>No touching:</strong> If you tap it, replenish it!</li>
+                <li><strong>Celebrate milestones:</strong> $1,000 reached? Treat yourself (slightly)!</li>
+            </ol>
+        </div>
+        
+        <div class="warning-box">
+            ⚠️ <strong>Important:</strong> Once you use your emergency fund, make rebuilding it a PRIORITY before spending on anything else!
+        </div>
+        
+        <div class="fact-box">
+            💰 The peace of mind knowing you have a safety net? Priceless.
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Finance Topics</a>
+        </div>
+    </div>
+
+    <script>
+        function calcTime() {
+            const monthly = parseFloat(document.getElementById('monthlySave').value) || 0;
+            const goal = parseFloat(document.getElementById('goalAmount').value) || 0;
+            
+            if (monthly <= 0) {
+                document.getElementById('timeResult').textContent = 'Enter a savings amount!';
+                document.getElementById('resultDisplay').style.display = 'block';
+                return;
+            }
+            
+            const months = Math.ceil(goal / monthly);
+            const years = Math.floor(months / 12);
+            const remainingMonths = months % 12;
+            
+            let message = '';
+            if (years > 0) {
+                message += years + ' year' + (years > 1 ? 's' : '');
+                if (remainingMonths > 0) {
+                    message += ' and ';
+                }
+            }
+            if (remainingMonths > 0) {
+                message += remainingMonths + ' month' + (remainingMonths > 1 ? 's' : '');
+            }
+            
+            document.getElementById('timeResult').textContent = message;
+            document.getElementById('resultDisplay').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
