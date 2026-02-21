@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Policy - ELI5 Park</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; min-height: 100vh; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; }
+        h1 { color: #1a1a2e; margin-bottom: 20px; }
+        h2 { color: #333; margin-top: 30px; margin-bottom: 15px; }
+        p { color: #666; line-height: 1.7; margin-bottom: 15px; }
+        ul { margin-left: 20px; color: #666; }
+        li { margin-bottom: 10px; }
+        .last-updated { color: #999; font-size: 14px; margin-bottom: 30px; }
+        .back-link { margin-top: 40px; }
+        .back-link a { color: #1a1a2e; }
+        .good { color: #2e7d32; font-weight: bold; }
+        .warning { color: #f57c00; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Security Policy</h1>
+        <p class="last-updated">Last Updated: February 2026</p>
+        
+        <h2>1. Security Overview</h2>
+        <p>ELI5 Park is committed to maintaining the security of our users. As a static educational website with no user accounts or data collection, we have minimal security risk.</p>
+        
+        <h2>2. What We Do Well</h2>
+        <ul>
+            <li class="good">✅ No user data collection - completely static site</li>
+            <li class="good">✅ No external dependencies (except Chart.js CDN on one page)</li>
+            <li class="good">✅ All content is server-side rendered (no user input stored)</li>
+            <li class="good">✅ HTTPS enabled via GitHub Pages</li>
+            <li class="good">✅ No authentication or user accounts</li>
+            <li class="good">✅ No third-party analytics or tracking</li>
+            <li class="good">✅ PWA service worker for offline support (local caching only)</li>
+        </ul>
+        
+        <h2>3. Potential Considerations</h2>
+        <ul>
+            <li class="warning">⚠️ Chart.js CDN: One page uses external JavaScript library from jsDelivr CDN</li>
+            <li class="warning">⚠️ Inline JavaScript: Many pages use inline scripts for interactive demos</li>
+            <li class="warning">⚠️ GitHub Pages hosting: Security depends on GitHub's infrastructure</li>
+        </ul>
+        
+        <h2>4. Known Issues (Previously Fixed)</h2>
+        <ul>
+            <li>✅ External Tailwind CSS CDN removed from LeetCode section (Feb 2026)</li>
+            <li>✅ All external dependencies eliminated from main site</li>
+        </ul>
+        
+        <h2>5. Vulnerabilities & Reporting</h2>
+        <p>If you discover a security vulnerability, please:</p>
+        <ul>
+            <li>Do not exploit the vulnerability</li>
+            <li>Report it through our GitHub Issues</li>
+            <li>Include detailed steps to reproduce</li>
+            <li>We will acknowledge reports within 48 hours</li>
+        </ul>
+        
+        <h2>6. Play Store Security (For App Version)</h2>
+        <p>When publishing as an Android app:</p>
+        <ul>
+            <li>App will be published with minimal permissions</li>
+            <li>No network access required (content is bundled)</li>
+            <li>No personal data collection</li>
+            <li>Content Security Policy will be implemented</li>
+        </ul>
+        
+        <h2>7. Content Safety</h2>
+        <p>All educational content is:</p>
+        <ul>
+            <li>Appropriate for all ages</li>
+            <li>Fact-checked for accuracy</li>
+            <li>Reviewed for harmful content</li>
+            <li>Includes disclaimers where appropriate (medical, financial advice)</li>
+        </ul>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Docs</a> | <a href="../index.html">Back to ELI5 Park</a>
+        </div>
+    </div>
+</body>
+</html>
