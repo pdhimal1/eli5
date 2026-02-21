@@ -2,40 +2,71 @@
 
 A collection of interactive educational pages that explain complex topics in simple terms.
 
-## Access Online
+## 🌐 Live Site
 
-Visit: **https://pdhimal1.github.io/eli5**
+Visit: **https://eli5park.com**
 
-## Topics
+(Also available at https://pdhimal1.github.io/eli5)
+
+## 📱 Mobile App
+
+The site is PWA-ready and can be installed as an app on Android and iOS devices.
+
+### Features
+- Works offline after first visit
+- Installable on mobile home screen
+- Responsive design for all devices
+
+## 📚 Topics
 
 ### Technology
-- Quad Trees
-- Radio Waves & Propagation
-- Radar
+- Monte Carlo Methods
+- Robot Vacuums
+- Self-Driving Cars (Radar & Cameras)
 - GPS & Satellites
-- WiFi
-- Bluetooth
-- Cell Towers
-- Machine Learning
-- Neural Networks
+- WiFi & Bluetooth
+- Neural Networks & Machine Learning
 - Encryption
 - The Internet
-- Binary & Bits
-- Compression
-- Electronic Warfare
-- Self-Driving Cars (Radar & Cameras)
+- Quad Trees
+- And more...
+
+### AI
+- Neural Networks
+- Machine Learning
+- Computer Vision
+- LLMs
+- Data Mining
 
 ### Finance
-- Finance Basics
-- Stocks
-- Investing
+- Stocks & Investing
 - Compound Interest
 - ETFs
 - Retirement Planning
 - Crypto
-- 529 Plans & Kids Accounts
+- 529 Plans
 
-## How It Works
+### Medical
+- X-Rays, MRI, CT Scans
+- Ultrasound
+- Vaccines
+
+### Wellness
+- Body Systems (Heart, Lungs, Brain, Digestion)
+- Mental Health (Stress, Sleep, Emotions)
+- Diet & Fitness
+
+### Parenting
+- Baby Led Weaning
+- Potty Training
+- Co-Regulation
+- Tantrums & Big Feelings
+- Infant Sleep
+- Independent Play
+- Setting Boundaries
+- The Good Enough Parent
+
+## 🎮 How It Works
 
 Each page uses interactive HTML5 canvas demos to visualize concepts with:
 - Animated simulations
@@ -43,4 +74,14 @@ Each page uses interactive HTML5 canvas demos to visualize concepts with:
 - Kid-friendly explanations
 - Real-world examples
 
-Built with vanilla HTML, CSS, and JavaScript.
+## 🔒 Security
+
+See [SECURITY.md](SECURITY.md) for security review details.
+
+## 🛠️ Tech Stack
+
+Built with vanilla HTML, CSS, and JavaScript. No frameworks or build tools required.
+
+## 📄 License
+
+MIT License - Feel free to use and modify!
