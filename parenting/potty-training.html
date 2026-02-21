@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potty Training - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #0277bd, #0288d1); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #0277bd; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .story-box ul { font-size: 18px; line-height: 1.8; color: #333; margin-left: 20px; margin-bottom: 10px; }
+        .story-box li { margin-bottom: 8px; }
+        .demo-area { background: #e1f5fe; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #01579b; font-size: 28px; margin-bottom: 15px; }
+        .timeline { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+        .timeline-box { background: #b3e5fc; padding: 15px; border-radius: 15px; text-align: center; min-width: 130px; flex: 1; }
+        .timeline-box h3 { color: #01579b; font-size: 18px; margin-bottom: 10px; }
+        .timeline-box p { font-size: 14px; color: #333; }
+        .timeline-box.ready { background: #81d4fa; border: 3px solid #0288d1; }
+        .fact-box { background: #e1f5fe; border-left: 5px solid #0277bd; padding: 15px; margin: 15px 0; color: #01579b; }
+        .warning-box { background: #fff3e0; border-left: 5px solid #ff9800; padding: 15px; margin: 15px 0; color: #e65100; }
+        .checklist { background: #f5f5f5; padding: 20px; border-radius: 15px; margin: 15px 0; }
+        .checklist h3 { color: #0277bd; margin-bottom: 15px; }
+        .check-item { display: flex; align-items: center; margin: 10px 0; font-size: 16px; }
+        .check-item input { margin-right: 10px; width: 20px; height: 20px; }
+        .myth-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .myth-box { background: #ffebee; padding: 15px; border-radius: 15px; }
+        .myth-box h4 { color: #c62828; margin-bottom: 8px; }
+        .myth-box p { font-size: 14px; color: #333; }
+        .truth-box { background: #e8f5e9; padding: 15px; border-radius: 15px; }
+        .truth-box h4 { color: #2e7d32; margin-bottom: 8px; }
+        .truth-box p { font-size: 14px; color: #333; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        .disclaimer { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px; margin-top: 20px; }
+        .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p, .story-box ul { font-size: 16px; }
+            .timeline-box { min-width: 100px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚽 Potty Training! 🚽</h1>
+        <p class="subtitle">From diapers to undies - at their own pace!</p>
+        
+        <div class="story-box">
+            <h2>🎯 The Big Picture</h2>
+            <p>Potty training is teaching your child to recognize when they need to pee or poop, and use the toilet instead of diapers.</p>
+            <p>But here's the secret: <strong>you can't force it!</strong> It's like teaching a caterpillar to fly - it happens when they're ready!</p>
+            <div class="fact-box">
+                💡 The average age for potty training completion varies wildly - anywhere from 2 to 4 years old is normal! There's no "right" age.
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📅 When Are Kids Ready?</h2>
+            <div class="timeline">
+                <div class="timeline-box">
+                    <h3>👶 0-18 months</h3>
+                    <p>Too young! Body can't control it yet</p>
+                </div>
+                <div class="timeline-box">
+                    <h3>🧒 18-24 months</h3>
+                    <p>Some start showing interest</p>
+                </div>
+                <div class="timeline-box ready">
+                    <h3>✨ 2-3 years</h3>
+                    <p>Most common time to start</p>
+                </div>
+                <div class="timeline-box">
+                    <h3>🧑 3-4 years</h3>
+                    <p>Still normal if not done!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>✅ Readiness Checklist</h2>
+            <p>Your child might be ready if they show MOST of these signs:</p>
+            <div class="checklist">
+                <div class="check-item"><input type="checkbox"> Can stay dry for 2+ hours (bladder control)</div>
+                <div class="check-item"><input type="checkbox"> Hides or goes to a corner to poop (knows it's happening)</div>
+                <div class="check-item"><input type="checkbox"> Shows interest in the bathroom or your toilet habits</div>
+                <div class="check-item"><input type="checkbox"> Can pull pants up and down</div>
+                <div class="check-item"><input type="checkbox"> Can follow simple instructions</div>
+                <div class="check-item"><input type="checkbox"> Tells you AFTER they've gone in their diaper</div>
+                <div class="check-item"><input type="checkbox"> Doesn't like wet/dirty diapers (wants to be changed)</div>
+            </div>
+            <p><strong>Fewer checks? That's okay!</strong> Just wait a bit longer. Pushing too early often backfires.</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🪜 The Gentle Approach</h2>
+            <p><strong>Dr. Bjorkman</strong> and <strong>Dr. Aliza Pressman</strong> suggest these principles:</p>
+            <ul>
+                <li><strong>Follow their lead</strong> - wait for interest, don't force</li>
+                <li><strong>No shame, no pressure</strong> - accidents are NORMAL, not failures</li>
+                <li><strong>Model it</strong> - let them see you use the bathroom (weird but effective!)</li>
+                <li><strong>Read books about it</strong> - normalizes the process</li>
+                <li><strong>Make it accessible</strong> - potty seat in the bathroom they can sit on anytime</li>
+                <li><strong>Celebrate tries, not just success</strong> - "You sat on the potty! Awesome!"</li>
+            </ul>
+        </div>
+        
+        <div class="story-box">
+            <h2>🚫 Myths vs Reality</h2>
+            <div class="myth-grid">
+                <div class="myth-box">
+                    <h4>❌ Myth: Earlier is Better</h4>
+                    <p>Starting at 18 months will make them "smarter" or more independent.</p>
+                </div>
+                <div class="truth-box">
+                    <h4>✅ Reality</h4>
+                    <p>Kids train faster when they're truly ready. Starting too early often leads to power struggles.</p>
+                </div>
+                <div class="myth-box">
+                    <h4>❌ Myth: Night Training = Day Training</h4>
+                    <p>Once they're day trained, they should stay dry at night too.</p>
+                </div>
+                <div class="truth-box">
+                    <h4>✅ Reality</h4>
+                    <p>Night dryness is biological, not behavioral. Many kids need night diapers until 5-7 years old!</p>
+                </div>
+                <div class="myth-box">
+                    <h4>❌ Myth: Rewards Work Best</h4>
+                    <p>Candy, stickers, and prizes will motivate them.</p>
+                </div>
+                <div class="truth-box">
+                    <h4>✅ Reality</h4>
+                    <p>External rewards can create pressure. Internal motivation ("I did it!") works better long-term.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🤯 What About Regression?</h2>
+            <p>Sometimes kids who were potty trained start having accidents again. This is SUPER common and usually means:</p>
+            <ul>
+                <li>🤒 Big life change (new sibling, moving, starting school)</li>
+                <li>🤧 Illness or constipation</li>
+                <li>😰 Stress or anxiety</li>
+                <li>💤 Just needing more time for the skill to solidify</li>
+            </ul>
+            <div class="warning-box">
+                🚨 Never punish accidents! It creates shame and makes things worse. Stay calm: "Oops, pee goes in the potty. Let's clean up together."
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>💡 Pro Tips from the Experts</h2>
+            <ul>
+                <li><strong>Wait for calm times</strong> - don't start during big transitions</li>
+                <li><strong>Naked time</strong> - some kids do better without the confusion of diapers/undies at first</li>
+                <li><strong>Potty before leaving</strong> - make it routine, not a question ("Time to try potty" not "Do you want to try?")</li>
+                <li><strong>Constipation check</strong> - if it hurts to poop, they'll hold it, making everything harder</li>
+                <li><strong>Boys: start sitting</strong> - easier to learn both at once, standing can come later</li>
+            </ul>
+        </div>
+        
+        <div class="disclaimer">
+            <p>🧸 <strong>ELI5 Disclaimer:</strong> This is educational content, not professional advice! Every child develops differently. Consult your pediatrician if your child has ongoing issues, pain, or you have concerns.</p>
+            <p style="margin-top: 10px;">📚 <strong>Learn more from:</strong> Dr. Becky Kennedy, Dr. Aliza Pressman (Raising Good Humans podcast), Dr. Bjorkman, and Janet Lansbury's respectful parenting approach.</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Parenting Topics</a>
+        </div>
+    </div>
+</body>
+</html>

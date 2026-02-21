@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Robot Vacuums Work - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #37474f, #455a64); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #37474f; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .story-box ul { font-size: 18px; line-height: 1.8; color: #333; margin-left: 20px; margin-bottom: 10px; }
+        .story-box li { margin-bottom: 8px; }
+        .demo-area { background: #cfd8dc; border-radius: 20px; padding: 25px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #263238; font-size: 28px; margin-bottom: 15px; }
+        .sensors-visual { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 20px 0; }
+        .sensor-box { background: white; padding: 20px; border-radius: 15px; text-align: center; min-width: 120px; }
+        .sensor-icon { font-size: 40px; }
+        .sensor-box h4 { margin: 10px 0 5px; color: #37474f; }
+        .sensor-box p { font-size: 12px; color: #666; }
+        .sensor-box.active { border: 3px solid #4caf50; }
+        .controls { text-align: center; margin-top: 15px; }
+        button { padding: 12px 25px; font-size: 16px; border: none; border-radius: 25px; cursor: pointer; background: #455a64; color: white; }
+        button:hover { transform: scale(1.05); }
+        .map-display { display: flex; justify-content: center; margin: 20px 0; }
+        canvas { background: white; border-radius: 10px; border: 3px solid #455a64; }
+        .fact-box { background: #eceff1; border-left: 5px solid #37474f; padding: 15px; margin: 15px 0; color: #263238; }
+        .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin: 20px 0; }
+        .tech-box { background: #f5f5f5; padding: 15px; border-radius: 15px; }
+        .tech-box h4 { color: #37474f; margin-bottom: 8px; }
+        .tech-box p { font-size: 14px; color: #333; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .story-box { padding: 18px; }
+            canvas { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 How Robot Vacuums Work! 🤖</h1>
+        <p class="subtitle">The tiny helper that sees your floor!</p>
+        
+        <div class="story-box">
+            <h2>👀 What Can It See?</h2>
+            <p>A robot vacuum has multiple "eyes" to understand your home:</p>
+            <ul>
+                <li><strong>Cliff sensors</strong> - Infrared beams that detect stairs/drops</li>
+                <li><strong>Bump sensors</strong> - Physical buttons that detect wall/furniture hits</li>
+                <li><strong>Wall sensors</strong> - Detect edges along walls</li>
+                <li><strong>Camera/Lidar</strong> (expensive models) - Laser mapping of the room</li>
+            </ul>
+            <div class="fact-box">
+                🔋 Most robot vacuums use a combination! Cheap ones rely on bumping around, expensive ones build detailed maps.
+            </div>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🗺️ Watch It Map!</h2>
+            <div class="map-display">
+                <canvas id="vacuumMap" width="400" height="300"></canvas>
+            </div>
+            <div class="controls">
+                <button onclick="startVacuum()">▶️ Start Cleaning</button>
+                <button onclick="pauseVacuum()">⏸️ Pause</button>
+                <button onclick="resetVacuum()">🔄 Reset</button>
+            </div>
+            <p id="vacuumStatus" style="text-align: center; margin-top: 15px; font-size: 16px; color: #263238;">Status: Waiting to start...</p>
+            <p style="text-align: center; font-size: 14px; color: #666;">Yellow = vacuum | Green = cleaned | Red = obstacle</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🧠 How Does It "Think"?</h2>
+            <p><strong>1. Random Bounce (Dumb Mode)</strong></p>
+            <p>Go straight until hitting something, pick a new random direction, repeat. Covers ~95% eventually!</p>
+            
+            <p><strong>2. Pattern Cleaning</strong></strong></p>
+            <p>Systematic back-and-forth or spiraling patterns. More efficient!</p>
+            
+            <p><strong>3. Smart Mapping (GPS Mode)</strong></p>
+            <p>Remember where furniture is, plan efficient routes, can clean specific rooms on command!</p>
+            
+            <div class="fact-box">
+                🏠 Advanced vacuums use SLAM - "Simultaneous Localization and Mapping." It builds a map while figuring out where it is on that map!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🧹 How Does It Actually Clean?</h2>
+            <div class="tech-grid">
+                <div class="tech-box">
+                    <h4>🌀 Spinning Brushes</h4>
+                    <p>Side brushes sweep dirt from edges into the path</p>
+                </div>
+                <div class="tech-box">
+                    <h4>🎯 Main Brush Roll</h4>
+                    <p>Agitates carpet fibers to loosen dirt</p>
+                </div>
+                <div class="tech-box">
+                    <h4>💨 Suction</h4>
+                    <p>Fan creates vacuum to pull dirt in</p>
+                </div>
+                <div class="tech-box">
+                    <h4>🪣 Dust Bin</h4>
+                    <p>Collects all the dirt (needs emptying!)</p>
+                </div>
+                <div class="tech-box">
+                    <h4>🧽 Filter</h4>
+                    <p>Traps dust particles, releases clean air</p>
+                </div>
+                <div class="tech-box">
+                    <h4>🔋 Battery</h4>
+                    <p>15-180 minutes per charge, then auto-returns to dock</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🚫 What Stops Them?</h2>
+            <ul>
+                <li>⚫ <strong>Dark floors</strong> - Can be seen as "cliffs" by cliff sensors!</li>
+                <li>🔌 <strong>Cords</strong> - Get tangled in brushes</li>
+                <li>🧦 <strong>Clothes/socks</strong> - Same tangling issue</li>
+                <li>🐕 <strong>Pet waste</strong> - Disaster scenario! (true story)</li>
+                <li>🪑 <strong>Thin rugs</strong> - Can get sucked up or bunched</li>
+                <li>🚪 <strong>High thresholds</strong> - Can't climb over</li>
+            </ul>
+        </div>
+        
+        <div class="story-box">
+            <h2>📊 Evolution of Robot Vacuums</h2>
+            <ul>
+                <li><strong>2002:</strong> First commercial robot vacuum (Roomba)</li>
+                <li><strong>2010s:</strong> Camera navigation added</li>
+                <li><strong>2015+:</strong> Lidar mapping, room-specific cleaning</li>
+                <li><strong>2020s:</strong> AI obstacle avoidance, self-emptying bases</li>
+            </ul>
+        </div>
+        
+        <div class="story-box">
+            <h2>💡 Fun Facts!</h2>
+            <ul>
+                <li>🤖 The spinning side brush is usually counterclockwise - pushes debris inward</li>
+                <li>🔊 Roombas are LOUD - about 60-70 decibels (like a vacuum!)</li>
+                <li>📱 Most connect to WiFi for app control</li>
+                <li>🎯 High-end models can distinguish between socks, cables, and pet waste!</li>
+            </ul>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Technology Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('vacuumMap');
+        const ctx = canvas.getContext('2d');
+        let vacuumX = 50;
+        let vacuumY = 50;
+        let vacuumAngle = Math.random() * Math.PI * 2;
+        let isRunning = false;
+        let cleaned = [];
+        let obstacles = [{x: 300, y: 100, w: 60, h: 80}, {x: 100, y: 200, w: 80, h: 50}, {x: 250, y: 220, w: 50, h: 50}];
+        
+        function drawMap() {
+            ctx.fillStyle = '#f5f5f5';
+            ctx.fillRect(0, 0, 400, 300);
+            
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(10, 10, 380, 280);
+            
+            obstacles.forEach(obs => {
+                ctx.fillStyle = '#ef9a9a';
+                ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+            });
+            
+            cleaned.forEach(p => {
+                ctx.fillStyle = 'rgba(129, 199, 132, 0.5)';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 15, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            ctx.save();
+            ctx.translate(vacuumX, vacuumY);
+            ctx.rotate(vacuumAngle);
+            
+            ctx.fillStyle = '#ffca28';
+            ctx.beginPath();
+            ctx.arc(0, 0, 15, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#424242';
+            ctx.fillRect(-5, -20, 10, 5);
+            ctx.fillRect(-5, 15, 10, 5);
+            
+            ctx.restore();
+        }
+        
+        function updateVacuum() {
+            if (!isRunning) return;
+            
+            const speed = 2;
+            vacuumX += Math.cos(vacuumAngle) * speed;
+            vacuumY += Math.sin(vacuumAngle) * speed;
+            
+            let hitWall = false;
+            
+            if (vacuumX < 15 || vacuumX > 385 || vacuumY < 15 || vacuumY > 285) {
+                hitWall = true;
+            }
+            
+            obstacles.forEach(obs => {
+                if (vacuumX > obs.x - 15 && vacuumX < obs.x + obs.w + 15 &&
+                    vacuumY > obs.y - 15 && vacuumY < obs.y + obs.h + 15) {
+                    hitWall = true;
+                }
+            });
+            
+            if (hitWall) {
+                vacuumX -= Math.cos(vacuumAngle) * 10;
+                vacuumY -= Math.sin(vacuumAngle) * 10;
+                vacuumAngle = Math.random() * Math.PI * 2;
+            }
+            
+            if (Math.random() < 0.1) {
+                vacuumAngle += (Math.random() - 0.5) * 1;
+            }
+            
+            cleaned.push({x: vacuumX, y: vacuumY});
+            
+            document.getElementById('vacuumStatus').textContent = `Status: Cleaning... Position: (${Math.floor(vacuumX)}, ${Math.floor(vacuumY)})`;
+            
+            drawMap();
+            requestAnimationFrame(updateVacuum);
+        }
+        
+        function startVacuum() {
+            isRunning = true;
+            updateVacuum();
+        }
+        
+        function pauseVacuum() {
+            isRunning = false;
+            document.getElementById('vacuumStatus').textContent = 'Status: Paused';
+        }
+        
+        function resetVacuum() {
+            isRunning = false;
+            vacuumX = 50;
+            vacuumY = 50;
+            vacuumAngle = Math.random() * Math.PI * 2;
+            cleaned = [];
+            document.getElementById('vacuumStatus').textContent = 'Status: Waiting to start...';
+            drawMap();
+        }
+        
+        drawMap();
+    </script>
+</body>
+</html>

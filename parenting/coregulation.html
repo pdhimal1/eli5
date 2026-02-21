@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Co-Regulation - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #2e7d32, #43a047); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #2e7d32; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .story-box ul { font-size: 18px; line-height: 1.8; color: #333; margin-left: 20px; margin-bottom: 10px; }
+        .story-box li { margin-bottom: 8px; }
+        .demo-area { background: #e8f5e9; border-radius: 20px; padding: 25px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #1b5e20; font-size: 28px; margin-bottom: 15px; }
+        .regulator-visual { display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 20px 0; }
+        .person-box { text-align: center; padding: 20px; background: white; border-radius: 15px; min-width: 150px; }
+        .person-box.dysregulated { border: 3px solid #f44336; }
+        .person-box.regulated { border: 3px solid #4caf50; }
+        .person-icon { font-size: 60px; }
+        .person-label { font-size: 14px; color: #333; margin-top: 10px; }
+        .arrow { font-size: 40px; color: #2e7d32; }
+        .thermometer { width: 80px; height: 200px; background: #fff; border: 3px solid #333; border-radius: 40px; position: relative; margin: 0 auto; overflow: hidden; }
+        .temp-fill { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, #4caf50, #ff9800, #f44336); transition: height 0.5s; }
+        .temp-label { text-align: center; margin-top: 10px; font-weight: bold; }
+        .controls { text-align: center; margin-top: 15px; }
+        .controls button { padding: 10px 20px; margin: 5px; font-size: 16px; border: none; border-radius: 25px; cursor: pointer; }
+        .btn-calm { background: #4caf50; color: white; }
+        .btn-stress { background: #f44336; color: white; }
+        .btn-reset { background: #9e9e9e; color: white; }
+        .fact-box { background: #e8f5e9; border-left: 5px solid #2e7d32; padding: 15px; margin: 15px 0; color: #1b5e20; }
+        .quote-box { background: #f1f8e9; border-radius: 15px; padding: 20px; margin: 15px 0; font-style: italic; }
+        .quote-box cite { display: block; margin-top: 10px; font-style: normal; color: #666; }
+        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin: 20px 0; }
+        .step-box { background: #c8e6c9; padding: 15px; border-radius: 15px; text-align: center; }
+        .step-box h4 { color: #2e7d32; margin-bottom: 8px; }
+        .step-box p { font-size: 14px; color: #333; }
+        .step-num { background: #2e7d32; color: white; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        .disclaimer { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px; margin-top: 20px; }
+        .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p, .story-box ul { font-size: 16px; }
+            .regulator-visual { gap: 15px; }
+            .person-icon { font-size: 40px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💚 Co-Regulation! 💚</h1>
+        <p class="subtitle">How you help your child find calm!</p>
+        
+        <div class="story-box">
+            <h2>🧠 What is Co-Regulation?</h2>
+            <p>Imagine your emotions are like a campfire. Sometimes it burns too hot (angry, overwhelmed), sometimes too low (sad, shut down).</p>
+            <p><strong>Self-regulation</strong> is learning to control your own fire - but kids CAN'T do this alone yet!</p>
+            <p><strong>Co-regulation</strong> is when YOU become the thermostat. Your calm helps them find calm!</p>
+            <div class="fact-box">
+                🧬 Babies are born with undeveloped brains. The part that controls emotions (prefrontal cortex) doesn't finish developing until age 25! That's why they NEED you to help regulate.
+            </div>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🌡️ The Regulation Thermometer</h2>
+            <p style="text-align: center; color: #1b5e20; margin-bottom: 15px;">Kids borrow YOUR nervous system. See how YOUR state affects them!</p>
+            <div class="regulator-visual">
+                <div class="person-box" id="parent-box">
+                    <div class="person-icon">👨‍👩‍👧</div>
+                    <div class="person-label"><strong>Parent's State</strong></div>
+                    <div class="thermometer">
+                        <div class="temp-fill" id="parent-temp" style="height: 50%;"></div>
+                    </div>
+                    <div class="temp-label" id="parent-label">Calm</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="person-box" id="child-box">
+                    <div class="person-icon">👶</div>
+                    <div class="person-label"><strong>Child's State</strong></div>
+                    <div class="thermometer">
+                        <div class="temp-fill" id="child-temp" style="height: 70%;"></div>
+                    </div>
+                    <div class="temp-label" id="child-label">Upset</div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn-calm" onclick="beCalm()">😌 Be Calm</button>
+                <button class="btn-stress" onclick="beStressed()">😤 Get Frustrated</button>
+                <button class="btn-reset" onclick="reset()">🔄 Reset</button>
+            </div>
+            <p id="demo-message" style="text-align: center; margin-top: 15px; font-size: 16px; color: #333;"></p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔬 The Science (Made Simple!)</h2>
+            <p>Our nervous systems are like WiFi - they're always picking up signals from people around us!</p>
+            <p>This is called <strong>"social engagement system"</strong> or sometimes "mirror neurons." When you see someone cry, you feel sad. When someone smiles, you feel happy!</p>
+            <p>For children, this connection is SUPER strong. Your body literally teaches their body how to feel.</p>
+            <div class="quote-box">
+                "You can't be calm FOR them, but your calm creates the CONDITIONS for their calm."
+                <cite>— Dr. Becky Kennedy</cite>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🛠️ How to Co-Regulate</h2>
+            <div class="steps-grid">
+                <div class="step-box">
+                    <div class="step-num">1</div>
+                    <h4>Notice Your Own State</h4>
+                    <p>Are you calm? Stressed? Angry? Take a breath first!</p>
+                </div>
+                <div class="step-box">
+                    <div class="step-num">2</div>
+                    <h4>Get on Their Level</h4>
+                    <p>Kneel down. Eye contact. Gentle voice.</p>
+                </div>
+                <div class="step-box">
+                    <div class="step-num">3</div>
+                    <h4>Name the Feeling</h4>
+                    <p>"You're really mad! You wanted that toy!"</p>
+                </div>
+                <div class="step-box">
+                    <div class="step-num">4</div>
+                    <h4>Hold Space</h4>
+                    <p>Stay close. Be patient. Don't fix it yet.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🤔 What Co-Regulation is NOT</h2>
+            <ul>
+                <li>❌ <strong>NOT fixing their feelings:</strong> "Stop crying, here's a cookie!"</li>
+                <li>❌ <strong>NOT distracting them away:</strong> "Look at this shiny thing!"</li>
+                <li>❌ <strong>NOT telling them to calm down:</strong> "CALM DOWN!" (never works!)</li>
+                <li>❌ <strong>NOT taking their emotions personally:</strong> "You're making ME upset!"</li>
+            </ul>
+            <p>Instead, it's about <strong>being the calm anchor</strong> in their emotional storm.</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>💪 The Long Game: Self-Regulation</h2>
+            <p>Every time you co-regulate, you're building pathways in their brain!</p>
+            <p>Over years of experiencing your calm during their chaos, they learn to:</p>
+            <ul>
+                <li>Recognize their own emotions</li>
+                <li>Soothe themselves</li>
+                <li>Problem-solve while upset</li>
+                <li>Ask for help when needed</li>
+            </ul>
+            <div class="fact-box">
+                🎯 Goal: Not "never get upset" but "know what to do WHEN upset." That's emotional intelligence!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>😤 When YOU Are Dysregulated</h2>
+            <p>Sometimes YOU'RE the one who's angry, stressed, or overwhelmed. That's human!</p>
+            <p><strong>The Good Enough Parent</strong> principle: You don't have to be perfect. You just need to:</p>
+            <ul>
+                <li>Notice: "I'm losing it right now"</li>
+                <li>Pause: Step away if safe, take 3 deep breaths</li>
+                <li>Repair: "Mommy got frustrated. I'm working on my big feelings too."</li>
+            </ul>
+            <div class="quote-box">
+                "Good enough parenting isn't about never messing up. It's about messing up, noticing, and repairing."
+                <cite>— The Good Enough Mother concept</cite>
+            </div>
+        </div>
+        
+        <div class="disclaimer">
+            <p>🧸 <strong>ELI5 Disclaimer:</strong> This is educational content based on developmental psychology concepts. Every child and family is different. If your child has ongoing emotional difficulties, consult a pediatrician or child therapist.</p>
+            <p style="margin-top: 10px;">📚 <strong>Learn more from:</strong> Dr. Becky Kennedy (Good Inside), Dr. Aliza Pressman (Raising Good Humans), "The Good Enough Mother" by Brunerie/Milovidov, Janet Lansbury (RIE approach), and Dr. Dan Siegel's work on interpersonal neurobiology.</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Parenting Topics</a>
+        </div>
+    </div>
+
+    <script>
+        let parentState = 50;
+        let childState = 70;
+        
+        function updateDisplay() {
+            document.getElementById('parent-temp').style.height = parentState + '%';
+            document.getElementById('child-temp').style.height = childState + '%';
+            
+            const parentBox = document.getElementById('parent-box');
+            const childBox = document.getElementById('child-box');
+            
+            parentBox.className = 'person-box ' + (parentState < 40 ? 'regulated' : parentState > 60 ? 'dysregulated' : '');
+            childBox.className = 'person-box ' + (childState < 40 ? 'regulated' : childState > 60 ? 'dysregulated' : '');
+            
+            document.getElementById('parent-label').textContent = 
+                parentState < 30 ? 'Very Calm' : 
+                parentState < 50 ? 'Calm' : 
+                parentState < 70 ? 'Stressed' : 'Very Stressed';
+                
+            document.getElementById('child-label').textContent = 
+                childState < 30 ? 'Very Calm' : 
+                childState < 50 ? 'Calm' : 
+                childState < 70 ? 'Upset' : 'Meltdown';
+        }
+        
+        function beCalm() {
+            parentState = Math.max(20, parentState - 20);
+            document.getElementById('demo-message').innerHTML = '✅ Your calm energy helps the child feel safe. Slowly, their nervous system follows yours!';
+            
+            setTimeout(() => {
+                childState = Math.max(30, childState - 15);
+                updateDisplay();
+            }, 500);
+            
+            updateDisplay();
+        }
+        
+        function beStressed() {
+            parentState = Math.min(100, parentState + 25);
+            document.getElementById('demo-message').innerHTML = '⚠️ When you escalate, the child escalates too! Their brain picks up on your stress.';
+            
+            setTimeout(() => {
+                childState = Math.min(100, childState + 10);
+                updateDisplay();
+            }, 500);
+            
+            updateDisplay();
+        }
+        
+        function reset() {
+            parentState = 50;
+            childState = 70;
+            document.getElementById('demo-message').innerHTML = '🔄 Child is upset. Try being calm to help them regulate!';
+            updateDisplay();
+        }
+        
+        updateDisplay();
+    </script>
+</body>
+</html>

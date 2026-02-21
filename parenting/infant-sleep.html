@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infant Sleep - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #303f9f, #3949ab); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #303f9f; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .story-box ul { font-size: 18px; line-height: 1.8; color: #333; margin-left: 20px; margin-bottom: 10px; }
+        .story-box li { margin-bottom: 8px; }
+        .demo-area { background: #c5cae9; border-radius: 20px; padding: 25px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #1a237e; font-size: 28px; margin-bottom: 15px; }
+        .sleep-cycle { display: flex; justify-content: center; align-items: flex-end; gap: 5px; height: 150px; margin: 20px 0; padding: 20px; background: white; border-radius: 15px; }
+        .cycle-bar { width: 30px; background: #3949ab; border-radius: 5px 5px 0 0; transition: height 0.3s; }
+        .cycle-bar.light { background: #7986cb; }
+        .cycle-bar.deep { background: #1a237e; }
+        .cycle-bar.rem { background: #5c6bc0; }
+        .cycle-labels { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
+        .cycle-label { font-size: 12px; display: flex; align-items: center; gap: 5px; }
+        .cycle-dot { width: 15px; height: 15px; border-radius: 50%; }
+        .timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 20px 0; }
+        .time-box { background: white; padding: 15px; border-radius: 15px; text-align: center; }
+        .time-box h4 { color: #303f9f; margin-bottom: 8px; }
+        .time-box p { font-size: 13px; color: #333; }
+        .fact-box { background: #e8eaf6; border-left: 5px solid #303f9f; padding: 15px; margin: 15px 0; color: #1a237e; }
+        .warning-box { background: #fff3e0; border-left: 5px solid #ff9800; padding: 15px; margin: 15px 0; color: #e65100; }
+        .myth-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin: 20px 0; }
+        .myth-box { background: #ffebee; padding: 15px; border-radius: 15px; }
+        .myth-box h4 { color: #c62828; margin-bottom: 8px; font-size: 16px; }
+        .myth-box p { font-size: 14px; color: #333; }
+        .truth-box { background: #e8f5e9; padding: 15px; border-radius: 15px; }
+        .truth-box h4 { color: #2e7d32; margin-bottom: 8px; font-size: 16px; }
+        .truth-box p { font-size: 14px; color: #333; }
+        .safe-sleep { background: #e8f5e9; padding: 20px; border-radius: 15px; margin: 20px 0; }
+        .safe-sleep h3 { color: #2e7d32; margin-bottom: 15px; }
+        .safe-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+        .safe-item { background: white; padding: 10px; border-radius: 10px; text-align: center; font-size: 14px; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        .disclaimer { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px; margin-top: 20px; }
+        .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .subtitle { font-size: 16px; }
+            .story-box { padding: 18px; }
+            .story-box h2 { font-size: 20px; }
+            .story-box p, .story-box ul { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>😴 Infant Sleep! 😴</h1>
+        <p class="subtitle">Why babies sleep weird (and what's normal!)</p>
+        
+        <div class="story-box">
+            <h2>🌙 The Truth About Baby Sleep</h2>
+            <p>Here's the thing nobody tells you: <strong>Babies are NOT supposed to sleep through the night!</strong></p>
+            <p>Their bodies are tiny, their stomachs are tiny, and their brains are developing at lightning speed. Waking up is actually biologically normal and protective!</p>
+            <div class="fact-box">
+                📊 "Sleeping through the night" in medical terms means 5 hours straight. A baby who sleeps 10pm-3am is technically "sleeping through the night"!
+            </div>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">📊 Sleep Cycles: Baby vs Adult</h2>
+            <p style="text-align: center; margin-bottom: 10px; color: #1a237e;">Babies have shorter sleep cycles, meaning they wake more often!</p>
+            <div class="sleep-cycle" id="adult-cycle">
+                <div class="cycle-bar light" style="height: 30px;"></div>
+                <div class="cycle-bar light" style="height: 40px;"></div>
+                <div class="cycle-bar deep" style="height: 80px;"></div>
+                <div class="cycle-bar deep" style="height: 90px;"></div>
+                <div class="cycle-bar rem" style="height: 50px;"></div>
+                <div class="cycle-bar light" style="height: 30px;"></div>
+                <div class="cycle-bar deep" style="height: 70px;"></div>
+                <div class="cycle-bar rem" style="height: 60px;"></div>
+            </div>
+            <p style="text-align: center; font-size: 14px; color: #666;">Adult: 90-minute cycles</p>
+            
+            <div class="sleep-cycle" id="baby-cycle" style="margin-top: 10px;">
+                <div class="cycle-bar light" style="height: 25px;"></div>
+                <div class="cycle-bar light" style="height: 35px;"></div>
+                <div class="cycle-bar deep" style="height: 50px;"></div>
+                <div class="cycle-bar rem" style="height: 30px;"></div>
+                <div class="cycle-bar light" style="height: 25px;"></div>
+                <div class="cycle-bar deep" style="height: 45px;"></div>
+                <div class="cycle-bar rem" style="height: 35px;"></div>
+                <div class="cycle-bar light" style="height: 25px;"></div>
+            </div>
+            <p style="text-align: center; font-size: 14px; color: #666;">Baby: 50-minute cycles (more frequent wake-ups!)</p>
+            
+            <div class="cycle-labels">
+                <div class="cycle-label"><div class="cycle-dot" style="background: #7986cb;"></div> Light</div>
+                <div class="cycle-label"><div class="cycle-dot" style="background: #1a237e;"></div> Deep</div>
+                <div class="cycle-label"><div class="cycle-dot" style="background: #5c6bc0;"></div> REM/Dream</div>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📅 Sleep by Age (Roughly!)</h2>
+            <div class="timeline">
+                <div class="time-box">
+                    <h4>👶 Newborn (0-3mo)</h4>
+                    <p>Total: 14-17hrs<br>Wakes every 2-3hrs<br>No day/night rhythm</p>
+                </div>
+                <div class="time-box">
+                    <h4>🧒 Infant (4-11mo)</h4>
+                    <p>Total: 12-15hrs<br>Maybe one longer stretch<br>2-3 naps</p>
+                </div>
+                <div class="time-box">
+                    <h4>🧑 Toddler (1-2yr)</h4>
+                    <p>Total: 11-14hrs<br>1-2 naps<br>More predictable</p>
+                </div>
+                <div class="time-box">
+                    <h4>👦 Preschool (3-5yr)</h4>
+                    <p>Total: 10-13hrs<br>Maybe 1 nap or none<br>More like adult sleep</p>
+                </div>
+            </div>
+            <p><em>These are ranges! Every baby is different.</em></p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🚫 Sleep Myths</h2>
+            <div class="myth-grid">
+                <div class="myth-box">
+                    <h4>❌ "Rice cereal helps them sleep longer"</h4>
+                    <p>Studies show no difference in sleep. Plus, early solids aren't recommended before 6 months.</p>
+                </div>
+                <div class="truth-box">
+                    <h4>✅ Reality</h4>
+                    <p>Hunger isn't usually why babies wake. Their sleep cycles are just short!</p>
+                </div>
+                <div class="myth-box">
+                    <h4>❌ "If you hold them, they'll never learn to sleep alone"</h4>
+                    <p>You can't spoil a baby. Independence comes from security, not being left alone.</p>
+                </div>
+                <div class="truth-box">
+                    <h4>✅ Reality</h4>
+                    <p>Responsive parenting builds secure attachment. They'll sleep independently when ready!</p>
+                </div>
+                <div class="myth-box">
+                    <h4>❌ "They should be sleeping through the night by X months"</h4>
+                    <p>There's no universal timeline. Many healthy 1-year-olds still wake at night.</p>
+                </div>
+                <div class="truth-box">
+                    <h4>✅ Reality</h4>
+                    <p>Night wakings are normal up to age 2-3 for many kids. You're not doing anything wrong!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🛡️ Safe Sleep Guidelines (AAP)</h2>
+            <div class="safe-sleep">
+                <h3>✅ Safe Sleep ABCs</h3>
+                <div class="safe-grid">
+                    <div class="safe-item"><strong>A</strong>lone<br>In their own space</div>
+                    <div class="safe-item"><strong>B</strong>ack<br>On their back to sleep</div>
+                    <div class="safe-item"><strong>C</strong>rib<br>Firm surface, no soft items</div>
+                </div>
+            </div>
+            <ul>
+                <li>✅ Firm mattress with fitted sheet only</li>
+                <li>✅ No blankets, pillows, bumpers, or toys in crib</li>
+                <li>✅ Room-sharing (same room) recommended for first 6-12 months</li>
+                <li>✅ Breastfeeding if possible (reduces SIDS risk)</li>
+                <li>✅ Pacifier at nap/bedtime (optional, but shown to help)</li>
+            </ul>
+            <div class="warning-box">
+                🚨 If you're ever exhausted to the point of unsafe sleep, it's better to set baby safely in crib and take 5 minutes to collect yourself than to risk unsafe sleep. A crying baby in a safe crib is okay for a few minutes!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>💡 Tips for Better (Not Perfect!) Sleep</h2>
+            <ul>
+                <li>🌅 <strong>Day/Night rhythm:</strong> Bright light during day, dark and calm at night</li>
+                <li>🔄 <strong>Bedtime routine:</strong> Same steps each night (bath, book, feed, bed)</li>
+                <li>🌡️ <strong>Environment:</strong> Cool room (68-72°F), white noise, darkness</li>
+                <li>👀 <strong>Watch for sleepy cues:</strong> Yawning, eye rubbing, looking away</li>
+                <li>⏰ <strong>Drowsy but awake:</strong> Sometimes helps, sometimes doesn't - follow your gut!</li>
+                <li>😴 <strong>Accept help:</strong> Tag-team with partner, accept offers to hold baby while you nap</li>
+            </ul>
+        </div>
+        
+        <div class="story-box">
+            <h2>💭 A Note on Sleep Training</h2>
+            <p>There are many approaches to infant sleep, from "wait it out" to "cry it out" to everything in between.</p>
+            <p><strong>What experts like Dr. Bjorkman and Dr. Pressman suggest:</strong></p>
+            <ul>
+                <li>There's no "right" method - different things work for different families</li>
+                <li>Crying doesn't necessarily mean distress (protest crying is normal)</li>
+                <li>But you don't HAVE to sleep train - responsive night parenting is valid too</li>
+                <li>The best approach is one that works for YOUR family's values and needs</li>
+            </ul>
+            <div class="fact-box">
+                💤 Your mental health matters too! If night wakings are destroying you, it's okay to make changes. A well-rested parent is better for baby than an exhausted martyr.
+            </div>
+        </div>
+        
+        <div class="disclaimer">
+            <p>🧸 <strong>ELI5 Disclaimer:</strong> This is educational content, not medical advice. Always follow your pediatrician's guidance and current safe sleep recommendations from the AAP. If you're struggling, reach out - you don't have to do this alone!</p>
+            <p style="margin-top: 10px;">📚 <strong>Learn more from:</strong> Dr. Jessica Bjorkman, Dr. Aliza Pressman, AAP safe sleep guidelines, and evidence-based resources like Precious Little Sleep.</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Parenting Topics</a>
+        </div>
+    </div>
+</body>
+</html>

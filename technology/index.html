@@ -10,12 +10,13 @@
         .container { max-width: 900px; margin: 0 auto; }
         h1 { text-align: center; color: #fff; font-size: 42px; margin-bottom: 10px; }
         .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
-        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .topic-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
-        .topic-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
-        .topic-icon { font-size: 45px; text-align: center; margin-bottom: 12px; }
-        .topic-card h2 { color: #333; font-size: 18px; margin-bottom: 8px; text-align: center; }
-        .topic-card p { color: #666; font-size: 13px; line-height: 1.4; text-align: center; }
+        .phase-title { text-align: center; color: #fff; font-size: 24px; margin: 30px 0 15px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .topic-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
+        .topic-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .topic-icon { font-size: 40px; text-align: center; margin-bottom: 10px; }
+        .topic-card h2 { color: #333; font-size: 16px; margin-bottom: 6px; text-align: center; }
+        .topic-card p { color: #666; font-size: 12px; line-height: 1.3; text-align: center; }
         .topic-card:nth-child(1) { border-top: 5px solid #4caf50; }
         .topic-card:nth-child(2) { border-top: 5px solid #e91e63; }
         .topic-card:nth-child(3) { border-top: 5px solid #2196f3; }
@@ -24,10 +25,6 @@
         .topic-card:nth-child(6) { border-top: 5px solid #00bcd4; }
         .topic-card:nth-child(7) { border-top: 5px solid #795548; }
         .topic-card:nth-child(8) { border-top: 5px solid #607d8b; }
-        .topic-card:nth-child(9) { border-top: 5px solid #f44336; }
-        .topic-card:nth-child(10) { border-top: 5px solid #3f51b5; }
-        .topic-card:nth-child(11) { border-top: 5px solid #8bc34a; }
-        .topic-card:nth-child(12) { border-top: 5px solid #ff5722; }
         .back-link { text-align: center; margin-top: 40px; }
         .back-link a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
         .disclaimer { background: rgba(255,255,255,0.9); border-radius: 15px; padding: 20px; margin-top: 40px; text-align: center; }
@@ -35,33 +32,40 @@
         
         @media (max-width: 768px) {
             h1 { font-size: 28px; }
-            .subtitle { font-size: 16px; }
-            .topics-grid { grid-template-columns: 1fr; }
+            .topics-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>💻 ELI5 Technology 💻</h1>
-        <p class="subtitle">Learn about tech - super simply! (For AI topics, visit the AI section)</p>
+        <p class="subtitle">Learn about tech - super simply!</p>
         
+        <!-- Cool/Stuff People Actually Want to Learn -->
+        <h2 class="phase-title">🚀 Popular Topics</h2>
         <div class="topics-grid">
-            <a href="quadtree.html" class="topic-card">
-                <div class="topic-icon">🌳</div>
-                <h2>Quad Trees</h2>
-                <p>How computers find things super fast!</p>
+            <a href="monte-carlo.html" class="topic-card">
+                <div class="topic-icon">🎲</div>
+                <h2>Monte Carlo Methods</h2>
+                <p>Using randomness to solve impossible problems!</p>
             </a>
             
-            <a href="rf-propagation.html" class="topic-card">
-                <div class="topic-icon">📻</div>
-                <h2>Radio Waves</h2>
-                <p>How radio waves travel through the air!</p>
+            <a href="robot-vacuums.html" class="topic-card">
+                <div class="topic-icon">🤖</div>
+                <h2>Robot Vacuums</h2>
+                <p>How they see, navigate, and clean!</p>
             </a>
             
-            <a href="radar.html" class="topic-card">
-                <div class="topic-icon">📡</div>
-                <h2>Radar</h2>
-                <p>Finding airplanes with radio waves!</p>
+            <a href="self-driving-cars-cameras.html" class="topic-card">
+                <div class="topic-icon">📷</div>
+                <h2>Self-Driving: Cameras</h2>
+                <p>How cars learn to see!</p>
+            </a>
+            
+            <a href="self-driving-cars-radars.html" class="topic-card">
+                <div class="topic-icon">🚗</div>
+                <h2>Self-Driving: Radar</h2>
+                <p>How cars use radar & lidar!</p>
             </a>
             
             <a href="gps-satellites.html" class="topic-card">
@@ -82,10 +86,16 @@
                 <p>Short-range wireless connection!</p>
             </a>
             
-            <a href="cell-towers.html" class="topic-card">
-                <div class="topic-icon">🗼</div>
-                <h2>Cell Towers</h2>
-                <p>How your phone connects to network!</p>
+            <a href="neural-networks.html" class="topic-card">
+                <div class="topic-icon">🧠</div>
+                <h2>Neural Networks</h2>
+                <p>How computers learn like brains!</p>
+            </a>
+            
+            <a href="machine-learning.html" class="topic-card">
+                <div class="topic-icon">📊</div>
+                <h2>Machine Learning</h2>
+                <p>Teaching computers to learn!</p>
             </a>
             
             <a href="encryption.html" class="topic-card">
@@ -112,22 +122,10 @@
                 <p>Making files smaller!</p>
             </a>
             
-            <a href="electronic-warfare.html" class="topic-card">
-                <div class="topic-icon">🎮</div>
-                <h2>Electronic Warfare</h2>
-                <p>Invisible battles with radio waves!</p>
-            </a>
-            
-            <a href="self-driving-cars-radars.html" class="topic-card">
-                <div class="topic-icon">🚗</div>
-                <h2>Self-Driving: Radar</h2>
-                <p>How cars use radar & lidar!</p>
-            </a>
-            
-            <a href="self-driving-cars-cameras.html" class="topic-card">
-                <div class="topic-icon">📷</div>
-                <h2>Self-Driving: Cameras</h2>
-                <p>How cars learn to see!</p>
+            <a href="quadtree.html" class="topic-card">
+                <div class="topic-icon">🌳</div>
+                <h2>Quad Trees</h2>
+                <p>How computers find things super fast!</p>
             </a>
         </div>
         
@@ -136,7 +134,7 @@
         </div>
         
         <div class="disclaimer">
-            <p>🧸 <strong>Note:</strong> These are simplified versions of complex logic. While great for learning, real-world production code often requires additional security and edge-case handling.</p>
+            <p>🧸 <strong>Note:</strong> These are simplified versions of complex topics. Great for learning, but real-world implementation often requires more nuance!</p>
         </div>
     </div>
 </body>
