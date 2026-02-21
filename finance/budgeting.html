@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budgeting Basics - ELI5!</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1b5e20, #2e7d32); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #1b5e20; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .story-box ul { font-size: 18px; line-height: 1.8; color: #333; margin-left: 20px; margin-bottom: 10px; }
+        .story-box li { margin-bottom: 8px; }
+        .demo-area { background: #e8f5e9; border-radius: 20px; padding: 25px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #1b5e20; font-size: 28px; margin-bottom: 15px; }
+        .budget-input { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .input-box { background: white; padding: 15px; border-radius: 15px; text-align: center; }
+        .input-box label { display: block; color: #1b5e20; font-size: 14px; margin-bottom: 8px; }
+        .input-box input { width: 100%; padding: 10px; font-size: 18px; border: 2px solid #4caf50; border-radius: 10px; text-align: center; }
+        .controls { text-align: center; margin: 20px 0; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; background: #4caf50; color: white; font-weight: bold; }
+        button:hover { transform: translateY(-3px); }
+        .results { background: white; border-radius: 15px; padding: 20px; margin-top: 20px; }
+        .results h3 { color: #1b5e20; text-align: center; }
+        .budget-bar { height: 30px; border-radius: 15px; margin: 10px 0; display: flex; overflow: hidden; }
+        .bar-segment { display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: bold; }
+        .fact-box { background: #e8f5e9; border-left: 5px solid #1b5e20; padding: 15px; margin: 15px 0; color: #0d3311; }
+        .tip-box { background: #fff9c4; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        .tip-box h4 { color: #f57f17; margin-bottom: 8px; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Budgeting Basics! 📊</h1>
+        <p class="subtitle">Know where your money goes!</p>
+        
+        <div class="story-box">
+            <h2>🤔 What is a Budget?</h2>
+            <p>A <strong>budget</strong> is just a plan for your money - deciding ahead of time where every dollar will go.</p>
+            <p>It's not about being "cheap" - it's about making choices that match what's important to YOU!</p>
+            <div class="fact-box">
+                💡 The key: Income - Expenses = What you have left
+            </div>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 Try a Simple Budget!</h2>
+            <p style="text-align: center; margin-bottom: 15px;">Enter your monthly income and see how to divide it up!</p>
+            
+            <div class="budget-input">
+                <div class="input-box">
+                    <label>💵 Monthly Income</label>
+                    <input type="number" id="income" value="4000" step="100">
+                </div>
+            </div>
+            
+            <div class="budget-input">
+                <div class="input-box">
+                    <label>🏠 Housing (30%)</label>
+                    <input type="number" id="housing" value="1200">
+                </div>
+                <div class="input-box">
+                    <label>🍔 Food (15%)</label>
+                    <input type="number" id="food" value="600">
+                </div>
+                <div class="input-box">
+                    <label>🚗 Transport (15%)</label>
+                    <input type="number" id="transport" value="600">
+                </div>
+            </div>
+            
+            <div class="budget-input">
+                <div class="input-box">
+                    <label>💊 Needs (10%)</label>
+                    <input type="number" id="needs" value="400">
+                </div>
+                <div class="input-box">
+                    <label>🎉 Wants (20%)</label>
+                    <input type="number" id="wants" value="800">
+                </div>
+                <div class="input-box">
+                    <label>💰 Savings (10%)</label>
+                    <input type="number" id="savings" value="400">
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button onclick="calculateBudget()">🧮 Calculate!</button>
+            </div>
+            
+            <div class="results" id="results" style="display: none;">
+                <h3>📈 Your Budget Breakdown</h3>
+                <div class="budget-bar">
+                    <div class="bar-segment" style="width: 30%; background: #2196f3;">Housing 30%</div>
+                    <div class="bar-segment" style="width: 15%; background: #ff9800;">Food 15%</div>
+                    <div class="bar-segment" style="width: 15%; background: #9c27b0;">Transport 15%</div>
+                    <div class="bar-segment" style="width: 10%; background: #f44336;">Needs 10%</div>
+                    <div class="bar-segment" style="width: 20%; background: #4caf50;">Wants 20%</div>
+                    <div class="bar-segment" style="width: 10%; background: #00bcd4;">Savings 10%</div>
+                </div>
+                <p id="budget-message" style="text-align: center; margin-top: 15px;"></p>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📐 The 50/30/20 Rule</h2>
+            <p>A simple way to budget:</p>
+            <ul>
+                <li><strong>50% Needs:</strong> Housing, food, utilities, insurance - things you MUST have</li>
+                <li><strong>30% Wants:</strong> Entertainment, dining out, hobbies - things you enjoy</li>
+                <li><strong>20% Savings:</strong> Emergency fund, retirement, paying off debt</li>
+            </ul>
+            <div class="fact-box">
+                🎯 This is a guideline, not a rule! Adjust based on your situation and goals.
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🛠️ How to Make a Budget</h2>
+            <ol>
+                <li><strong>Know your income:</strong> Take-home pay, not gross</li>
+                <li><strong>Track expenses:</strong> For 1 month, write down everything</li>
+                <li><strong>Categorize:</strong> Needs vs Wants</li>
+                <li><strong>Set goals:</strong> What do you want to save for?</li>
+                <li><strong>Adjust:</strong> If expenses > income, find areas to cut</li>
+                <li><strong>Review:</strong> Check monthly, adjust as needed</li>
+            </ol>
+        </div>
+        
+        <div class="story-box">
+            <h2>💡 Budgeting Tips</h2>
+            <div class="tip-box">
+                <h4>🎯 Start with Goals</h4>
+                <p>What are you saving for? Vacation? New car? Having a goal makes it easier!</p>
+            </div>
+            <div class="tip-box">
+                <h4>📝 Track Every Purchase</h4>
+                <p>For one month, write down everything. You'll be surprised!</p>
+            </div>
+            <div class="tip-box">
+                <h4>🚫 Budget for Fun</h4>
+                <p>If you don't budget for "wants," you'll feel deprived and overspend later!</p>
+            </div>
+            <div class="tip-box">
+                <h4>💪 Start Small</h4>
+                <p>Even $50/month savings adds up! Start with what you can.</p>
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Finance Topics</a>
+        </div>
+    </div>
+
+    <script>
+        function calculateBudget() {
+            const income = parseFloat(document.getElementById('income').value) || 0;
+            const housing = parseFloat(document.getElementById('housing').value) || 0;
+            const food = parseFloat(document.getElementById('food').value) || 0;
+            const transport = parseFloat(document.getElementById('transport').value) || 0;
+            const needs = parseFloat(document.getElementById('needs').value) || 0;
+            const wants = parseFloat(document.getElementById('wants').value) || 0;
+            const savings = parseFloat(document.getElementById('savings').value) || 0;
+            
+            const total = housing + food + transport + needs + wants + savings;
+            const remaining = income - total;
+            
+            const messageEl = document.getElementById('budget-message');
+            if (remaining === 0) {
+                messageEl.innerHTML = '✅ Perfect! Your budget balances!';
+                messageEl.style.color = '#2e7d32';
+            } else if (remaining > 0) {
+                messageEl.innerHTML = '✅ You have $' + remaining.toLocaleString() + ' left! Add it to savings or fun money!';
+                messageEl.style.color = '#2e7d32';
+            } else {
+                messageEl.innerHTML = '⚠️ You are over budget by $' + Math.abs(remaining).toLocaleString() + '. Try reducing some categories!';
+                messageEl.style.color = '#c62828';
+            }
+            
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
