@@ -3,153 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeetCode - ELI5 Park</title>
-    <link rel="stylesheet" href="../styles.css">
+    <title>LeetCode & Algorithms - ELI5 Park</title>
     <style>
-        body { background-color: #1a1a1a; }
-        .glow-cyan { box-shadow: 0 0 20px #06b6d4; }
-        .glow-lime { box-shadow: 0 0 20px #84cc16; }
-        .glow-yellow { box-shadow: 0 0 20px #eab308; }
-        .glow-red { box-shadow: 0 0 20px #ef4444; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 42px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .phase-title { text-align: center; color: #fff; font-size: 24px; margin: 30px 0 15px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .topic-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
+        .topic-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .topic-icon { font-size: 40px; text-align: center; margin-bottom: 10px; }
+        .topic-card h2 { color: #333; font-size: 18px; margin-bottom: 6px; text-align: center; }
+        .topic-card p { color: #666; font-size: 13px; line-height: 1.3; text-align: center; }
+        .topic-card:nth-child(1) { border-top: 5px solid #4caf50; }
+        .topic-card:nth-child(2) { border-top: 5px solid #e91e63; }
+        .topic-card:nth-child(3) { border-top: 5px solid #2196f3; }
+        .topic-card:nth-child(4) { border-top: 5px solid #9c27b0; }
+        .topic-card:nth-child(5) { border-top: 5px solid #ff9800; }
+        .topic-card:nth-child(6) { border-top: 5px solid #00bcd4; }
+        .topic-card:nth-child(7) { border-top: 5px solid #795548; }
+        .topic-card:nth-child(8) { border-top: 5px solid #607d8b; }
+        .topic-card:nth-child(9) { border-top: 5px solid #3f51b5; }
+        .topic-card:nth-child(10) { border-top: 5px solid #f44336; }
+        .back-link { text-align: center; margin-top: 40px; }
+        .back-link a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        .header-nav { text-align: center; margin-bottom: 20px; }
+        .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        .header-nav a:hover { color: #fff; }
+        .disclaimer { background: rgba(255,255,255,0.9); border-radius: 15px; padding: 20px; margin-top: 40px; text-align: center; }
+        .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
+        .intro-box { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 25px; margin-bottom: 30px; text-align: center; }
+        .intro-box h2 { color: #1a237e; font-size: 24px; margin-bottom: 15px; }
+        .intro-box p { color: #333; font-size: 16px; line-height: 1.7; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 28px; }
+            .topics-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
-<body class="text-gray-100 min-h-screen">
-    <header class="p-6 border-b border-gray-700">
-        <a href="../index.html" class="text-3xl font-bold text-cyan-400 hover:text-cyan-300">🎢 ELI5 Park</a>
-        <span class="mx-2 text-gray-500">/</span>
-        <span class="text-3xl font-bold text-white">LeetCode</span>
-    </header>
-
-    <main class="max-w-4xl mx-auto p-6">
-        <div class="mb-8">
-            <h1 class="text-5xl font-bold text-white mb-4">🧩 LeetCode Curriculum</h1>
-            <p class="text-xl text-gray-400">
-                Welcome to the ultimate coding theme park! Each section is an "attraction" that teaches 
-                a fundamental algorithm concept through interactive visualizations.
-            </p>
-        </div>
-
-        <div class="mb-12">
-            <h2 class="text-3xl font-bold text-green-400 mb-6">🟢 Phase 1: The Basics (The Toolbox)</h2>
-            <p class="text-gray-400 mb-4">Learn the fundamental tools every coder needs. Like learning to use a hammer before building a house!</p>
-            
-            <a href="arrays/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-cyan-400 transition-all">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <span class="bg-cyan-600 text-white px-3 py-1 rounded text-sm font-bold">5 Problems</span>
-                        <h3 class="text-2xl font-bold text-white mt-2">📦 Arrays & Hashing</h3>
-                        <p class="text-gray-400 mt-1">Organizing a closet - the fundamentals of data storage</p>
-                    </div>
-                    <span class="text-cyan-400 text-3xl">→</span>
-                </div>
-            </a>
-
-            <a href="two-pointers/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-cyan-400 transition-all">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <span class="bg-cyan-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
-                        <h3 class="text-2xl font-bold text-white mt-2">👫 Two Pointers</h3>
-                        <p class="text-gray-400 mt-1">Two people walking toward each other on a bridge</p>
-                    </div>
-                    <span class="text-cyan-400 text-3xl">→</span>
-                </div>
-            </a>
-
-            <a href="sliding-window/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-cyan-400 transition-all">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <span class="bg-cyan-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
-                        <h3 class="text-2xl font-bold text-white mt-2">🔍 Sliding Window</h3>
-                        <p class="text-gray-400 mt-1">Looking through a moving magnifying glass</p>
-                    </div>
-                    <span class="text-cyan-400 text-3xl">→</span>
-                </div>
-            </a>
-        </div>
-
-        <div class="mb-12">
-            <h2 class="text-3xl font-bold text-yellow-400 mb-6">🟡 Phase 2: The Structures (The Buildings)</h2>
-            <p class="text-gray-400 mb-4">Now we're building! Learn how to organize data into powerful structures.</p>
-            
-            <div class="grid gap-4">
-                <a href="stacks-queues/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-yellow-400 transition-all">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
-                            <h3 class="text-2xl font-bold text-white mt-2">🗃️ Stacks & Queues</h3>
-                            <p class="text-gray-400 mt-1">Like cafeteria trays or a checkout line</p>
-                        </div>
-                        <span class="text-yellow-400 text-3xl">→</span>
-                    </div>
-                </a>
-
-                <a href="linked-lists/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-yellow-400 transition-all">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
-                            <h3 class="text-2xl font-bold text-white mt-2">🔗 Linked Lists</h3>
-                            <p class="text-gray-400 mt-1">A treasure hunt where each clue leads to the next</p>
-                        </div>
-                        <span class="text-yellow-400 text-3xl">→</span>
-                    </div>
-                </a>
-
-                <a href="trees-graphs/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-yellow-400 transition-all">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <span class="bg-yellow-600 text-white px-3 py-1 rounded text-sm font-bold">4 Problems</span>
-                            <h3 class="text-2xl font-bold text-white mt-2">🌳 Trees & Graphs</h3>
-                            <p class="text-gray-400 mt-1">Family trees or subway maps - connected data!</p>
-                        </div>
-                        <span class="text-yellow-400 text-3xl">→</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <div class="mb-12">
-            <h2 class="text-3xl font-bold text-red-400 mb-6">🔴 Phase 3: The Logic (The Engine)</h2>
-            <p class="text-gray-400 mb-4">The really cool stuff! These patterns will make you a coding wizard.</p>
-            
-            <div class="grid gap-4">
-                <a href="binary-search/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-red-400 transition-all">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <span class="bg-red-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
-                            <h3 class="text-2xl font-bold text-white mt-2">🔍 Binary Search</h3>
-                            <p class="text-gray-400 mt-1">Finding a word in a dictionary efficiently</p>
-                        </div>
-                        <span class="text-red-400 text-3xl">→</span>
-                    </div>
-                </a>
-
-                <a href="backtracking/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-red-400 transition-all">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <span class="bg-red-600 text-white px-3 py-1 rounded text-sm font-bold">3 Problems</span>
-                            <h3 class="text-2xl font-bold text-white mt-2">↩️ Backtracking</h3>
-                            <p class="text-gray-400 mt-1">Exploring a maze and drawing a map</p>
-                        </div>
-                        <span class="text-red-400 text-3xl">→</span>
-                    </div>
-                </a>
-
-                <a href="dynamic-programming/index.html" class="block p-6 bg-gray-800 rounded-lg hover:bg-gray-700 border border-gray-700 hover:border-red-400 transition-all">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <span class="bg-red-600 text-white px-3 py-1 rounded text-sm font-bold">4 Problems</span>
-                            <h3 class="text-2xl font-bold text-white mt-2">💾 Dynamic Programming</h3>
-                            <p class="text-gray-400 mt-1">Writing down answers so you don't recalculate!</p>
-                        </div>
-                        <span class="text-red-400 text-3xl">→</span>
-                    </div>
-                </a>
-            </div>
+<body>
+    <div class="container">
+        <div class="header-nav">
+            <a href="../index.html">🏠 ELI5 Park</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <span style="color: #fff;">LeetCode & Algorithms</span>
         </div>
         
-        <div class="mt-12 p-6 bg-gray-800 rounded-lg border border-gray-700">
-            <p class="text-gray-400 text-sm">🧸 <strong>Note:</strong> These are simplified versions of complex logic. While great for learning, real-world production code often requires additional security and edge-case handling.</p>
+        <h1>🧩 LeetCode & Algorithms</h1>
+        <p class="subtitle">Data structures, algorithms & coding interview prep!</p>
+        
+        <div class="intro-box">
+            <h2>Welcome to the Coding Dojo!</h2>
+            <p>Learn fundamental algorithm concepts through simple explanations. Perfect for coding interviews and building strong programming foundations!</p>
         </div>
-    </main>
+        
+        <!-- Phase 1: Basics -->
+        <h2 class="phase-title">🟢 Phase 1: The Basics (The Toolbox)</h2>
+        <p style="color:rgba(255,255,255,0.8); text-align:center; margin-bottom:15px;">Learn the fundamental tools every coder needs!</p>
+        <div class="topics-grid">
+            <a href="arrays/index.html" class="topic-card">
+                <div class="topic-icon">📦</div>
+                <h2>Arrays & Hashing</h2>
+                <p>Organizing data - the fundamentals of storage</p>
+            </a>
+            
+            <a href="two-pointers/index.html" class="topic-card">
+                <div class="topic-icon">👫</div>
+                <h2>Two Pointers</h2>
+                <p>Two people walking toward each other</p>
+            </a>
+            
+            <a href="sliding-window/index.html" class="topic-card">
+                <div class="topic-icon">🔍</div>
+                <h2>Sliding Window</h2>
+                <p>Looking through a moving magnifying glass</p>
+            </a>
+        </div>
+        
+        <!-- Phase 2: Structures -->
+        <h2 class="phase-title">🟡 Phase 2: Data Structures</h2>
+        <p style="color:rgba(255,255,255,0.8); text-align:center; margin-bottom:15px;">Organize data into powerful structures!</p>
+        <div class="topics-grid">
+            <a href="stacks-queues/index.html" class="topic-card">
+                <div class="topic-icon">🗃️</div>
+                <h2>Stacks & Queues</h2>
+                <p>Like cafeteria trays or checkout lines</p>
+            </a>
+            
+            <a href="linked-lists/index.html" class="topic-card">
+                <div class="topic-icon">🔗</div>
+                <h2>Linked Lists</h2>
+                <p>A treasure hunt where clues lead to more</p>
+            </a>
+            
+            <a href="trees-graphs/index.html" class="topic-card">
+                <div class="topic-icon">🌳</div>
+                <h2>Trees & Graphs</h2>
+                <p>Family trees or subway maps</p>
+            </a>
+        </div>
+        
+        <!-- Phase 3: Logic -->
+        <h2 class="phase-title">🔴 Phase 3: Advanced Logic</h2>
+        <p style="color:rgba(255,255,255,0.8); text-align:center; margin-bottom:15px;">Patterns that make you a coding wizard!</p>
+        <div class="topics-grid">
+            <a href="binary-search/index.html" class="topic-card">
+                <div class="topic-icon">🔍</div>
+                <h2>Binary Search</h2>
+                <p>Finding a word in a dictionary efficiently</p>
+            </a>
+            
+            <a href="backtracking/index.html" class="topic-card">
+                <div class="topic-icon">↩️</div>
+                <h2>Backtracking</h2>
+                <p>Exploring a maze and mapping your path</p>
+            </a>
+            
+            <a href="dynamic-programming/index.html" class="topic-card">
+                <div class="topic-icon">💾</div>
+                <h2>Dynamic Programming</h2>
+                <p>Writing down answers so you don't recalculate!</p>
+            </a>
+        </div>
+        
+        <!-- Phase 4: Advanced -->
+        <h2 class="phase-title">🟣 Phase 4: Advanced Topics</h2>
+        <p style="color:rgba(255,255,255,0.8); text-align:center; margin-bottom:15px;">Super-powered structures for special problems!</p>
+        <div class="topics-grid">
+            <a href="advanced-data-structures/quadtree/index.html" class="topic-card">
+                <div class="topic-icon">🌲</div>
+                <h2>QuadTrees</h2>
+                <p>How video games find things so fast!</p>
+            </a>
+            
+            <a href="advanced-data-structures/monte-carlo/index.html" class="topic-card">
+                <div class="topic-icon">🎲</div>
+                <h2>Monte Carlo Methods</h2>
+                <p>Using randomness to solve impossible problems</p>
+            </a>
+        </div>
+        
+        <div class="disclaimer">
+            <p>🧸 <strong>Note:</strong> These are simplified versions of complex logic. Great for learning, but real-world production code often requires more nuance!</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="../index.html">← Back to ELI5 Park</a>
+        </div>
+    </div>
 </body>
 </html>

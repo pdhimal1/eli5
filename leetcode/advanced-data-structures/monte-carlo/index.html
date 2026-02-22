@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monte Carlo Methods - ELI5 LeetCode</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 36px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .story-box h2 { color: #e91e63; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { color: #333; font-size: 16px; line-height: 1.8; margin-bottom: 15px; }
+        .story-box ul { margin-left: 20px; color: #333; font-size: 16px; line-height: 1.8; }
+        .story-box li { margin-bottom: 10px; }
+        .highlight { background: #fff3e0; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #ff9800; }
+        .highlight-blue { background: #e3f2fd; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #2196f3; }
+        .nav-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .nav-links a { color: #2196f3; text-decoration: none; font-size: 16px; }
+        .header-nav { text-align: center; margin-bottom: 20px; }
+        .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-nav">
+            <a href="../../index.html">🏠 ELI5 Park</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <a href="../index.html">LeetCode</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <span style="color: #fff;">Monte Carlo</span>
+        </div>
+        
+        <h1>🎲 Monte Carlo Methods</h1>
+        <p class="subtitle">Using randomness to solve impossible problems!</p>
+        
+        <div class="story-box">
+            <h2>ELI5: What is Monte Carlo?</h2>
+            <p>Imagine you need to find the area of a weird, wobbly lake, but you don't have any fancy math. What can you do?</p>
+            <div class="highlight">
+                <strong>TL;DR:</strong> Monte Carlo is like throwing random darts at a board and counting what hits where! If you throw 10,000 darts at random, you can figure out all sorts of things without doing any hard math!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 The Lake Example</h2>
+            <p>To find the area of a weird lake shape:</p>
+            <ol>
+                <li>Draw a SQUARE around the lake</li>
+                <li>Throw 10,000 random dots inside the square</li>
+                <li>Count how many dots landed IN the lake</li>
+                <li>Divide dots in lake by total dots</li>
+                <li>Multiply by square's area = lake's area!</li>
+            </ol>
+            <p style="margin-top:10px;">More dots = more accurate answer! It's magic!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🧮 Where It's Used</h2>
+            <ul>
+                <li><strong>Casino math:</strong> Calculating gambling odds</li>
+                <li><strong>Flight simulators:</strong> Modeling weather patterns</li>
+                <li><strong>Drug discovery:</strong> Simulating how molecules work</li>
+                <li><strong>Stock markets:</strong> Predicting future prices</li>
+                <li><strong>Video games:</strong> Physics and AI behavior</li>
+                <li><strong>Climate science:</strong> Modeling climate change</li>
+            </ul>
+        </div>
+        
+        <div class="story-box">
+            <h2>🤔 Why Does It Work?</h2>
+            <p>It's all about <strong>probability</strong> and <strong>large numbers</strong>!</p>
+            <p>When you throw 1 million random darts, the percentage that hit a certain area gets closer and closer to the TRUE area. It's like taking a survey - ask enough people and you get accurate results!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>📊 Pi Example</h2>
+            <p>Want to calculate PI (3.14159...)?</p>
+            <ol>
+                <li>Draw a circle inside a square</li>
+                <li>Throw 1 million random points</li>
+                <li>Count points in circle vs. points in square</li>
+                <li>The ratio is approximately π/4!</li>
+            </ol>
+            <div class="highlight-blue">
+                <strong>Computers have calculated π to trillions of digits using this method!</strong>
+            </div>
+        </div>
+        
+        <div class="nav-links">
+            <a href="../index.html">← Back to LeetCode</a>
+        </div>
+        
+        <div class="back-link">
+            <a href="../index.html">← Back to LeetCode Index</a>
+        </div>
+    </div>
+</body>
+</html>

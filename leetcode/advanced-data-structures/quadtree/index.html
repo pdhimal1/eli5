@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuadTrees - ELI5 LeetCode</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 36px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 30px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .story-box h2 { color: #e91e63; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { color: #333; font-size: 16px; line-height: 1.8; margin-bottom: 15px; }
+        .story-box ul { margin-left: 20px; color: #333; font-size: 16px; line-height: 1.8; }
+        .story-box li { margin-bottom: 10px; }
+        .highlight { background: #fff3e0; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #ff9800; }
+        .highlight-blue { background: #e3f2fd; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #2196f3; }
+        .nav-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .nav-links a { color: #2196f3; text-decoration: none; font-size: 16px; }
+        .header-nav { text-align: center; margin-bottom: 20px; }
+        .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-nav">
+            <a href="../../index.html">🏠 ELI5 Park</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <a href="../index.html">LeetCode</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <span style="color: #fff;">QuadTrees</span>
+        </div>
+        
+        <h1>🌳 QuadTrees</h1>
+        <p class="subtitle">How do video games find things so fast?</p>
+        
+        <div class="story-box">
+            <h2>ELI5: What is a QuadTree?</h2>
+            <p>Imagine you have a HUGE area (like a whole city) and you need to find points in it. Looking through every single point would be SO slow!</p>
+            <div class="highlight">
+                <strong>TL;DR:</strong> A QuadTree is like dividing a pizza into 4 equal slices, then cutting each slice into 4 more, and keeping going! When you want to find something, you only look in the slice where it might be.
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🍕 The Pizza Example</h2>
+            <p>Let's say you have a map and want to find all the restaurants in New York City:</p>
+            <ol>
+                <li>Start with the WHOLE map</li>
+                <li>Divide it into 4 quadrants (north, south, east, west)</li>
+                <li>If one quadrant has too many restaurants, divide IT into 4 more pieces!</li>
+                <li>Keep going until each piece has only a few restaurants</li>
+                <li>Now finding a restaurant is super fast - just pick the right quadrant!</li>
+            </ol>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎮 Where It's Used</h2>
+            <ul>
+                <li><strong>Video games:</strong> To quickly find which objects are near the player</li>
+                <li><strong>Maps:</strong> To find nearby locations</li>
+                <li><strong>Image compression:</strong> To store images efficiently</li>
+                <li><strong>Collision detection:</strong> In physics simulations</li>
+            </ul>
+        </div>
+        
+        <div class="story-box">
+            <h2>⏱️ Why Is It Fast?</h2>
+            <p>Without QuadTree: Checking 1 million points = 1 million checks 😩</p>
+            <p>With QuadTree: Same 1 million points = only ~20 checks! 🚀</p>
+            <div class="highlight-blue">
+                <strong>It's called "logarithmic time"</strong> - which means even if you have 100x more points, you only need a few more checks!
+            </div>
+        </div>
+        
+        <div class="nav-links">
+            <a href="monte-carlo/index.html">→ Next: Monte Carlo Methods</a>
+            <a href="../index.html">← Back to LeetCode</a>
+        </div>
+        
+        <div class="back-link">
+            <a href="../index.html">← Back to LeetCode Index</a>
+        </div>
+    </div>
+</body>
+</html>
