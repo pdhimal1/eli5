@@ -98,6 +98,7 @@ a:hover { color: #22d3ee; }
 .ml-4 { margin-left: 1rem; }
 .mr-2 { margin-right: 0.5rem; }
 .mx-2 { margin-left: 0.5rem; margin-right: 0.5rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
 
 /* Display */
 .block { display: block; }
@@ -132,6 +133,7 @@ a:hover { color: #22d3ee; }
 .col-span-3 { grid-column: span 3 / span 3; }
 
 /* Sizing */
+.max-w-4xl { max-width: 56rem; }
 .w-full { width: 100%; }
 .w-auto { width: auto; }
 .w-8 { width: 2rem; }
