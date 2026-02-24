@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sauteed Mushrooms - ELI5 Cooking!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #5d4037; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .recipe-card { background: #fff3e0; border-radius: 15px; padding: 20px; margin: 20px 0; }
+        .recipe-card h3 { color: #e65100; margin-bottom: 10px; }
+        .recipe-card ul { margin-left: 20px; }
+        .recipe-card li { margin: 8px 0; color: #333; }
+        .steps { counter-reset: step; }
+        .steps li { list-style: none; counter-increment: step; margin: 15px 0; }
+        .steps li::before { content: counter(step) ". "; font-weight: bold; color: #e65100; font-size: 20px; }
+        .tip-box { background: #e8f5e9; border-left: 5px solid #4caf50; padding: 15px; margin: 15px 0; color: #2e7d32; border-radius: 0 10px 10px 0; }
+        .safety-warning { background: #ffebee; border-left: 5px solid #f44336; padding: 15px; margin: 15px 0; color: #c62828; border-radius: 0 10px 10px 0; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .story-box { padding: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍄 Sauteed Mushrooms! 🍄</h1>
+        <p class="subtitle">The simplest, most delicious veggie!</p>
+        
+        <div class="safety-warning">
+            <strong>⚠️ Safety:</strong> Ask an adult to help with the hot pan!
+        </div>
+        
+        <div class="story-box">
+            <h2>Why This Recipe Works!</h2>
+            <p>Mushrooms are like sponges - they soak up flavor!</p>
+            <p>When you cook them, they release water and get nicely browned. That's called <strong>maillard reaction</strong> - it makes food taste yummy and toasty!</p>
+            <p>Mike the Home Cook says: "Mushrooms are the easiest vegetable to cook. Even if you mess up, they still taste great!"</p>
+        </div>
+        
+        <div class="recipe-card">
+            <h3>🛒 What You Need</h3>
+            <ul>
+                <li>8 oz mushrooms (cremini or white mushrooms)</li>
+                <li>2 tablespoons butter (or olive oil)</li>
+                <li>Salt to taste</li>
+                <li> optional: a splash of soy sauce</li>
+            </ul>
+        </div>
+        
+        <div class="story-box">
+            <h2>👨‍🍳 How To Cook</h2>
+            <ol class="steps">
+                <li><strong>Clean the mushrooms:</strong> Wipe them with a damp paper towel. Don't soak them in water - they'll get soggy!</li>
+                <li><strong>Slice them up:</strong> Cut into similar sizes so they cook evenly.</li>
+                <li><strong>Heat the pan:</strong> Put butter in a pan over medium heat. Wait for it to melt and get a little foamy.</li>
+                <li><strong>Add mushrooms:</strong> Put them in single layer. Don't crowd the pan! Cook in batches if needed.</li>
+                <li><strong>Don't touch!</strong> Let them sit for 2-3 minutes. They need time to get brown and crispy.</li>
+                <li><strong>Flip and repeat:</strong> Toss them around, let them brown on the other side.</li>
+                <li><strong>Season:</strong> Add salt! Taste and adjust. Add soy sauce for extra umami (savory taste)!</li>
+            </ol>
+        </div>
+        
+        <div class="tip-box">
+            <strong>💡 Pro Tip from Gordon Ramsay:</strong> "Don't crowd the pan! If mushrooms are too close together, they steam instead of sauté. Give them space to get golden brown."
+        </div>
+        
+        <div class="story-box">
+            <h2>🔄 Different Mushrooms</h2>
+            <p><strong>White/Cremini:</strong> Standard, good for everything!</p>
+            <p><strong>Portobello:</strong> Big and meaty - great for burgers!</p>
+            <p><strong>Shiitake:</strong> Umami bomb! Delicious in Asian dishes.</p>
+            <p><strong>Fun Fact:</strong> Mushrooms are fungi, not vegetables! They're more like yeast than carrots!</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Cooking</a>
+        </div>
+    </div>
+</body>
+</html>

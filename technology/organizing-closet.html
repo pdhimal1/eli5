@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizing Your Closet - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #7b1fa2; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0510; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ce93d8; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ab47bc; border-radius: 10px; background: #0a0510; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .btn-sort { background: linear-gradient(135deg, #ab47bc, #ba68c8); color: white; }
+        .tip-box { background: #e8f5e9; border-left: 5px solid #4caf50; padding: 15px; margin: 15px 0; color: #2e7d32; border-radius: 0 10px 10px 0; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        .header-nav { text-align: center; margin-bottom: 20px; }
+        .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        .header-nav a:hover { color: #fff; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .story-box { padding: 18px; }
+            canvas { width: 100% !important; height: auto !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-nav">
+            <a href="../index.html">🏠 ELI5 Park</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <a href="index.html">Technology</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <span style="color: #fff;">Real World Skills</span>
+        </div>
+        
+        <h1>🧺 Organizing Your Closet! 🧺</h1>
+        <p class="subtitle">Sorting like a computer scientist!</p>
+        
+        <div class="story-box">
+            <h2>💡 Why Organize?</h2>
+            <p>When you have a lot of clothes, finding things can be hard!</p>
+            <p>Computers have the same problem - they need to organize lots of data!</p>
+            <p>Let's learn how computers sort things - using your closet!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🎯 Method 1: Sort by Color (Like a Rainbow!)</h2>
+            <p>This is like <strong>Bubble Sort</strong> - you compare things next to each other!</p>
+            <p>1. Find two shirts next to each other</p>
+            <p>2. Which one should come first? (Red before Orange before Yellow)</p>
+            <p>3. Swap if they're in the wrong order!</p>
+            <p>4. Repeat until done!</p>
+            <div class="tip-box">
+                🏃 Like sorting cards by color - you compare each pair and swap if needed!
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>📦 Method 2: First In, First Out (FIFO)</h2>
+            <p>Think about clothes you wear most often!</p>
+            <p><strong>The idea:</strong> Put the clothes you wear most often in front!</p>
+            <p>This is like a <strong>Queue</strong> - like people in a line!</p>
+            <p>First person in line gets served first!</p>
+            <p>It's also like a <strong>Cache</strong> in a computer - the stuff you use most goes in "quick access"!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🏷️ Method 3: Group Similar Items</h2>
+            <p>This is like <strong>Hash Tables</strong> - organizing by categories!</p>
+            <p>All shirts in one pile, pants in another, socks in another!</p>
+            <p>When you need pants, you go straight to the pants pile!</p>
+            <p>This is super fast - just like a dictionary!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔍 Method 4: Binary Search (The Fast Way!)</h2>
+            <p>Imagine your clothes are sorted by color in a line!</p>
+            <p>Instead of checking every single one, you check the middle!</p>
+            <p>Is the one you're looking for redder or bluer than the middle?</p>
+            <p>Then you only look at half! Then half of that!</p>
+            <p><strong>Boom!</strong> You find it super fast!</p>
+        </div>
+        
+        <div class="tip-box">
+            <strong>💡 Real World Organizing Tips:</strong>
+            <br>• Sort clothes by how often you wear them (most used = easiest to reach)
+            <br>• Group by category (shirts, pants, socks)
+            <br>• Use the front of your closet for everyday items
+            <br>• Store seasonal stuff in the back!
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Technology</a>
+        </div>
+    </div>
+</body>
+</html>

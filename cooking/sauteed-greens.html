@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sauteed Greens - ELI5 Cooking!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #2e7d32; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .recipe-card { background: #e8f5e9; border-radius: 15px; padding: 20px; margin: 20px 0; }
+        .recipe-card h3 { color: #1b5e20; margin-bottom: 10px; }
+        .recipe-card ul { margin-left: 20px; }
+        .recipe-card li { margin: 8px 0; color: #333; }
+        .steps { counter; }
+        .-reset: stepsteps li { list-style: none; counter-increment: step; margin: 15px 0; }
+        .steps li::before { content: counter(step) ". "; font-weight: bold; color: #1b5e20; font-size: 20px; }
+        .tip-box { background: #fff3e0; border-left: 5px solid #ff9800; padding: 15px; margin: 15px 0; color: #e65100; border-radius: 0 10px 10px 0; }
+        .safety-warning { background: #ffebee; border-left: 5px solid #f44336; padding: 15px; margin: 15px 0; color: #c62828; border-radius: 0 10px 10px 0; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .story-box { padding: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🥬 Sauteed Greens! 🥬</h1>
+        <p class="subtitle">Spinach, kale, and more!</p>
+        
+        <div class="safety-warning">
+            <strong>⚠️ Safety:</strong> Ask an adult to help with the hot pan! Use tongs to move greens around.
+        </div>
+        
+        <div class="story-box">
+            <h2>Why Eat Greens?</h2>
+            <p>Leafy greens are super healthy - they're like multivitamins from nature!</p>
+            <p>But cooked right, they're also delicious! David Chang says: "Bitter greens are an acquired taste. Cook them with fat and salt, and everyone loves them."</p>
+        </div>
+        
+        <div class="recipe-card">
+            <h3>🛒 What You Need</h3>
+            <ul>
+                <li>1 bunch greens (spinach, kale, chard, or bok choy)</li>
+                <li>2 cloves garlic, minced</li>
+                <li>2 tablespoons olive oil or butter</li>
+                <li>Salt to taste</li>
+                <li> optional: squeeze of lemon</li>
+            </ul>
+        </div>
+        
+        <div class="story-box">
+            <h2>👨‍🍳 How To Cook</h2>
+            <ol class="steps">
+                <li><strong>Prep the greens:</strong> Wash them well! Remove tough stems from kale. Tear spinach into pieces.</li>
+                <li><strong>Heat the pan:</strong> Add oil/butter over medium heat.</li>
+                <li><strong>Add garlic:</strong> Cook for 30 seconds until fragrant. Don't let it burn!</li>
+                <li><strong>Add greens:</strong> Start with sturdy greens first (kale), then tender ones (spinach).</li>
+                <li><strong>Wilt and toss:</strong> Use tongs to toss. They'll shrink a lot!</li>
+                <li><strong>Season:</strong> Add salt. Taste! Add lemon if you want.</li>
+            </ol>
+        </div>
+        
+        <div class="tip-box">
+            <strong>💡 Different Greens, Different Times:</strong>
+            <br>Kale: 3-4 minutes | Spinach: 1-2 minutes | Chard: 2-3 minutes
+            <br>Don't overcook - they should still have some bite!
+        </div>
+        
+        <div class="story-box">
+            <h2>🔄 Greens Quick Guide</h2>
+            <p><strong>Spinach:</strong> Most popular! Sweet when cooked. Perfect for beginners.</p>
+            <p><strong>Kale:</strong> Very healthy! Remove tough stems. Massaging with salt makes it tender!</p>
+            <p><strong>Bok Choy:</strong> Crunchy stems, tender leaves. Great in Asian dishes!</p>
+            <p><strong>Arugula:</strong> Peppery! Great in salads or lightly wilted.</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Cooking</a>
+        </div>
+    </div>
+</body>
+</html>
