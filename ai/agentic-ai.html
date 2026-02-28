@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #7c4dff; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .demo-area { background: #0a0515; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #ce93d8; font-size: 28px; margin-bottom: 10px; }
+        canvas { display: block; margin: 0 auto; border: 3px solid #ab47bc; border-radius: 10px; background: #0a0515; }
+        .controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-3px) scale(1.05); }
+        .tip-box { background: #e8f5e9; border-left: 5px solid #4caf50; padding: 15px; margin: 15px 0; color: #2e7d32; border-radius: 0 10px 10px 0; }
+        .fact-box { background: #f3e5f5; border-left: 5px solid #7c4dff; padding: 15px; margin: 15px 0; color: #4a148c; border-radius: 0 10px 10px 0; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        .header-nav { text-align: center; margin-bottom: 20px; }
+        .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .story-box { padding: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-nav">
+            <a href="../index.html">🏠 ELI5 Park</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <a href="index.html">AI</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <span style="color: #fff;">Agentic AI</span>
+        </div>
+        
+        <h1>🤖 Agentic AI: Your AI Assistant! 🤖</h1>
+        <p class="subtitle">AI that can do things for you!</p>
+        
+        <div class="story-box">
+            <h2>What's Agentic AI?</h2>
+            <p><strong>Agentic AI</strong> is like having a helpful assistant! It can:</p>
+            <p>✅ Remember what you asked before</p>
+            <p>✅ Do tasks for you (like sending emails, booking things)</p>
+            <p>✅ Figure out the steps to solve a problem</p>
+            <p>✅ Learn from what you like and don't like</p>
+        </div>
+        
+        <div class="demo-area">
+            <h2 class="demo-title">🎮 How an AI Agent Works!</h2>
+            <canvas id="agentCanvas" width="700" height="350"></canvas>
+            <div class="controls">
+                <button onclick="askAgent()" style="background: linear-gradient(135deg, #7c4dff, #ab47bc); color: white;">Ask Agent to Help! 🎯</button>
+            </div>
+        </div>
+        
+        <div class="story-box">
+            <h2>🔄 How It Works</h2>
+            <p><strong>1. Understand Goal:</strong> The agent understands what you want</p>
+            <p><strong>2. Make a Plan:</strong> It figures out the steps to get there</p>
+            <p><strong>3. Take Action:</strong> It does things (search, calculate, write)</p>
+            <p><strong>4. Check Results:</strong> Did it work? If not, try again!</p>
+            <p><strong>5. Learn:</strong> It remembers for next time</p>
+        </div>
+        
+        <div class="fact-box">
+            <h2>🏢 How Companies Use AI Agents</h2>
+            <p><strong>Customer Service:</strong> AI agents answer questions 24/7!</p>
+            <p><strong>Scheduling:</strong> Book meetings automatically</p>
+            <p><strong>Data Entry:</strong> Fill in forms from emails</p>
+            <p><strong>Research:</strong> Find information and summarize it</p>
+            <p><strong>Code Writing:</strong> Help programmers write code faster</p>
+        </div>
+        
+        <div class="tip-box">
+            <h2>💡 Real Examples</h2>
+            <p><strong>Google's Assistant:</strong> Can call restaurants and make reservations!</p>
+            <p><strong>Microsoft Copilot:</strong> Helps write emails and documents!</p>
+            <p><strong>ChatGPT with Plugins:</strong> Can book flights, order food!</p>
+            <p><strong>AI Customer Support:</strong> Solves problems without human help!</p>
+        </div>
+        
+        <div class="story-box">
+            <h2>⚠️ What to Watch Out For</h2>
+            <p>AI agents are helpful but:</p>
+            <p>🤔 Always check their work - they can make mistakes!</p>
+            <p>🔒 Don't share passwords or private info</p>
+            <p>👀 They don't actually "understand" like humans do</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to AI Topics</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('agentCanvas');
+        const ctx = canvas.getContext('2d');
+        let tasks = [];
+        let completed = [];
+        
+        function askAgent() {
+            const taskNames = ['Search info', 'Write email', 'Book meeting', 'Find answer', 'Calculate', 'Summarize'];
+            const randomTask = taskNames[Math.floor(Math.random() * taskNames.length)];
+            tasks.push({ name: randomTask, progress: 0 });
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#0a0515';
+            ctx.fillRect(0, 0, 700, 350);
+            
+            // Draw user
+            ctx.fillStyle = '#4caf50';
+            ctx.beginPath();
+            ctx.arc(100, 175, 40, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = '30px Arial';
+            ctx.fillText('👤', 85, 185);
+            
+            // Draw AI Agent
+            ctx.fillStyle = '#7c4dff';
+            ctx.beginPath();
+            ctx.arc(350, 175, 50, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = '40px Arial';
+            ctx.fillText('🤖', 330, 190);
+            
+            // Draw arrow
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(150, 175);
+            ctx.lineTo(290, 175);
+            ctx.stroke();
+            ctx.fillText('→', 210, 185);
+            
+            // Draw task list
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('Tasks:', 500, 30);
+            
+            let y = 60;
+            tasks.forEach((task, i) => {
+                task.progress += 2;
+                
+                // Task box
+                ctx.fillStyle = '#333';
+                ctx.fillRect(480, y - 20, 180, 40);
+                
+                // Progress
+                ctx.fillStyle = '#7c4dff';
+                ctx.fillRect(482, y - 18, Math.min(task.progress * 1.6, 176), 36);
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = '14px Arial';
+                ctx.fillText(task.name, 490, y + 5);
+                
+                if (task.progress >= 110) {
+                    completed.push(task.name);
+                    tasks.splice(i, 1);
+                }
+                
+                y += 50;
+            });
+            
+            // Completed tasks
+            if (completed.length > 0) {
+                ctx.fillStyle = '#4caf50';
+                ctx.font = 'bold 16px Arial';
+                ctx.fillText('Done:', 500, 280);
+                
+                let y2 = 310;
+                completed.slice(-3).forEach(task => {
+                    ctx.fillText('✓ ' + task, 500, y2);
+                    y2 += 25;
+                });
+            }
+            
+            // Instructions
+            ctx.fillStyle = '#aaa';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(tasks.length === 0 ? '👆 Click button to give agent a task!' : '🤖 Agent is working...', 350, 330);
+            
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

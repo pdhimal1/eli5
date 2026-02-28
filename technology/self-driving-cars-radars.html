@@ -425,15 +425,37 @@
                         const dy = obs.y - p.y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
                         
-                        if (Math.abs(dist - p.radius) < 15 && p.radius > 50) {
-                            ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
+                        if (Math.abs(dist - p.radius) < 15 && p.radius > 50 && !p.returned) {
+                            // Draw signal going TO the object
+                            ctx.strokeStyle = '#2196f3';
+                            ctx.lineWidth = 2;
                             ctx.beginPath();
-                            ctx.arc(obs.x, obs.y, 15, 0, Math.PI * 2);
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(obs.x, obs.y);
+                            ctx.stroke();
+                            
+                            // Draw bouncing back signal
+                            ctx.strokeStyle = '#ff5722';
+                            ctx.setLineDash([5, 5]);
+                            ctx.beginPath();
+                            ctx.moveTo(obs.x, obs.y);
+                            ctx.lineTo(p.x, p.y);
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+                            
+                            // Highlight the object
+                            ctx.fillStyle = 'rgba(255, 87, 34, 0.8)';
+                            ctx.beginPath();
+                            ctx.arc(obs.x, obs.y, 18, 0, Math.PI * 2);
                             ctx.fill();
                             
+                            // Show distance
                             ctx.fillStyle = '#fff';
-                            ctx.font = '12px Arial';
-                            ctx.fillText(`${Math.round(dist)}m`, obs.x, obs.y - 20);
+                            ctx.font = 'bold 14px Arial';
+                            ctx.fillText(`${Math.round(dist)}m`, obs.x, obs.y - 25);
+                            
+                            // Mark as returned so we don't draw again
+                            p.returned = true;
                         }
                     }
                     
@@ -446,21 +468,37 @@
                     const endX = p.x + Math.cos(p.angle) * p.distance;
                     const endY = p.y + Math.sin(p.angle) * p.distance;
                     
-                    ctx.fillStyle = `rgba(76, 175, 80, ${1 - p.distance / p.maxDistance})`;
+                    // Draw laser going out
+                    ctx.strokeStyle = `rgba(76, 175, 80, ${1 - p.distance / p.maxDistance})`;
+                    ctx.lineWidth = 2;
                     ctx.beginPath();
-                    ctx.arc(endX, endY, 3, 0, Math.PI * 2);
-                    ctx.fill();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(endX, endY);
+                    ctx.stroke();
                     
                     for (const obs of obstacles) {
                         const dx = obs.x - p.x;
                         const dy = obs.y - p.y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
                         
-                        if (Math.abs(dist - p.distance) < 10 && p.distance > 30) {
+                        if (Math.abs(dist - p.distance) < 10 && p.distance > 30 && !p.returned) {
+                            // Draw bouncing back
+                            ctx.strokeStyle = '#ff5722';
+                            ctx.lineWidth = 2;
+                            ctx.setLineDash([3, 3]);
+                            ctx.beginPath();
+                            ctx.moveTo(obs.x, obs.y);
+                            ctx.lineTo(p.x, p.y);
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+                            
+                            // Highlight the object
                             ctx.fillStyle = 'rgba(76, 175, 80, 0.9)';
                             ctx.beginPath();
-                            ctx.arc(obs.x, obs.y, 10, 0, Math.PI * 2);
+                            ctx.arc(obs.x, obs.y, 12, 0, Math.PI * 2);
                             ctx.fill();
+                            
+                            p.returned = true;
                         }
                     }
                     
