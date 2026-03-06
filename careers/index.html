@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELI5 Careers - Dream Jobs for Kids!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 42px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .section-title { text-align: center; color: #fff; font-size: 28px; margin: 40px 0 20px; padding: 15px; background: rgba(255,255,255,0.15); border-radius: 15px; }
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .topic-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
+        .topic-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .topic-icon { font-size: 45px; text-align: center; margin-bottom: 12px; }
+        .topic-card h2 { color: #333; font-size: 18px; margin-bottom: 8px; text-align: center; }
+        .topic-card p { color: #666; font-size: 13px; line-height: 1.4; text-align: center; }
+        .topic-card:nth-child(1) { border-top: 5px solid #e91e63; }
+        .topic-card:nth-child(2) { border-top: 5px solid #2196f3; }
+        .topic-card:nth-child(3) { border-top: 5px solid #ff9800; }
+        .topic-card:nth-child(4) { border-top: 5px solid #9c27b0; }
+        .topic-card:nth-child(5) { border-top: 5px solid #4caf50; }
+        .topic-card:nth-child(6) { border-top: 5px solid #00bcd4; }
+        .topic-card:nth-child(7) { border-top: 5px solid #ff5722; }
+        .topic-card:nth-child(8) { border-top: 5px solid #607d8b; }
+        .topic-card:nth-child(9) { border-top: 5px solid #795548; }
+        .topic-card:nth-child(10) { border-top: 5px solid #009688; }
+        .back-link { text-align: center; margin-top: 40px; }
+        .back-link a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        .header-nav { text-align: center; margin-bottom: 20px; }
+        .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        .header-nav a:hover { color: #fff; }
+        .disclaimer { background: rgba(255,255,255,0.9); border-radius: 15px; padding: 20px; margin-top: 40px; text-align: center; }
+        .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 28px; }
+            .subtitle { font-size: 16px; }
+            .topics-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-nav">
+            <a href="../index.html">🏠 ELI5 Park</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <span style="color: #fff;">Careers for Kids</span>
+        </div>
+        
+        <h1>🌟 ELI5 Careers 🌟</h1>
+        <p class="subtitle">Dream big! Learn about jobs you can do when you grow up!</p>
+        
+        <!-- Health & Medicine -->
+        <h2 class="section-title">🏥 Health & Medicine</h2>
+        <div class="topics-grid">
+            <a href="doctor.html" class="topic-card">
+                <div class="topic-icon">👨‍⚕️</div>
+                <h2>Doctor</h2>
+                <p>Help people stay healthy and feel better!</p>
+            </a>
+            
+            <a href="nurse.html" class="topic-card">
+                <div class="topic-icon">💉</div>
+                <h2>Nurse</h2>
+                <p>Care for patients day and night!</p>
+            </a>
+            
+            <a href="veterinarian.html" class="topic-card">
+                <div class="topic-icon">🐾</div>
+                <h2>Veterinarian</h2>
+                <p>Help sick animals get better!</p>
+            </a>
+        </div>
+        
+        <!-- Engineering & Building -->
+        <h2 class="section-title">🏗️ Engineering & Building</h2>
+        <div class="topics-grid">
+            <a href="engineer.html" class="topic-card">
+                <div class="topic-icon">🔧</div>
+                <h2>Engineer</h2>
+                <p>Build amazing things with science!</p>
+            </a>
+            
+            <a href="civil-engineer.html" class="topic-card">
+                <div class="topic-icon">🏠</div>
+                <h2>Civil Engineer</h2>
+                <p>Build houses, roads, and bridges!</p>
+            </a>
+            
+            <a href="software-engineer.html" class="topic-card">
+                <div class="topic-icon">💻</div>
+                <h2>Software Engineer</h2>
+                <p>Write code to make apps and games!</p>
+            </a>
+        </div>
+        
+        <!-- Creative Jobs -->
+        <h2 class="section-title">🎨 Creative Jobs</h2>
+        <div class="topics-grid">
+            <a href="youtuber.html" class="topic-card">
+                <div class="topic-icon">📺</div>
+                <h2>YouTuber</h2>
+                <p>Make videos and share with the world!</p>
+            </a>
+            
+            <a href="social-media-manager.html" class="topic-card">
+                <div class="topic-icon">📱</div>
+                <h2>Social Media Manager</h2>
+                <p>Help businesses grow online!</p>
+            </a>
+            
+            <a href="makeup-artist.html" class="topic-card">
+                <div class="topic-icon">💄</div>
+                <h2>Makeup Artist</h2>
+                <p>Make people look amazing!</p>
+            </a>
+            
+            <a href="graphic-designer.html" class="topic-card">
+                <div class="topic-icon">🎨</div>
+                <h2>Graphic Designer</h2>
+                <p>Create logos, posters, and art!</p>
+            </a>
+        </div>
+        
+        <!-- Helping Others -->
+        <h2 class="section-title">💚 Helping Others</h2>
+        <div class="topics-grid">
+            <a href="teacher.html" class="topic-card">
+                <div class="topic-icon">📚</div>
+                <h2>Teacher</h2>
+                <p>Help kids learn and grow!</p>
+            </a>
+            
+            <a href="firefighter.html" class="topic-card">
+                <div class="topic-icon">🚒</div>
+                <h2>Firefighter</h2>
+                <p>Save people from danger!</p>
+            </a>
+            
+            <a href="police-officer.html" class="topic-card">
+                <div class="topic-icon">👮</div>
+                <h2>Police Officer</h2>
+                <p>Keep communities safe!</p>
+            </a>
+        </div>
+        
+        <div class="disclaimer">
+            <p><strong>💭 Remember:</strong> These are just SOME of the thousands of jobs out there! The best job is one you enjoy and that helps others. Keep learning and trying new things!</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="../index.html">← Back to ELI5 Park</a>
+        </div>
+    </div>
+</body>
+</html>
