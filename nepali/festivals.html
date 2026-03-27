@@ -10,12 +10,18 @@
         .container { max-width: 900px; margin: 0 auto; }
         h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
         .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .topic-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
+        .topic-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .topic-icon { font-size: 40px; text-align: center; margin-bottom: 10px; }
+        .topic-card h2 { color: #333; font-size: 16px; margin-bottom: 6px; text-align: center; }
+        .topic-card p { color: #666; font-size: 12px; line-height: 1.4; text-align: center; }
+        .topic-card:nth-child(1) { border-top: 5px solid #DC143C; }
+        .topic-card:nth-child(2) { border-top: 5px solid #FFD700; }
+        .topic-card:nth-child(3) { border-top: 5px solid #FF69B4; }
         .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .story-box h2 { color: #DC143C; font-size: 24px; margin-bottom: 15px; }
         .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
-        .fact-box { background: #fff9c4; border-radius: 15px; padding: 20px; margin: 20px 0; }
-        .fact-box h3 { color: #f57f17; margin-bottom: 10px; }
-        .fact-box p { color: #333; }
         .back-link { text-align: center; margin-top: 30px; }
         .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
         .header-nav { text-align: center; margin-bottom: 20px; }
@@ -24,7 +30,10 @@
         .disclaimer { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px; margin-top: 40px; text-align: center; }
         .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
         
-        @media (max-width: 768px) { h1 { font-size: 26px; } .story-box { padding: 18px; } }
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .topics-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -43,53 +52,32 @@
         <div class="story-box">
             <h2>Why Nepal Has So Many Festivals!</h2>
             <p>Nepal is called the "land of festivals" because there are over 50 festivals celebrated every year!</p>
-            <p>Different ethnic groups (like Newar, Brahmin, Chhetri, Tamang, and others) all have their own special celebrations.</p>
-            <p>Many festivals are based on the Hindu and Buddhist calendars, which follow the moon and stars!</p>
+            <p>Different communities and ethnic groups all have their own special celebrations!</p>
+            <p>Many festivals celebrate nature, family, and the changing seasons!</p>
         </div>
         
-        <div class="story-box">
-            <h2>🎊 Dashain - The Biggest Festival!</h2>
-            <p>Dashain is the most important festival in Nepal, celebrating the victory of good over evil!</p>
-            <p>It remembers when goddess Durga defeated a buffalo demon named Mahishasura.</p>
-            <p>Families get together, eat special food, play cards, and kids get "Eidi" (money gifts) from elders!</p>
-            <p><strong>When:</strong> Usually September/October, lasts 15 days</p>
-        </div>
-        
-        <div class="fact-box">
-            <h3>Dashain Activities</h3>
-            <p>• Receiving "Tika" - a mix of rice, yogurt, and vermillion on the forehead</p>
-            <p>• Getting "Eidi" - money gifts from elders</p>
-            <p>• Flying kites</p>
-            <p>• Playing cards (a tradition during Dashain!)</p>
-            <p>• Eating special foods like goat curry and rice pudding</p>
-        </div>
-        
-        <div class="story-box">
-            <h2>🪔 Tihar - Festival of Lights!</h2>
-            <p>Tihar comes right after Dashain and is all about honoring animals and the goddess of wealth!</p>
-            <p>It's like a Thanksgiving and Diwali combined!</p>
-            <p><strong>When:</strong> Usually October/November, lasts 5 days</p>
-        </div>
-        
-        <div class="fact-box">
-            <h3>Tihar - Day by Day</h3>
-            <p>• <strong>Day 1:</strong> Crows - feed them (they're messengers of death)</p>
-            <p>• <strong>Day 2:</strong> Dogs - honor them (they guard the gates of heaven)</p>
-            <p>• <strong>Day 3:</strong> Cows - decorate them with flowers and garlands</p>
-            <p>• <strong>Day 4:</strong> Oxen or tonight is Laxmi Puja - the goddess of wealth!</p>
-            <p>• <strong>Day 5:</strong> Brothers get gifts from sisters (Bhai Tika!)</p>
-        </div>
-        
-        <div class="story-box">
-            <h2>🎨 Other Fun Festivals!</h2>
-            <p><strong>Holi:</strong> The festival of colors! People throw colored powder and water at each other!</p>
-            <p><strong>Indra Jatra:</strong> A Newar festival with masked dances and the living goddess!</p>
-            <p><strong>Buddha Jayanti:</strong> Celebration of Buddha's birth (in Lumbini!)</p>
-            <p><strong>Shivaratri:</strong> Night of Lord Shiva - people stay awake all night!</p>
+        <div class="topics-grid">
+            <a href="dashain.html" class="topic-card">
+                <div class="topic-icon">🎊</div>
+                <h2>Dashain</h2>
+                <p>The biggest festival of all!</p>
+            </a>
+            
+            <a href="tihar.html" class="topic-card">
+                <div class="topic-icon">🪔</div>
+                <h2>Tihar</h2>
+                <p>Festival of lights and honoring animals!</p>
+            </a>
+            
+            <a href="holi.html" class="topic-card">
+                <div class="topic-icon">🎨</div>
+                <h2>Holi</h2>
+                <p>The festival of colors!</p>
+            </a>
         </div>
         
         <div class="disclaimer">
-            <p><strong>💭 Remember:</strong> This is general information about Nepali festivals. Different families and ethnic groups may have their own unique traditions and ways of celebrating!</p>
+            <p><strong>💭 Remember:</strong> Nepal has many different communities. Different families and ethnic groups may celebrate festivals in their own special ways!</p>
         </div>
         
         <div class="back-link">
