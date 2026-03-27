@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELI5 Nepali Culture - Learn About Nepal!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #003893, #DC143C); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 42px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .topic-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
+        .topic-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .topic-icon { font-size: 45px; text-align: center; margin-bottom: 12px; }
+        .topic-card h2 { color: #333; font-size: 18px; margin-bottom: 8px; text-align: center; }
+        .topic-card p { color: #666; font-size: 13px; line-height: 1.4; text-align: center; }
+        .topic-card:nth-child(1) { border-top: 5px solid #DC143C; }
+        .topic-card:nth-child(2) { border-top: 5px solid #FFD700; }
+        .topic-card:nth-child(3) { border-top: 5px solid #003893; }
+        .topic-card:nth-child(4) { border-top: 5px solid #228B22; }
+        .topic-card:nth-child(5) { border-top: 5px solid #FF8C00; }
+        .topic-card:nth-child(6) { border-top: 5px solid #8B4513; }
+        .back-link { text-align: center; margin-top: 40px; }
+        .back-link a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        .header-nav { text-align: center; margin-bottom: 20px; }
+        .header-nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
+        .header-nav a:hover { color: #fff; }
+        .disclaimer { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px; margin-top: 40px; text-align: center; }
+        .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 28px; }
+            .subtitle { font-size: 16px; }
+            .topics-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-nav">
+            <a href="../index.html">🏠 ELI5 Park</a>
+            <span style="color: rgba(255,255,255,0.5);"> / </span>
+            <span style="color: #fff;">Nepali Culture</span>
+        </div>
+        
+        <h1>🇳🇵 ELI5 Nepali Culture 🇳🇵</h1>
+        <p class="subtitle">Learn about the amazing traditions of Nepal!</p>
+        
+        <div class="topics-grid">
+            <a href="festivals.html" class="topic-card">
+                <div class="topic-icon">🎉</div>
+                <h2>Festivals</h2>
+                <p>Dashain, Tihar, Holi, and more celebrations!</p>
+            </a>
+            
+            <a href="bartaman.html" class="topic-card">
+                <div class="topic-icon">🎓</div>
+                <h2>Bartaman</h2>
+                <p>The coming of age ceremony!</p>
+            </a>
+            
+            <a href="food.html" class="topic-card">
+                <div class="topic-icon">🍛</div>
+                <h2>Traditional Food</h2>
+                <p>Daal Bhat, momos, and delicious dishes!</p>
+            </a>
+            
+            <a href="marriage.html" class="topic-card">
+                <div class="topic-icon">💒</div>
+                <h2>Marriage Traditions</h2>
+                <p>How weddings work in Nepal!</p>
+            </a>
+            
+            <a href="architecture.html" class="topic-card">
+                <div class="topic-icon">🏔️</div>
+                <h2>Architecture</h2>
+                <p>Temples, stupas, and traditional houses!</p>
+            </a>
+            
+            <a href="daily-life.html" class="topic-card">
+                <div class="topic-icon">🙏</div>
+                <h2>Daily Life</h2>
+                <p>Customs, greetings, and daily rituals!</p>
+            </a>
+        </div>
+        
+        <div class="disclaimer">
+            <p><strong>💭 Remember:</strong> This is educational content about Nepali culture. Traditions vary by family, region, and ethnicity. We aim to share general information - please verify with cultural resources for specific details!</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="../index.html">← Back to ELI5 Park</a>
+        </div>
+    </div>
+</body>
+</html>
