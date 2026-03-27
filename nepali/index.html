@@ -10,7 +10,7 @@
         .container { max-width: 900px; margin: 0 auto; }
         h1 { text-align: center; color: #fff; font-size: 42px; margin-bottom: 10px; }
         .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
-        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
         .topic-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
         .topic-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
         .topic-icon { font-size: 45px; text-align: center; margin-bottom: 12px; }
@@ -18,10 +18,13 @@
         .topic-card p { color: #666; font-size: 13px; line-height: 1.4; text-align: center; }
         .topic-card:nth-child(1) { border-top: 5px solid #DC143C; }
         .topic-card:nth-child(2) { border-top: 5px solid #FFD700; }
-        .topic-card:nth-child(3) { border-top: 5px solid #003893; }
+        .topic-card:nth-child(3) { border-top: 5px solid #FF8C00; }
         .topic-card:nth-child(4) { border-top: 5px solid #228B22; }
-        .topic-card:nth-child(5) { border-top: 5px solid #FF8C00; }
-        .topic-card:nth-child(6) { border-top: 5px solid #8B4513; }
+        .topic-card:nth-child(5) { border-top: 5px solid #5d4037; }
+        .topic-card:nth-child(6) { border-top: 5px solid #6A1B9A; }
+        .topic-card:nth-child(7) { border-top: 5px solid #0277BD; }
+        .topic-card:nth-child(8) { border-top: 5px solid #e91e63; }
+        .topic-card:nth-child(9) { border-top: 5px solid #C62828; }
         .back-link { text-align: center; margin-top: 40px; }
         .back-link a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 18px; }
         .header-nav { text-align: center; margin-bottom: 20px; }
@@ -29,6 +32,7 @@
         .header-nav a:hover { color: #fff; }
         .disclaimer { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px; margin-top: 40px; text-align: center; }
         .disclaimer p { color: #333; font-size: 14px; line-height: 1.6; }
+        .section-title { color: white; text-align: center; font-size: 22px; margin: 30px 0 15px; }
         
         @media (max-width: 768px) {
             h1 { font-size: 28px; }
@@ -48,29 +52,81 @@
         <h1>🇳🇵 ELI5 Nepali Culture 🇳🇵</h1>
         <p class="subtitle">Learn about the amazing traditions of Nepal!</p>
         
+        <h2 class="section-title">🎉 Festivals</h2>
         <div class="topics-grid">
-            <a href="festivals.html" class="topic-card">
-                <div class="topic-icon">🎉</div>
-                <h2>Festivals</h2>
-                <p>Dashain, Tihar, Holi, and more celebrations!</p>
+            <a href="dashain.html" class="topic-card">
+                <div class="topic-icon">🎊</div>
+                <h2>Dashain</h2>
+                <p>The biggest festival - 15 days of celebration!</p>
             </a>
             
+            <a href="tihar.html" class="topic-card">
+                <div class="topic-icon">🪔</div>
+                <h2>Tihar</h2>
+                <p>Festival of lights and honoring animals!</p>
+            </a>
+            
+            <a href="holi.html" class="topic-card">
+                <div class="topic-icon">🎨</div>
+                <h2>Holi</h2>
+                <p>The festival of colors!</p>
+            </a>
+        </div>
+        
+        <h2 class="section-title">🍛 Food</h2>
+        <div class="topics-grid">
+            <a href="dal-bhat.html" class="topic-card">
+                <div class="topic-icon">🍚</div>
+                <h2>Daal Bhat</h2>
+                <p>The national dish - lentils and rice!</p>
+            </a>
+            
+            <a href="momos.html" class="topic-card">
+                <div class="topic-icon">🥟</div>
+                <h2>Momos</h2>
+                <p>Delicious dumplings everyone loves!</p>
+            </a>
+            
+            <a href="sel-roti.html" class="topic-card">
+                <div class="topic-icon">🍩</div>
+                <h2>Sel Roti</h2>
+                <p>Sweet rice ring - festival treat!</p>
+            </a>
+            
+            <a href="thukpa.html" class="topic-card">
+                <div class="topic-icon">🍜</div>
+                <h2>Thukpa</h2>
+                <p>Hot noodle soup from the mountains!</p>
+            </a>
+            
+            <a href="chatpate.html" class="topic-card">
+                <div class="topic-icon">🌶️</div>
+                <h2>Chatpate</h2>
+                <p>Spicy crunchy street snack!</p>
+            </a>
+        </div>
+        
+        <h2 class="section-title">🎊 Celebrations</h2>
+        <div class="topics-grid">
             <a href="bartaman.html" class="topic-card">
                 <div class="topic-icon">🎓</div>
                 <h2>Bartaman</h2>
-                <p>The coming of age ceremony!</p>
-            </a>
-            
-            <a href="food.html" class="topic-card">
-                <div class="topic-icon">🍛</div>
-                <h2>Traditional Food</h2>
-                <p>Daal Bhat, momos, and delicious dishes!</p>
+                <p>Coming of age celebration for boys!</p>
             </a>
             
             <a href="marriage.html" class="topic-card">
                 <div class="topic-icon">💒</div>
-                <h2>Marriage Traditions</h2>
+                <h2>Marriage</h2>
                 <p>How weddings work in Nepal!</p>
+            </a>
+        </div>
+        
+        <h2 class="section-title">🏠 Daily Life</h2>
+        <div class="topics-grid">
+            <a href="daily-life.html" class="topic-card">
+                <div class="topic-icon">🙏</div>
+                <h2>Daily Life</h2>
+                <p>Customs, greetings, and daily life!</p>
             </a>
             
             <a href="architecture.html" class="topic-card">
@@ -78,16 +134,10 @@
                 <h2>Architecture</h2>
                 <p>Temples, stupas, and traditional houses!</p>
             </a>
-            
-            <a href="daily-life.html" class="topic-card">
-                <div class="topic-icon">🙏</div>
-                <h2>Daily Life</h2>
-                <p>Customs, greetings, and daily rituals!</p>
-            </a>
         </div>
         
         <div class="disclaimer">
-            <p><strong>💭 Remember:</strong> This is educational content about Nepali culture. Traditions vary by family, region, and ethnicity. We aim to share general information - please verify with cultural resources for specific details!</p>
+            <p><strong>💭 Remember:</strong> This is educational content about Nepali culture. Traditions vary by family, region, and community. We aim to share general information!</p>
         </div>
         
         <div class="back-link">
