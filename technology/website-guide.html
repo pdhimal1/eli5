@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELI5: How to Make and Share Your Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 20px;
+            text-align: left;
+        }
+        
+        .header-nav a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        
+        .header-nav a:hover {
+            color: #fff;
+        }
+        
+        .header-nav span {
+            color: rgba(255,255,255,0.5);
+            margin: 0 8px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .intro-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            font-size: 1.05em;
+        }
+        
+        .step {
+            margin-bottom: 35px;
+            border: 2px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8f9ff;
+        }
+        
+        .step h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .step-content {
+            font-size: 1.05em;
+            line-height: 1.8;
+        }
+        
+        .analogy-box {
+            background: #e7f3ff;
+            border-left: 5px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-style: italic;
+        }
+        
+        .analogy-box strong {
+            color: #2196F3;
+        }
+        
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        
+        .tips-box {
+            background: #f0f7ff;
+            border-left: 5px solid #764ba2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .tips-box strong {
+            color: #764ba2;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            margin-top: 30px;
+            border-radius: 10px;
+        }
+        
+        .summary-box h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .timeline-item {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 0.9em;
+            text-align: center;
+        }
+        
+        .arrow {
+            color: #667eea;
+            font-size: 1.5em;
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .timeline {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .arrow {
+                display: block;
+                transform: rotate(90deg);
+            }
+        }
+        
+        footer {
+            background: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            color: #666;
+            border-top: 2px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-nav">
+            <a href="../index.html">🏠 ELI5 Park</a>
+            <span>/</span>
+            <a href="index.html">Technology</a>
+            <span>/</span>
+            <span style="color: #fff;">Build a Website</span>
+        </div>
+        
+        <header>
+            <h1>🚀 How to Make & Share Your Website</h1>
+            <p>ELI5: Explained Like I'm 5 (But You're 12!)</p>
+        </header>
+        
+        <div class="content">
+            <div class="intro-box">
+                <strong>🎯 What Are We Doing?</strong> You're going to create your own website and put it on the internet so anyone in the world can see it! It's like building a cool poster and hanging it in the biggest hallway in the world. Let's break it down into super simple steps!
+            </div>
+            
+            <!-- STEP 1 -->
+            <div class="step">
+                <h2><span class="step-number">1</span>Write Your Website (HTML File)</h2>
+                <div class="step-content">
+                    <p><strong>What is HTML?</strong> HTML is like the instructions for building a website. It's a special language that tells computers what to show.</p>
+                    
+                    <div class="analogy-box">
+                        <strong>🧠 Think of it like this:</strong> If a website was a sandwich, HTML would be the instructions: "Put bread on bottom, add lettuce, add cheese, add bread on top." The computer reads these instructions and builds your website!
+                    </div>
+                    
+                    <p><strong>What You Do:</strong></p>
+                    <ul>
+                        <li>Open a text editor (like Notepad on Windows or TextEdit on Mac)</li>
+                        <li>Write your website code (stuff like &lt;h1&gt;My Cool Website&lt;/h1&gt;)</li>
+                        <li>Save it as <code>index.html</code> (the filename is important!)</li>
+                    </ul>
+                    
+                    <div class="tips-box">
+                        <strong>💡 Pro Tip:</strong> You don't need to understand all the HTML code yet. Just know that every website starts as an HTML file - it's like the blueprint of your website!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- STEP 2 -->
+            <div class="step">
+                <h2><span class="step-number">2</span>Put Your File in a Folder (Create a Repository)</h2>
+                <div class="step-content">
+                    <p><strong>What is a Repository?</strong> It's just a fancy word for "a folder that keeps all your website files organized."</p>
+                    
+                    <div class="analogy-box">
+                        <strong>🧠 Think of it like this:</strong> If you're making a movie, a repository is like the box where you keep all the movie scenes, sounds, and special effects. Everything your website needs goes in one organized place!
+                    </div>
+                    
+                    <p><strong>What You Do:</strong></p>
+                    <ul>
+                        <li>Create a new folder on your computer</li>
+                        <li>Name it something cool like "my-awesome-website"</li>
+                        <li>Put your <code>index.html</code> file inside</li>
+                        <li>Add any other files your website needs (images, styles, etc.)</li>
+                    </ul>
+                    
+                    <div class="tips-box">
+                        <strong>💡 Pro Tip:</strong> Keep your folder organized! Put all your images in an "images" folder, all your styles in a "styles" folder. It's like organizing your backpack!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- STEP 3 -->
+            <div class="step">
+                <h2><span class="step-number">3</span>Upload to GitHub (Tell the Cloud About Your Website)</h2>
+                <div class="step-content">
+                    <p><strong>What is GitHub?</strong> GitHub is like Google Drive for code. It's a place where you can save and store your website files in the cloud.</p>
+                    
+                    <div class="analogy-box">
+                        <strong>🧠 Think of it like this:</strong> GitHub is like backing up your homework to the cloud. If your computer breaks, your website is still safe in the cloud. Plus, other people can see your code and help you!
+                    </div>
+                    
+                    <p><strong>What You Do:</strong></p>
+                    <ol>
+                        <li>Go to <strong>github.com</strong> and create a free account</li>
+                        <li>Click "New" and create a new repository</li>
+                        <li>Name it (same as your folder name is cool!)</li>
+                        <li>Upload your folder to GitHub (drag and drop, or use Git commands)</li>
+                    </ol>
+                    
+                    <div class="tips-box">
+                        <strong>💡 Pro Tip:</strong> Don't worry if Git commands sound scary. GitHub has a super easy web interface - just drag your files into your browser!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- STEP 4 -->
+            <div class="step">
+                <h2><span class="step-number">4</span>Buy a Domain Name (Get Your Website Address)</h2>
+                <div class="step-content">
+                    <p><strong>What is a Domain?</strong> A domain is your website's address on the internet. Like how your house has an address (123 Main Street), your website needs an address too!</p>
+                    
+                    <div class="analogy-box">
+                        <strong>🧠 Think of it like this:</strong> Instead of telling people "Go to this random number: 204.157.43.219", you give them a nice, easy name like "my-cool-website.com". A domain is that pretty name!
+                    </div>
+                    
+                    <p><strong>What You Do:</strong></p>
+                    <ol>
+                        <li>Go to <strong>vercel.com</strong> (they sell domains AND host websites!)</li>
+                        <li>Sign in with your GitHub account</li>
+                        <li>Go to their domain store</li>
+                        <li>Search for the name you want (like "my-cool-site.com")</li>
+                        <li>Buy it (usually costs $10-15 per year)</li>
+                    </ol>
+                    
+                    <div class="tips-box">
+                        <strong>💡 Pro Tip:</strong> Try lots of names! If someone else already owns "google.com", you can't have it. Try variations like "my-google-fan-site.com" or use a different ending like ".net" or ".dev"!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- STEP 5 -->
+            <div class="step">
+                <h2><span class="step-number">5</span>Deploy Your Website (Put It on the Internet)</h2>
+                <div class="step-content">
+                    <p><strong>What is Deploying?</strong> Deploying means taking your website and putting it on special computers (called servers) that are always on and connected to the internet.</p>
+                    
+                    <div class="analogy-box">
+                        <strong>🧠 Think of it like this:</strong> Your laptop turns off when you close it, right? But servers are like computers that NEVER turn off. When you deploy, you're saying "Keep my website running 24/7 on this super computer!"
+                    </div>
+                    
+                    <p><strong>What You Do:</strong></p>
+                    <ol>
+                        <li>Go back to <strong>vercel.com</strong></li>
+                        <li>Click "New Project"</li>
+                        <li>Select your GitHub repository</li>
+                        <li>Vercel automatically finds and deploys your website!</li>
+                        <li>Connect your domain name to your Vercel deployment</li>
+                    </ol>
+                    
+                    <div class="tips-box">
+                        <strong>💡 Pro Tip:</strong> Vercel does most of the work for you! It's like having a robot friend that says "I'll make sure your website is always running!" 🤖
+                    </div>
+                </div>
+            </div>
+            
+            <!-- STEP 6 -->
+            <div class="step">
+                <h2><span class="step-number">6</span>Get HTTPS (Make Your Website Secure)</h2>
+                <div class="step-content">
+                    <p><strong>What is HTTPS?</strong> HTTPS is like a security guard for your website. It protects information and makes sure people know your website is real.</p>
+                    
+                    <div class="analogy-box">
+                        <strong>🧠 Think of it like this:</strong> HTTPS is like a lock on a safe. When someone visits your website, they know it's protected and safe. It's also how banks keep your money safe online!
+                    </div>
+                    
+                    <p><strong>What You Do:</strong></p>
+                    <ul>
+                        <li>Good news! <strong>Vercel gives you HTTPS for FREE!</strong></li>
+                        <li>You don't have to do anything - it's automatic</li>
+                        <li>Your website will show a little green lock in the browser 🔒</li>
+                    </ul>
+                    
+                    <div class="tips-box">
+                        <strong>💡 Pro Tip:</strong> That little green lock means your website is legitimate and secure. Visitors will trust your site more when they see it!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SUMMARY -->
+            <div class="summary-box">
+                <h3>📋 Here's Your Quick Roadmap:</h3>
+                <div class="timeline">
+                    <div class="timeline-item">1️⃣ Write HTML</div>
+                    <div class="arrow">→</div>
+                    <div class="timeline-item">2️⃣ Create Folder</div>
+                    <div class="arrow">→</div>
+                    <div class="timeline-item">3️⃣ Upload to GitHub</div>
+                    <div class="arrow">→</div>
+                    <div class="timeline-item">4️⃣ Buy Domain</div>
+                    <div class="arrow">→</div>
+                    <div class="timeline-item">5️⃣ Deploy</div>
+                    <div class="arrow">→</div>
+                    <div class="timeline-item">6️⃣ Done! 🎉</div>
+                </div>
+            </div>
+            
+            <!-- FUN FACTS -->
+            <div class="step">
+                <h2>🤔 Cool Facts About Websites!</h2>
+                <div class="step-content">
+                    <ul>
+                        <li>🌍 There are over 1.8 BILLION websites on the internet right now!</li>
+                        <li>💻 Every single one started as files on someone's computer, just like yours!</li>
+                        <li>🚀 Famous websites like Netflix, Instagram, and YouTube all started small and grew bigger</li>
+                        <li>🔧 Servers run special software that says "Here's the website!" when someone visits</li>
+                        <li>🌐 Your domain name gets translated into a number (called an IP address) so computers can find your website</li>
+                        <li>⚡ When someone types your domain, their computer talks to your server in milliseconds!</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- TROUBLESHOOTING -->
+            <div class="step">
+                <h2>❓ Common Questions</h2>
+                <div class="step-content">
+                    <p><strong>Q: Can I see my website before I deploy it?</strong></p>
+                    <p>A: Yes! You can open your HTML file in your browser on your computer to preview it. But only YOU can see it. Once you deploy, the whole world can see it!</p>
+                    
+                    <p style="margin-top: 15px;"><strong>Q: What if I want to change my website?</strong></p>
+                    <p>A: Easy! Edit your files, upload them to GitHub, and Vercel automatically updates your live website. It's like magic! ✨</p>
+                    
+                    <p style="margin-top: 15px;"><strong>Q: Do I have to pay for everything?</strong></p>
+                    <p>A: GitHub is free! Vercel hosting is free! The only thing you pay for is the domain name (~$10/year). Way cheaper than starting a real business!</p>
+                    
+                    <p style="margin-top: 15px;"><strong>Q: Can someone steal my website?</strong></p>
+                    <p>A: Not really! The code is visible (that's normal for websites), but they can't take it down or control it. And HTTPS keeps visitors' information safe!</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Made with ❤️ to help you understand how websites work! | Now go build something amazing! 🚀</p>
+        </footer>
+    </div>
+</body>
+</html>
