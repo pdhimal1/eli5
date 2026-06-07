@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monte Carlo Financial Planning - ELI5!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Comic Sans MS', sans-serif; background: linear-gradient(135deg, #1a237e, #283593); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #fff; font-size: 38px; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 30px; }
+        .story-box { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .story-box h2 { color: #1a237e; font-size: 24px; margin-bottom: 15px; }
+        .story-box p { font-size: 18px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+        .story-box ul { font-size: 18px; line-height: 1.8; color: #333; margin-left: 20px; margin-bottom: 10px; }
+        .story-box li { margin-bottom: 8px; }
+        .demo-area { background: #e8eaf6; border-radius: 20px; padding: 25px; margin-bottom: 20px; }
+        .demo-title { text-align: center; color: #1a237e; font-size: 28px; margin-bottom: 15px; }
+        .input-group { background: white; border-radius: 15px; padding: 20px; margin-bottom: 15px; }
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .input-field { display: flex; flex-direction: column; }
+        .input-field label { font-size: 14px; font-weight: bold; color: #1a237e; margin-bottom: 5px; }
+        .input-field input { padding: 10px; border: 2px solid #1a237e; border-radius: 8px; font-size: 14px; }
+        canvas { display: block; margin: 0 auto; background: white; border-radius: 10px; }
+        .controls { text-align: center; margin-top: 15px; }
+        button { padding: 12px 25px; font-size: 16px; border: none; border-radius: 25px; cursor: pointer; background: #1a237e; color: white; margin: 5px; }
+        button:hover { transform: scale(1.05); background: #0d47a1; }
+        .stats { text-align: center; margin-top: 15px; font-size: 16px; color: #1a237e; background: white; padding: 15px; border-radius: 10px; }
+        .fact-box { background: #f3e5f5; border-left: 5px solid #1a237e; padding: 15px; margin: 15px 0; color: #1a237e; }
+        .outcome-box { background: white; padding: 15px; border-radius: 10px; margin: 10px 0; border-left: 4px solid #1a237e; }
+        .outcome-box p { margin: 5px 0; font-size: 14px; }
+        .good { color: #4caf50; font-weight: bold; }
+        .bad { color: #f44336; font-weight: bold; }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 18px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 26px; }
+            .input-row { grid-template-columns: 1fr; }
+            .story-box { padding: 18px; }
+            canvas { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 Monte Carlo Financial Planning! 💰</h1>
+        <p class="subtitle">Will your retirement dreams come true? Let's test 1,000 futures!</p>
+        
+        <div class="story-box">
+            <h2>🎯 What is Financial Monte Carlo?</h2>
+            <p>When you're planning for retirement, there's a BIG problem: <strong>the future is uncertain!</strong></p>
+            <p>Stock markets go up and down randomly. Some years you make 20%, other years you lose 5%. Nobody knows the future!</p>
+            <p>So financial advisors use <strong>Monte Carlo simulations</strong> to ask: "If we run 1,000 different possible futures based on normal market patterns, how many of them let me retire with enough money?"</p>
+            <div class="fact-box">
+                💡 This isn't about predicting the exact future - it's about calculating the probability that your plan works despite uncertainty!
+            </div>
+        </div>
+
+        <div class="demo-area">
+            <h2 class="demo-title">💸 Test Your Retirement Plan!</h2>
+            <p style="text-align: center; color: #1a237e;">Fill in your numbers and run 1,000 simulations to see if your retirement will work!</p>
+            
+            <div class="input-group">
+                <div class="input-row">
+                    <div class="input-field">
+                        <label for="startingAmount">Starting Amount ($):</label>
+                        <input type="number" id="startingAmount" value="100000" min="0" step="10000">
+                    </div>
+                    <div class="input-field">
+                        <label for="annualContribution">Annual Contribution ($):</label>
+                        <input type="number" id="annualContribution" value="20000" min="0" step="5000">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-field">
+                        <label for="yearsToRetire">Years Until Retirement:</label>
+                        <input type="number" id="yearsToRetire" value="30" min="1" step="1">
+                    </div>
+                    <div class="input-field">
+                        <label for="targetAmount">Retirement Goal ($):</label>
+                        <input type="number" id="targetAmount" value="1000000" min="0" step="100000">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-field">
+                        <label for="avgReturn">Average Annual Return (%):</label>
+                        <input type="number" id="avgReturn" value="7" min="-10" step="0.5">
+                    </div>
+                    <div class="input-field">
+                        <label for="volatility">Market Volatility (%):</label>
+                        <input type="number" id="volatility" value="12" min="1" step="1">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button onclick="runSimulation()">🎲 Run 1,000 Simulations!</button>
+                <button onclick="resetSimulation()">🔄 Reset</button>
+            </div>
+            
+            <canvas id="simulationCanvas" width="400" height="300"></canvas>
+            <div class="stats" id="simulationStats">Waiting for simulation...</div>
+        </div>
+
+        <div class="story-box">
+            <h2>📊 How It Works</h2>
+            <p><strong>The Process:</strong></p>
+            <ol>
+                <li><strong>Start with your money:</strong> Starting amount + annual contributions</li>
+                <li><strong>Simulate random returns:</strong> Each year, the market returns a random percentage (based on historical patterns)</li>
+                <li><strong>Keep compounding:</strong> Let it grow year by year</li>
+                <li><strong>Repeat 1,000 times:</strong> Each simulation is one possible future</li>
+                <li><strong>Check success rate:</strong> What % of futures reach your goal?</li>
+            </ol>
+            <div class="fact-box">
+                📊 Financial advisors typically want 90%+ success rate. If only 50% of futures work, you should save more or work longer!
+            </div>
+        </div>
+
+        <div class="story-box">
+            <h2>🤔 What Do The Results Mean?</h2>
+            <div class="outcome-box">
+                <p><span class="good">✅ 95%+ Success Rate:</span> Your plan is very safe! You'll likely reach your goal even if markets go down.</p>
+            </div>
+            <div class="outcome-box">
+                <p><span class="good">✅ 80-95% Success Rate:</span> Good! A solid plan for most people.</p>
+            </div>
+            <div class="outcome-box">
+                <p><span class="bad">⚠️ 60-80% Success Rate:</span> You might want to save more or delay retirement a bit.</p>
+            </div>
+            <div class="outcome-box">
+                <p><span class="bad">❌ Below 60%:</span> Your plan is risky. Consider bigger changes like saving more or working longer.</p>
+            </div>
+        </div>
+
+        <div class="story-box">
+            <h2>🎯 Real-World Example</h2>
+            <p><strong>Meet Sarah:</strong></p>
+            <ul>
+                <li>Age 35, wants to retire at 65 (30 years away)</li>
+                <li>Has $100,000 saved already</li>
+                <li>Can save $20,000 per year</li>
+                <li>Wants $1,000,000 by retirement</li>
+                <li>Markets average 7% return with 12% ups and downs</li>
+            </ul>
+            <p><strong>The Monte Carlo says:</strong> "In 85 out of 100 possible futures, you'll have over $1,000,000!" 🎉</p>
+            <p>But in 15 futures (bad luck scenarios), you'll only have $600,000-$800,000.</p>
+            <p>Sarah might want to: save more, take slightly more investment risk, or work 2 extra years!</p>
+        </div>
+
+        <div class="story-box">
+            <h2>💡 Why This Matters</h2>
+            <ul>
+                <li>🎲 <strong>No crystal ball:</strong> We can't predict exact future returns</li>
+                <li>📊 <strong>But we can use probabilities:</strong> Historical data shows patterns</li>
+                <li>💪 <strong>Take control:</strong> If success rate is low, you can change the plan now!</li>
+                <li>🏖️ <strong>Peace of mind:</strong> Knowing your chances helps you sleep better</li>
+                <li>⚡ <strong>Real advisor tool:</strong> Professional financial planners use this every day</li>
+            </ul>
+        </div>
+
+        <div class="story-box">
+            <h2>🚨 Remember!</h2>
+            <div class="fact-box">
+                This is for learning only! Real financial planning is complex and depends on:
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>Your actual tax situation</li>
+                    <li>Inflation (things getting more expensive)</li>
+                    <li>Your specific investment choices</li>
+                    <li>Major life changes (kids, buying a house, etc.)</li>
+                    <li>Social Security / Pension benefits</li>
+                </ul>
+                Always talk to a real financial advisor for your personal situation!
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Finance Topics</a>
+        </div>
+    </div>
+
+    <script>
+        function normalRandom() {
+            // Box-Muller transform for normal distribution
+            let u1 = Math.random();
+            let u2 = Math.random();
+            return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        }
+
+        function simulateRetirementYear(balance, contribution, avgReturn, volatility) {
+            // Add annual contribution first
+            balance += contribution;
+            
+            // Random market return following normal distribution
+            const randomReturn = (avgReturn / 100 + (volatility / 100) * normalRandom());
+            balance *= (1 + randomReturn);
+            
+            return Math.max(0, balance);
+        }
+
+        function runSimulation() {
+            const startingAmount = parseFloat(document.getElementById('startingAmount').value);
+            const annualContribution = parseFloat(document.getElementById('annualContribution').value);
+            const yearsToRetire = parseInt(document.getElementById('yearsToRetire').value);
+            const targetAmount = parseFloat(document.getElementById('targetAmount').value);
+            const avgReturn = parseFloat(document.getElementById('avgReturn').value);
+            const volatility = parseFloat(document.getElementById('volatility').value);
+
+            const numSimulations = 1000;
+            const results = [];
+
+            // Run simulations
+            for (let sim = 0; sim < numSimulations; sim++) {
+                let balance = startingAmount;
+                
+                for (let year = 0; year < yearsToRetire; year++) {
+                    balance = simulateRetirementYear(balance, annualContribution, avgReturn, volatility);
+                }
+                
+                results.push(balance);
+            }
+
+            // Calculate statistics
+            results.sort((a, b) => a - b);
+            const successCount = results.filter(r => r >= targetAmount).length;
+            const successRate = (successCount / numSimulations) * 100;
+            const median = results[Math.floor(numSimulations / 2)];
+            const best = results[numSimulations - 1];
+            const worst = results[0];
+            const p10 = results[Math.floor(numSimulations * 0.1)];
+            const p90 = results[Math.floor(numSimulations * 0.9)];
+
+            // Draw chart
+            drawChart(results, targetAmount, successRate);
+
+            // Update stats
+            document.getElementById('simulationStats').innerHTML = `
+                <strong>✅ Success Rate: ${successRate.toFixed(1)}%</strong> (${successCount} out of ${numSimulations} futures)<br>
+                Median Outcome: $${median.toLocaleString('en-US', {maximumFractionDigits: 0})}<br>
+                Worst 10%: $${p10.toLocaleString('en-US', {maximumFractionDigits: 0})} | Best 10%: $${p90.toLocaleString('en-US', {maximumFractionDigits: 0})}<br>
+                Range: $${worst.toLocaleString('en-US', {maximumFractionDigits: 0})} to $${best.toLocaleString('en-US', {maximumFractionDigits: 0})}<br>
+                <br><strong>${successRate >= 90 ? '✅ Excellent!' : successRate >= 80 ? '✅ Good!' : successRate >= 60 ? '⚠️ Risky' : '❌ Very Risky'}</strong>
+            `;
+        }
+
+        function drawChart(results, targetAmount, successRate) {
+            const canvas = document.getElementById('simulationCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#f5f5f5';
+            ctx.fillRect(0, 0, 400, 300);
+
+            // Draw histogram
+            const numBins = 30;
+            const max = Math.max(...results) * 1.1;
+            const binWidth = max / numBins;
+            const binCounts = new Array(numBins).fill(0);
+
+            results.forEach(val => {
+                const binIndex = Math.min(Math.floor(val / binWidth), numBins - 1);
+                binCounts[binIndex]++;
+            });
+
+            const maxCount = Math.max(...binCounts);
+            const chartWidth = 380;
+            const chartHeight = 240;
+            const barWidth = chartWidth / numBins;
+
+            binCounts.forEach((count, i) => {
+                const barHeight = (count / maxCount) * chartHeight;
+                const x = 10 + i * barWidth;
+                const y = 250 - barHeight;
+
+                ctx.fillStyle = count > 0 ? '#2196F3' : '#e0e0e0';
+                ctx.fillRect(x, y, barWidth - 1, barHeight);
+            });
+
+            // Draw target line
+            const targetX = 10 + (targetAmount / max) * chartWidth;
+            ctx.strokeStyle = '#FF5722';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(targetX, 10);
+            ctx.lineTo(targetX, 250);
+            ctx.stroke();
+
+            // Labels
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('$0', 10, 270);
+            ctx.fillText(`$${(max / 2).toLocaleString('en-US', {maximumFractionDigits: 0})}`, 200, 270);
+            ctx.fillText(`$${max.toLocaleString('en-US', {maximumFractionDigits: 0})}`, 390, 270);
+
+            ctx.fillStyle = '#FF5722';
+            ctx.fillText('Goal', targetX, 290);
+
+            ctx.fillStyle = '#2196F3';
+            ctx.fillText('Distribution', 200, 15);
+        }
+
+        function resetSimulation() {
+            const canvas = document.getElementById('simulationCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#f5f5f5';
+            ctx.fillRect(0, 0, 400, 300);
+            ctx.fillStyle = '#1a237e';
+            ctx.font = '18px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Click "Run Simulations" to start', 200, 150);
+            
+            document.getElementById('simulationStats').textContent = 'Waiting for simulation...';
+        }
+
+        // Initialize
+        resetSimulation();
+    </script>
+
+    <div style="background:rgba(255,255,255,0.95);border-radius:15px;padding:20px;margin-top:40px;text-align:center;">
+        <p style="color:#333;font-size:14px;line-height:1.6;"><strong>Disclaimer:</strong> This content is for educational purposes only. Not financial advice!</p>
+    </div>
+</body>
+</html>
