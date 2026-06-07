@@ -19,7 +19,7 @@
         .demo-title { text-align: center; color: #4a148c; font-size: 28px; margin-bottom: 15px; }
         canvas { display: block; margin: 0 auto; background: white; border-radius: 10px; }
         .controls { text-align: center; margin-top: 15px; }
-        button { padding: 12px 25px; font-size: 16px; border: none; border-radius: 25px; cursor: pointer; background: #7b1fa2; color: white; }
+        button { padding: 12px 25px; font-size: 16px; border: none; border-radius: 25px; cursor: pointer; background: #7b1fa2; color: white; margin: 5px; }
         button:hover { transform: scale(1.05); }
         .stats { text-align: center; margin-top: 15px; font-size: 18px; color: #4a148c; }
         .fact-box { background: #f3e5f5; border-left: 5px solid #6a1b9a; padding: 15px; margin: 15px 0; color: #4a148c; }
@@ -72,6 +72,54 @@
                 <li>So π ≈ 4 × (darts in circle / total darts)</li>
             </ul>
             <p>More darts = better estimate! With millions of darts, computers can estimate π to many decimal places!</p>
+        </div>
+
+        <div class="demo-area">
+            <h2 class="demo-title">🏓 Table Tennis Rally Prediction!</h2>
+            <p style="text-align: center; color: #4a148c;">Will the rally last long? Use Monte Carlo to predict! Each simulation = one random rally.</p>
+            <canvas id="tennisCanvas" width="400" height="300"></canvas>
+            <div class="controls">
+                <button onclick="simulateTennisRallies(100)">🎾 Simulate 100 Rallies</button>
+                <button onclick="simulateTennisRallies(1000)">🎾 Simulate 1000 Rallies</button>
+                <button onclick="resetTennis()">🔄 Reset</button>
+            </div>
+            <div class="stats" id="tennisStats">Rallies simulated: 0 | Average rally length: 0 shots</div>
+        </div>
+
+        <div class="story-box">
+            <h2>🏓 How Table Tennis Works</h2>
+            <p>In table tennis, players have to hit the ball back and forth over the net. But how long will a rally last? It depends on how good each player is!</p>
+            <ul>
+                <li>Each shot, the player has a chance to miss (maybe 5-10%)</li>
+                <li>If they miss, the rally ends!</li>
+                <li>If they don't miss, the other player tries...</li>
+                <li>We can simulate thousands of rallies to see: what's the average length?</li>
+            </ul>
+            <p>🎲 By running many random simulations, we can predict rally patterns without needing complex math!</p>
+        </div>
+
+        <div class="demo-area">
+            <h2 class="demo-title">🤖 Robot Vacuum Room Coverage!</h2>
+            <p style="text-align: center; color: #4a148c;">How long until the robot covers the whole room? Each simulation = one cleaning cycle.</p>
+            <canvas id="robotCanvas" width="400" height="300"></canvas>
+            <div class="controls">
+                <button onclick="simulateRobotCoverage(10)">🤖 Simulate 10 Cleanings</button>
+                <button onclick="simulateRobotCoverage(100)">🤖 Simulate 100 Cleanings</button>
+                <button onclick="resetRobot()">🔄 Reset</button>
+            </div>
+            <div class="stats" id="robotStats">Cleanings simulated: 0 | Average time to cover room: 0% seconds</div>
+        </div>
+
+        <div class="story-box">
+            <h2>🤖 How Robot Vacuums Work</h2>
+            <p>A robot vacuum doesn't have a perfect plan - it bounces around randomly! But eventually, it covers the floor. How long does it take?</p>
+            <ul>
+                <li>The robot moves in a random direction</li>
+                <li>When it hits a wall, it picks a new random direction</li>
+                <li>Eventually, it covers ~95% of the room!</li>
+                <li>But how long? We can simulate to find out!</li>
+            </ul>
+            <p>🎲 By running thousands of simulations, we can estimate average cleaning time. This helps companies predict battery needs and customer satisfaction!</p>
         </div>
         
         <div class="story-box">
@@ -140,6 +188,7 @@
     </div>
 
     <script>
+        // ===== DARTS / PI ESTIMATION =====
         const canvas = document.getElementById('mcCanvas');
         const ctx = canvas.getContext('2d');
         let totalDarts = 0;
@@ -189,6 +238,218 @@
         }
         
         drawBoard();
+
+        // ===== TABLE TENNIS RALLY =====
+        let tennisRalliesRun = 0;
+        let tennisAverageLength = 0;
+        let allTennisLengths = [];
+
+        function simulateTennisRally() {
+            let shotCount = 0;
+            const playerSkill = 0.92; // 92% chance to successfully hit the ball back
+            
+            while (Math.random() < playerSkill) {
+                shotCount++;
+                if (shotCount > 1000) break; // Safety limit
+            }
+            
+            return shotCount;
+        }
+
+        function simulateTennisRallies(numSimulations) {
+            const tennisCanvas = document.getElementById('tennisCanvas');
+            const tennisCtx = tennisCanvas.getContext('2d');
+            
+            allTennisLengths = [];
+            let totalShots = 0;
+
+            for (let i = 0; i < numSimulations; i++) {
+                const rallyLength = simulateTennisRally();
+                allTennisLengths.push(rallyLength);
+                totalShots += rallyLength;
+                tennisRalliesRun++;
+            }
+
+            tennisAverageLength = totalShots / numSimulations;
+
+            // Draw distribution chart
+            tennisCtx.fillStyle = '#f5f5f5';
+            tennisCtx.fillRect(0, 0, 400, 300);
+
+            // Draw grid and labels
+            tennisCtx.strokeStyle = '#ddd';
+            tennisCtx.lineWidth = 1;
+            for (let i = 0; i <= 10; i++) {
+                const x = (i / 10) * 400;
+                tennisCtx.beginPath();
+                tennisCtx.moveTo(x, 250);
+                tennisCtx.lineTo(x, 270);
+                tennisCtx.stroke();
+            }
+
+            // Draw bar chart of rally lengths
+            tennisCtx.fillStyle = '#4CAF50';
+            const maxRallyLength = Math.max(...allTennisLengths);
+            const binWidth = 400 / 20;
+
+            for (let bin = 0; bin < 20; bin++) {
+                let count = 0;
+                for (let length of allTennisLengths) {
+                    const binNum = Math.floor((length / maxRallyLength) * 19);
+                    if (binNum === bin) count++;
+                }
+
+                const barHeight = (count / numSimulations) * 200;
+                tennisCtx.fillRect(bin * binWidth, 250 - barHeight, binWidth - 2, barHeight);
+            }
+
+            // Labels
+            tennisCtx.fillStyle = '#333';
+            tennisCtx.font = '12px Arial';
+            tennisCtx.textAlign = 'center';
+            tennisCtx.fillText('Short', 20, 290);
+            tennisCtx.fillText('Long', 380, 290);
+            tennisCtx.fillText('Rally Lengths', 200, 15);
+
+            document.getElementById('tennisStats').textContent = 
+                `Rallies simulated: ${tennisRalliesRun} | Average rally length: ${tennisAverageLength.toFixed(1)} shots`;
+        }
+
+        function resetTennis() {
+            const tennisCanvas = document.getElementById('tennisCanvas');
+            const tennisCtx = tennisCanvas.getContext('2d');
+            tennisCtx.fillStyle = '#f5f5f5';
+            tennisCtx.fillRect(0, 0, 400, 300);
+            tennisCtx.fillStyle = '#4a148c';
+            tennisCtx.font = '18px Arial';
+            tennisCtx.textAlign = 'center';
+            tennisCtx.fillText('Click "Simulate Rallies" to start', 200, 150);
+            
+            tennisRalliesRun = 0;
+            tennisAverageLength = 0;
+            allTennisLengths = [];
+            document.getElementById('tennisStats').textContent = 'Rallies simulated: 0 | Average rally length: 0 shots';
+        }
+
+        // Initialize tennis canvas
+        resetTennis();
+
+        // ===== ROBOT VACUUM COVERAGE =====
+        let robotCleaningsRun = 0;
+        let robotAverageTime = 0;
+
+        function simulateRobotCleaning() {
+            const roomSize = 100; // 100x100 grid
+            const covered = new Set();
+            let steps = 0;
+            let robotX = 50;
+            let robotY = 50;
+            let angle = Math.random() * Math.PI * 2;
+            const coverageRadius = 8; // Robot covers area around it
+
+            while (covered.size < roomSize * 0.95 && steps < 50000) {
+                // Mark cells as covered
+                for (let dx = -coverageRadius; dx <= coverageRadius; dx++) {
+                    for (let dy = -coverageRadius; dy <= coverageRadius; dy++) {
+                        const x = Math.floor(robotX + dx);
+                        const y = Math.floor(robotY + dy);
+                        if (x >= 0 && x < roomSize && y >= 0 && y < roomSize) {
+                            covered.add(`${x},${y}`);
+                        }
+                    }
+                }
+
+                // Move robot
+                robotX += Math.cos(angle) * 1;
+                robotY += Math.sin(angle) * 1;
+
+                // Hit wall - change direction
+                if (robotX < 5 || robotX > 95 || robotY < 5 || robotY > 95) {
+                    angle = Math.random() * Math.PI * 2;
+                    robotX = Math.max(5, Math.min(95, robotX));
+                    robotY = Math.max(5, Math.min(95, robotY));
+                }
+
+                // Random direction change occasionally
+                if (Math.random() < 0.05) {
+                    angle += (Math.random() - 0.5) * 0.5;
+                }
+
+                steps++;
+            }
+
+            return steps;
+        }
+
+        function simulateRobotCoverage(numSimulations) {
+            const robotCanvas = document.getElementById('robotCanvas');
+            const robotCtx = robotCanvas.getContext('2d');
+
+            let totalTime = 0;
+            let times = [];
+
+            for (let i = 0; i < numSimulations; i++) {
+                const time = simulateRobotCleaning();
+                times.push(time);
+                totalTime += time;
+                robotCleaningsRun++;
+            }
+
+            robotAverageTime = totalTime / numSimulations;
+
+            // Draw visualization
+            robotCtx.fillStyle = '#f5f5f5';
+            robotCtx.fillRect(0, 0, 400, 300);
+
+            // Draw distribution
+            robotCtx.fillStyle = '#FF9800';
+            const minTime = Math.min(...times);
+            const maxTime = Math.max(...times);
+            const timeRange = maxTime - minTime;
+            const binWidth = 400 / 15;
+
+            for (let bin = 0; bin < 15; bin++) {
+                let count = 0;
+                const binMin = minTime + (bin / 15) * timeRange;
+                const binMax = minTime + ((bin + 1) / 15) * timeRange;
+
+                for (let time of times) {
+                    if (time >= binMin && time < binMax) count++;
+                }
+
+                const barHeight = (count / numSimulations) * 200;
+                robotCtx.fillRect(bin * binWidth, 250 - barHeight, binWidth - 2, barHeight);
+            }
+
+            // Labels
+            robotCtx.fillStyle = '#333';
+            robotCtx.font = '12px Arial';
+            robotCtx.textAlign = 'center';
+            robotCtx.fillText('Fast', 20, 290);
+            robotCtx.fillText('Slow', 380, 290);
+            robotCtx.fillText('Cleaning Times', 200, 15);
+
+            document.getElementById('robotStats').textContent = 
+                `Cleanings simulated: ${robotCleaningsRun} | Average time to cover room: ${robotAverageTime.toFixed(0)} steps`;
+        }
+
+        function resetRobot() {
+            const robotCanvas = document.getElementById('robotCanvas');
+            const robotCtx = robotCanvas.getContext('2d');
+            robotCtx.fillStyle = '#f5f5f5';
+            robotCtx.fillRect(0, 0, 400, 300);
+            robotCtx.fillStyle = '#4a148c';
+            robotCtx.font = '18px Arial';
+            robotCtx.textAlign = 'center';
+            robotCtx.fillText('Click "Simulate Cleanings" to start', 200, 150);
+            
+            robotCleaningsRun = 0;
+            robotAverageTime = 0;
+            document.getElementById('robotStats').textContent = 'Cleanings simulated: 0 | Average time to cover room: 0 steps';
+        }
+
+        // Initialize robot canvas
+        resetRobot();
     </script>
 
     <div style="background:rgba(255,255,255,0.95);border-radius:15px;padding:20px;margin-top:40px;text-align:center;">
